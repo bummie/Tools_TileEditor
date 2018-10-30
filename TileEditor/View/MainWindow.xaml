@@ -5,11 +5,11 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:ignore="http://www.galasoft.ch/ignore"
         mc:Ignorable="d ignore"
-        Height="300"
-        Width="300"
-        Title="MVVM Light Application"
-        DataContext="{Binding Main, Source={StaticResource Locator}}">
-    
+        Height="800"
+        Width="1200"
+        Title="Level Editor"
+        DataContext="{Binding Main, Source={StaticResource Locator}}" Background="LightSlateGray">
+
     <Window.Resources>
         <ResourceDictionary>
             <ResourceDictionary.MergedDictionaries>
@@ -19,14 +19,46 @@
     </Window.Resources>
 
     <Grid x:Name="LayoutRoot">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="1*"/>
+            <RowDefinition Height="10*"/>
+        </Grid.RowDefinitions>
 
-        <TextBlock FontSize="36"
-                   FontWeight="Bold"
-                   Foreground="Purple"
-                   Text="{Binding WelcomeTitle}"
-                   VerticalAlignment="Center"
-                   HorizontalAlignment="Center"
-                   TextWrapping="Wrap" />
+        <!-- Toolbar -->
+        <Grid Grid.Row="0">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="1*"/>
+                <ColumnDefinition Width="1*"/>
+                <ColumnDefinition Width="1*"/>
+                <ColumnDefinition Width="1*"/>
+                <ColumnDefinition Width="1*"/>
+                <ColumnDefinition Width="1*"/>
+                <ColumnDefinition Width="1*"/>
+            </Grid.ColumnDefinitions>
+
+            <Button Grid.Column="0">Hand</Button>
+            <Button Grid.Column="1">Brush</Button>
+            <Button Grid.Column="2">Save</Button>
+            <Button Grid.Column="3">Import</Button>
+            <Button Grid.Column="4">Host</Button>
+            <Button Grid.Column="5">Join</Button>
+            <Button Grid.Column="6">Clear</Button>
+           
+        </Grid>
+
+        <!-- Canvas and properties -->
+        <Grid Grid.Row="1">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="2*"/>
+                <ColumnDefinition Width="5*"/>
+                <ColumnDefinition Width="2*"/>
+            </Grid.ColumnDefinitions>
+
+            <Label Grid.Column="0">Properties</Label>
+            <Canvas x:Name="Canvas" Grid.Column="1"></Canvas>
+            <Label Grid.Column="2">Tiles</Label>
+        </Grid>
 
     </Grid>
+    
 </Window>
