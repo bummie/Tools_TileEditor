@@ -11,9 +11,15 @@ namespace TileEditor.Handlers
     {
         public readonly int MAP_SIZE_WIDTH;
         public readonly int MAP_SIZE_HEIGHT;
-        public readonly int TILE_SIZE;
 
+        private float _tileSize = 32;
         private CameraHandler _cameraHandler;
+
+        public float TileSize
+        {
+            get { return _tileSize; }
+            set { _tileSize = value / _cameraHandler.Zoom; }
+        }
 
         public Point SelectedTilePoint { get; set; }
         public Point HoverTile { get; set; }
@@ -22,9 +28,9 @@ namespace TileEditor.Handlers
         {
             MAP_SIZE_WIDTH = width;
             MAP_SIZE_HEIGHT = height;
-            TILE_SIZE = tileSize;
-
             _cameraHandler = cameraHandler;
+
+            TileSize = tileSize;
         }
 
         /// <summary>
@@ -35,19 +41,23 @@ namespace TileEditor.Handlers
         /// <returns></returns>
         public Point GetPointFromCoords(Point coord)
         {
-            float scaledTileSize = TILE_SIZE * _cameraHandler.Zoom;
             Point oldPoint = coord;
 
             coord.X -= _cameraHandler.Position.X;
             coord.Y -= _cameraHandler.Position.Y;
 
-            if (oldPoint.X < _cameraHandler.Position.X || coord.X > (MAP_SIZE_WIDTH * scaledTileSize)) { return new Point(-1, -1); }
-            if (oldPoint.Y < _cameraHandler.Position.Y || coord.Y > (MAP_SIZE_HEIGHT * scaledTileSize)) { return new Point(-1, -1); }
+            if (oldPoint.X < _cameraHandler.Position.X || coord.X > (MAP_SIZE_WIDTH * TileSize)) { return new Point(-1, -1); }
+            if (oldPoint.Y < _cameraHandler.Position.Y || coord.Y > (MAP_SIZE_HEIGHT * TileSize)) { return new Point(-1, -1); }
 
-            int x = (int)(coord.X / scaledTileSize); // + (int)_cameraHandler.Position.X;
-            int y = (int)(coord.Y / scaledTileSize); //+ (int)_cameraHandler.Position.Y;
+            int x = (int)(coord.X / TileSize); // + (int)_cameraHandler.Position.X;
+            int y = (int)(coord.Y / TileSize); //+ (int)_cameraHandler.Position.Y;
 
             return new Point(x, y);    
+        }
+
+        public Point GetCoordsFromPoint(Point tilePoint)
+        {
+            return new Point((tilePoint.X * TileSize) + _cameraHandler.Position.X, (tilePoint.Y * TileSize) + _cameraHandler.Position.Y);
         }
     }
 }

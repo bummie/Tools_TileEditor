@@ -34,7 +34,17 @@ namespace TileEditor.Handlers
         {
             Clear();
             DrawGrid();
-            CreateSquare(_gridHandler.TILE_SIZE, new Point(_gridHandler.HoverTile.X * _gridHandler.TILE_SIZE, _gridHandler.HoverTile.Y * _gridHandler.TILE_SIZE));
+            DrawHoverSquare();
+        }
+
+        /// <summary>
+        /// Draws the square around the highlighted square
+        /// </summary>
+        private void DrawHoverSquare()
+        {
+            if(_gridHandler.HoverTile == new Point(-1, -1)) { return; };
+
+            CreateSquare(_gridHandler.TileSize, _gridHandler.GetCoordsFromPoint(_gridHandler.HoverTile));
         }
 
         /// <summary>
@@ -42,20 +52,20 @@ namespace TileEditor.Handlers
         /// </summary>
         public void DrawGrid()
         {
-            double width = _gridHandler.TILE_SIZE * _gridHandler.MAP_SIZE_WIDTH;
-            double height = _gridHandler.TILE_SIZE * _gridHandler.MAP_SIZE_HEIGHT;
+            double width = _gridHandler.TileSize * _gridHandler.MAP_SIZE_WIDTH;
+            double height = _gridHandler.TileSize * _gridHandler.MAP_SIZE_HEIGHT;
 
             // Columns
             for (int i = 0; i <= _gridHandler.MAP_SIZE_WIDTH; i++)
             {
-                int x = i * _gridHandler.TILE_SIZE;
+                int x = i * (int)_gridHandler.TileSize;
                 CreateLine(x, 0, x, height);
             }
 
             // Rows
             for (int i = 0; i <= _gridHandler.MAP_SIZE_HEIGHT; i++)
             {
-                int y = i * _gridHandler.TILE_SIZE;
+                int y = i * (int)_gridHandler.TileSize;
                 CreateLine(0, y, width, y);
             }
         }
@@ -83,10 +93,10 @@ namespace TileEditor.Handlers
         }
 
         /// <summary>
-        /// 
+        /// Creates a hollow square
         /// </summary>
         /// <param name="size"></param>
-        private void CreateSquare(int size, Point position)
+        private void CreateSquare(float size, Point position)
         {
             Rectangle rect = new Rectangle();
             rect.Stroke = new SolidColorBrush(Colors.IndianRed);
