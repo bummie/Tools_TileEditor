@@ -45,7 +45,7 @@ namespace TileEditor.Handlers
         {
             if(_gridHandler.HoverTile == new Point(-1, -1)) { return; };
 
-            CreateSquare(_gridHandler.GetCoordsFromPoint(_gridHandler.HoverTile), _gridHandler.TileSize, Colors.IndianRed);
+            CreateSquare(_gridHandler.GetCoordsFromPoint(_gridHandler.HoverTile), _gridHandler.TileSize, Colors.DarkGray);
         }
 
 
@@ -56,7 +56,7 @@ namespace TileEditor.Handlers
         {
             if (_gridHandler.SelectedTilePoint == new Point(-1, -1)) { return; };
 
-            CreateSquare(_gridHandler.GetCoordsFromPoint(_gridHandler.SelectedTilePoint), _gridHandler.TileSize, Colors.DarkGreen);
+            CreateSquare(_gridHandler.GetCoordsFromPoint(_gridHandler.SelectedTilePoint), _gridHandler.TileSize, Colors.White);
         }
 
         /// <summary>
@@ -92,7 +92,7 @@ namespace TileEditor.Handlers
         private void CreateLine(double x1, double y1, double x2, double y2)
         {
             Line line = new Line();
-            line.Stroke = Brushes.Black;
+            line.Stroke = Brushes.NavajoWhite;
             line.StrokeThickness = GridThickness;
 
             line.X1 = (x1 + _cameraHandler.Position.X);

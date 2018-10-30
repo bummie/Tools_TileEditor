@@ -8,7 +8,7 @@
         Height="900"
         Width="1200"
         Title="Level Editor"
-        DataContext="{Binding Main, Source={StaticResource Locator}}" Background="LightSlateGray">
+        DataContext="{Binding Main, Source={StaticResource Locator}}">
 
     <Window.Resources>
         <ResourceDictionary>
@@ -17,6 +17,12 @@
             </ResourceDictionary.MergedDictionaries>
         </ResourceDictionary>
     </Window.Resources>
+    <Window.Background>
+        <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
+            <GradientStop Color="#FF1F1F1F"/>
+            <GradientStop Color="#FF161616" Offset="1"/>
+        </LinearGradientBrush>
+    </Window.Background>
 
     <Grid x:Name="LayoutRoot">
         <Grid.RowDefinitions>
@@ -37,10 +43,19 @@
                 <ColumnDefinition Width="1*"/>
             </Grid.ColumnDefinitions>
 
+            <Grid.Resources>
+                <Style TargetType="Button">
+                    <Setter Property="FontSize" Value="14" />
+                    <Setter Property="Background" Value="#FF667693"/>
+                </Style>
+                
+               
+            </Grid.Resources>
+
             <Button Grid.Column="0">
                 <Grid>
                     <Grid.RowDefinitions>
-                        <RowDefinition Height="3*"></RowDefinition>
+                        <RowDefinition Height="2*"></RowDefinition>
                         <RowDefinition Height="2*"></RowDefinition>
                     </Grid.RowDefinitions>
 
@@ -52,7 +67,7 @@
             <Button Grid.Column="1">
                 <Grid>
                     <Grid.RowDefinitions>
-                        <RowDefinition Height="3*"></RowDefinition>
+                        <RowDefinition Height="2*"></RowDefinition>
                         <RowDefinition Height="2*"></RowDefinition>
                     </Grid.RowDefinitions>
 
@@ -63,7 +78,7 @@
             <Button Grid.Column="2">
                 <Grid>
                     <Grid.RowDefinitions>
-                        <RowDefinition Height="3*"></RowDefinition>
+                        <RowDefinition Height="2*"></RowDefinition>
                         <RowDefinition Height="2*"></RowDefinition>
                     </Grid.RowDefinitions>
 
@@ -74,7 +89,7 @@
             <Button Grid.Column="3">
                 <Grid>
                     <Grid.RowDefinitions>
-                        <RowDefinition Height="3*"></RowDefinition>
+                        <RowDefinition Height="2*"></RowDefinition>
                         <RowDefinition Height="2*"></RowDefinition>
                     </Grid.RowDefinitions>
 
@@ -85,7 +100,7 @@
             <Button Grid.Column="4">
                 <Grid>
                     <Grid.RowDefinitions>
-                        <RowDefinition Height="3*"></RowDefinition>
+                        <RowDefinition Height="2*"></RowDefinition>
                         <RowDefinition Height="2*"></RowDefinition>
                     </Grid.RowDefinitions>
 
@@ -96,7 +111,7 @@
             <Button Grid.Column="5">
                 <Grid>
                     <Grid.RowDefinitions>
-                        <RowDefinition Height="3*"></RowDefinition>
+                        <RowDefinition Height="2*"></RowDefinition>
                         <RowDefinition Height="2*"></RowDefinition>
                     </Grid.RowDefinitions>
 
@@ -107,7 +122,7 @@
             <Button Grid.Column="6">
                 <Grid>
                     <Grid.RowDefinitions>
-                        <RowDefinition Height="3*"></RowDefinition>
+                        <RowDefinition Height="2*"></RowDefinition>
                         <RowDefinition Height="2*"></RowDefinition>
                     </Grid.RowDefinitions>
 
@@ -126,15 +141,7 @@
             </Grid.ColumnDefinitions>
 
             <Label Grid.Column="0">Properties</Label>
-            <Canvas x:Name="DrawCanvas" Focusable="True" Grid.Column="1" ClipToBounds="True" MouseMove="MouseMove" MouseDown="MouseDown" MouseUp="MouseUp">
-                <Canvas.Background>
-                    <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
-                        <GradientStop Color="Black"/>
-                        <GradientStop Color="#FFDE2C2C"/>
-                        <GradientStop Color="White"/>
-                    </LinearGradientBrush>
-                </Canvas.Background>
-            </Canvas>
+            <Canvas x:Name="DrawCanvas" Focusable="True" Grid.Column="1" ClipToBounds="True" MouseMove="MouseMove" MouseDown="MouseDown" MouseUp="MouseUp" Background="#FF3D6AB5"/>
             <Label Grid.Column="2">Tiles</Label>
         </Grid>
 
