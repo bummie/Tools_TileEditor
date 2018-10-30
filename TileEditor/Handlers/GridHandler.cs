@@ -17,7 +17,7 @@ namespace TileEditor.Handlers
 
         public float TileSize
         {
-            get { return _tileSize * _cameraHandler.Zoom; }
+            get { return (float) Math.Ceiling(_tileSize * _cameraHandler.Zoom); }
             set { _tileSize = value; }
         }
 
@@ -49,8 +49,8 @@ namespace TileEditor.Handlers
             if (oldPoint.X < _cameraHandler.Position.X || coord.X > (MAP_SIZE_WIDTH * TileSize)) { return new Point(-1, -1); }
             if (oldPoint.Y < _cameraHandler.Position.Y || coord.Y > (MAP_SIZE_HEIGHT * TileSize)) { return new Point(-1, -1); }
 
-            int x = (int)(coord.X / TileSize); // + (int)_cameraHandler.Position.X;
-            int y = (int)(coord.Y / TileSize); //+ (int)_cameraHandler.Position.Y;
+            int x = (int)(coord.X / TileSize);
+            int y = (int)(coord.Y / TileSize);
 
             return new Point(x, y);    
         }

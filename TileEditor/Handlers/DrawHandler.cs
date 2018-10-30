@@ -35,6 +35,7 @@ namespace TileEditor.Handlers
             Clear();
             DrawGrid();
             DrawHoverSquare();
+            DrawSelectedSquare();
         }
 
         /// <summary>
@@ -44,7 +45,18 @@ namespace TileEditor.Handlers
         {
             if(_gridHandler.HoverTile == new Point(-1, -1)) { return; };
 
-            CreateSquare(_gridHandler.TileSize, _gridHandler.GetCoordsFromPoint(_gridHandler.HoverTile));
+            CreateSquare(_gridHandler.GetCoordsFromPoint(_gridHandler.HoverTile), _gridHandler.TileSize, Colors.IndianRed);
+        }
+
+
+        /// <summary>
+        /// Draws the square around the highlighted square
+        /// </summary>
+        private void DrawSelectedSquare()
+        {
+            if (_gridHandler.SelectedTilePoint == new Point(-1, -1)) { return; };
+
+            CreateSquare(_gridHandler.GetCoordsFromPoint(_gridHandler.SelectedTilePoint), _gridHandler.TileSize, Colors.DarkGreen);
         }
 
         /// <summary>
@@ -96,10 +108,10 @@ namespace TileEditor.Handlers
         /// Creates a hollow square
         /// </summary>
         /// <param name="size"></param>
-        private void CreateSquare(float size, Point position)
+        private void CreateSquare(Point position, float size, Color color)
         {
             Rectangle rect = new Rectangle();
-            rect.Stroke = new SolidColorBrush(Colors.IndianRed);
+            rect.Stroke = new SolidColorBrush(color);
             rect.StrokeThickness = 3;
             rect.Width = size;
             rect.Height = size;
