@@ -48,8 +48,8 @@
                     <Setter Property="FontSize" Value="14" />
                     <Setter Property="Background" Value="#FF667693"/>
                 </Style>
-                
-               
+
+
             </Grid.Resources>
 
             <Button Grid.Column="0">
@@ -148,5 +148,4 @@
         <!-- Canvas and properties -->
         <Grid Grid.Row="2"></Grid>
     </Grid>
-
 </Window>
