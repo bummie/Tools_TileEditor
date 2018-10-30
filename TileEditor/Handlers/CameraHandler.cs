@@ -12,7 +12,7 @@ namespace TileEditor.Handlers
         private readonly float MIN_ZOOM = 0.5f;
         private readonly float MAX_ZOOM = 2.0f;
         public static readonly float ZOOM_LEVEL = 0.1f;
-        public readonly float MOVE_AMOUNT = 1f;
+        public readonly float MOVE_AMOUNT = 2f;
 
         #region Properties
         public Point Position { get; set; }

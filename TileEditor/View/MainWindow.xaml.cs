@@ -63,11 +63,21 @@ namespace TileEditor
             _drawHandler.Update();
         }
 
+        /// <summary>
+        /// The event fires when the canvas is clicked
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void OnButtonKeyRelease(object sender, KeyEventArgs e)
         {
 
         }
 
+        /// <summary>
+        /// The event fires when the mouse moves over the canvas
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private new void MouseMove(object sender, MouseEventArgs e)
         {
             _gridHandler.HoverTile = _gridHandler.GetPointFromCoords(e.GetPosition(DrawCanvas));
@@ -76,7 +86,7 @@ namespace TileEditor
 
         private new void MouseDown(object sender, MouseButtonEventArgs e)
         {
-            MessageBox.Show(e.GetPosition(DrawCanvas).ToString() + "\nTile: " + _gridHandler.GetPointFromCoords(e.GetPosition(DrawCanvas)) + "\nCamera: " + _cameraHandler.Position.ToString());
+            MessageBox.Show(e.GetPosition(DrawCanvas).ToString() + "\nTile: " + _gridHandler.GetPointFromCoords(e.GetPosition(DrawCanvas)) + "\nCamera: " + _cameraHandler.Position.ToString() + "\n TileSize: " + _gridHandler.TileSize + "\n Camera Zoom: " + _cameraHandler.Zoom);
         }
     }
 }

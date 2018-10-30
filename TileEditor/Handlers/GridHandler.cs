@@ -12,13 +12,13 @@ namespace TileEditor.Handlers
         public readonly int MAP_SIZE_WIDTH;
         public readonly int MAP_SIZE_HEIGHT;
 
-        private float _tileSize = 32;
+        private float _tileSize;
         private CameraHandler _cameraHandler;
 
         public float TileSize
         {
-            get { return _tileSize; }
-            set { _tileSize = value / _cameraHandler.Zoom; }
+            get { return _tileSize * _cameraHandler.Zoom; }
+            set { _tileSize = value; }
         }
 
         public Point SelectedTilePoint { get; set; }
@@ -55,6 +55,11 @@ namespace TileEditor.Handlers
             return new Point(x, y);    
         }
 
+        /// <summary>
+        /// Returns correct coord based on tile point
+        /// </summary>
+        /// <param name="tilePoint"></param>
+        /// <returns></returns>
         public Point GetCoordsFromPoint(Point tilePoint)
         {
             return new Point((tilePoint.X * TileSize) + _cameraHandler.Position.X, (tilePoint.Y * TileSize) + _cameraHandler.Position.Y);
