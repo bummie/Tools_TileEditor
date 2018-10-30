@@ -47,14 +47,14 @@ namespace TileEditor.Handlers
             for (int i = 0; i <= _gridHandler.MAP_SIZE_WIDTH; i++)
             {
                 int x = i * _gridHandler.TILE_SIZE;
-                CreateLine(x + _cameraHandler.X, 0 + _cameraHandler.Y, x + _cameraHandler.X, height + _cameraHandler.Y);
+                CreateLine(x, 0, x, height);
             }
 
             // Rows
             for (int i = 0; i <= _gridHandler.MAP_SIZE_HEIGHT; i++)
             {
                 int y = i * _gridHandler.TILE_SIZE;
-                CreateLine(0 + _cameraHandler.X, y + _cameraHandler.Y, width + _cameraHandler.X, y + _cameraHandler.Y);
+                CreateLine(0, y, width, y);
             }
         }
 
@@ -71,11 +71,11 @@ namespace TileEditor.Handlers
             line.Stroke = Brushes.Black;
             line.StrokeThickness = GridThickness;
 
-            line.X1 = x1;
-            line.Y1 = y1;
+            line.X1 = (x1 + _cameraHandler.X) * _cameraHandler.Zoom;
+            line.Y1 = (y1 + _cameraHandler.Y) * _cameraHandler.Zoom;
 
-            line.X2 = x2;
-            line.Y2 = y2;
+            line.X2 = (x2 + _cameraHandler.X) * _cameraHandler.Zoom;
+            line.Y2 = (y2 + _cameraHandler.Y) * _cameraHandler.Zoom;
 
             _canvas.Children.Add(line);
         }

@@ -126,7 +126,7 @@
             </Grid.ColumnDefinitions>
 
             <Label Grid.Column="0">Properties</Label>
-            <Canvas x:Name="DrawCanvas" Focusable="True" Grid.Column="1">
+            <Canvas x:Name="DrawCanvas" Focusable="True" Grid.Column="1" ClipToBounds="True">
                 <Canvas.Background>
                     <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
                         <GradientStop Color="Black"/>

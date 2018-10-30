@@ -26,7 +26,7 @@ namespace TileEditor
             Closing += (s, e) => ViewModelLocator.Cleanup();
 
             _cameraHandler = new CameraHandler();
-            _gridHandler = new GridHandler(5, 10, 64);
+            _gridHandler = new GridHandler(32, 64, 32);
             _drawHandler = new DrawHandler(DrawCanvas, _gridHandler, _cameraHandler);
 
             KeyDown += new KeyEventHandler(OnButtonKeyDown);
