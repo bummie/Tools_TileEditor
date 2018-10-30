@@ -70,6 +70,8 @@ namespace TileEditor
 
         private new void MouseMove(object sender, MouseEventArgs e)
         {
+            _gridHandler.HoverTile = _gridHandler.GetPointFromCoords(e.GetPosition(DrawCanvas));
+            _drawHandler.Update();
         }
 
         private new void MouseDown(object sender, MouseButtonEventArgs e)

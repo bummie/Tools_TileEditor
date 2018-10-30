@@ -16,6 +16,7 @@ namespace TileEditor.Handlers
         private CameraHandler _cameraHandler;
 
         public Point SelectedTilePoint { get; set; }
+        public Point HoverTile { get; set; }
 
         public GridHandler(int width, int height, int tileSize, CameraHandler cameraHandler)
         {

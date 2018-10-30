@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media;
 using System.Windows.Shapes;
@@ -33,6 +34,7 @@ namespace TileEditor.Handlers
         {
             Clear();
             DrawGrid();
+            CreateSquare(_gridHandler.TILE_SIZE, new Point(_gridHandler.HoverTile.X * _gridHandler.TILE_SIZE, _gridHandler.HoverTile.Y * _gridHandler.TILE_SIZE));
         }
 
         /// <summary>
@@ -78,6 +80,23 @@ namespace TileEditor.Handlers
             line.Y2 = (y2 + _cameraHandler.Position.Y) * _cameraHandler.Zoom;
 
             _canvas.Children.Add(line);
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="size"></param>
+        private void CreateSquare(int size, Point position)
+        {
+            Rectangle rect = new Rectangle();
+            rect.Stroke = new SolidColorBrush(Colors.IndianRed);
+            rect.StrokeThickness = 3;
+            rect.Width = size;
+            rect.Height = size;
+            Canvas.SetLeft(rect, position.X);
+            Canvas.SetTop(rect, position.Y);
+
+            _canvas.Children.Add(rect);
         }
 
         /// <summary>
