@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:ignore="http://www.galasoft.ch/ignore"
         mc:Ignorable="d ignore"
-        Height="800"
+        Height="900"
         Width="1200"
         Title="Level Editor"
         DataContext="{Binding Main, Source={StaticResource Locator}}" Background="LightSlateGray">
@@ -22,6 +22,7 @@
         <Grid.RowDefinitions>
             <RowDefinition Height="1*"/>
             <RowDefinition Height="10*"/>
+            <RowDefinition Height="2*"/>
         </Grid.RowDefinitions>
 
         <!-- Toolbar -->
@@ -36,14 +37,84 @@
                 <ColumnDefinition Width="1*"/>
             </Grid.ColumnDefinitions>
 
-            <Button Grid.Column="0">Hand</Button>
-            <Button Grid.Column="1">Brush</Button>
-            <Button Grid.Column="2">Save</Button>
-            <Button Grid.Column="3">Import</Button>
-            <Button Grid.Column="4">Host</Button>
-            <Button Grid.Column="5">Join</Button>
-            <Button Grid.Column="6">Clear</Button>
-           
+            <Button Grid.Column="0">
+                <Grid>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="3*"></RowDefinition>
+                        <RowDefinition Height="2*"></RowDefinition>
+                    </Grid.RowDefinitions>
+
+                    <Image Grid.Row="0" Source="/Resources/Icons/shape_square_edit.png" />
+                    <Label Grid.Row="1">Select Tile</Label>
+                </Grid>
+            </Button>
+
+            <Button Grid.Column="1">
+                <Grid>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="3*"></RowDefinition>
+                        <RowDefinition Height="2*"></RowDefinition>
+                    </Grid.RowDefinitions>
+
+                    <Image Grid.Row="0" Source="/Resources/Icons/paintbrush.png" />
+                    <Label Grid.Row="1">Draw</Label>
+                </Grid>
+            </Button>
+            <Button Grid.Column="2">
+                <Grid>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="3*"></RowDefinition>
+                        <RowDefinition Height="2*"></RowDefinition>
+                    </Grid.RowDefinitions>
+
+                    <Image Grid.Row="0" Source="/Resources/Icons/disk.png" />
+                    <Label Grid.Row="1">Save</Label>
+                </Grid>
+            </Button>
+            <Button Grid.Column="3">
+                <Grid>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="3*"></RowDefinition>
+                        <RowDefinition Height="2*"></RowDefinition>
+                    </Grid.RowDefinitions>
+
+                    <Image Grid.Row="0" Source="/Resources/Icons/photo_add.png" />
+                    <Label Grid.Row="1">Import</Label>
+                </Grid>
+            </Button>
+            <Button Grid.Column="4">
+                <Grid>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="3*"></RowDefinition>
+                        <RowDefinition Height="2*"></RowDefinition>
+                    </Grid.RowDefinitions>
+
+                    <Image Grid.Row="0" Source="/Resources/Icons/server_add.png" />
+                    <Label Grid.Row="1">Host</Label>
+                </Grid>
+            </Button>
+            <Button Grid.Column="5">
+                <Grid>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="3*"></RowDefinition>
+                        <RowDefinition Height="2*"></RowDefinition>
+                    </Grid.RowDefinitions>
+
+                    <Image Grid.Row="0" Source="/Resources/Icons/server_go.png" />
+                    <Label Grid.Row="1">Join</Label>
+                </Grid>
+            </Button>
+            <Button Grid.Column="6">
+                <Grid>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="3*"></RowDefinition>
+                        <RowDefinition Height="2*"></RowDefinition>
+                    </Grid.RowDefinitions>
+
+                    <Image Grid.Row="0" Source="/Resources/Icons/bin_empty.png" />
+                    <Label Grid.Row="1">Clear</Label>
+                </Grid>
+            </Button>
         </Grid>
 
         <!-- Canvas and properties -->
@@ -55,10 +126,20 @@
             </Grid.ColumnDefinitions>
 
             <Label Grid.Column="0">Properties</Label>
-            <Canvas x:Name="Canvas" Grid.Column="1"></Canvas>
+            <Canvas x:Name="DrawCanvas" Grid.Column="1">
+                <Canvas.Background>
+                    <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
+                        <GradientStop Color="Black"/>
+                        <GradientStop Color="#FFDE2C2C"/>
+                        <GradientStop Color="White"/>
+                    </LinearGradientBrush>
+                </Canvas.Background>
+            </Canvas>
             <Label Grid.Column="2">Tiles</Label>
         </Grid>
 
+        <!-- Canvas and properties -->
+        <Grid Grid.Row="2"></Grid>
     </Grid>
-    
+
 </Window>
