@@ -13,8 +13,9 @@ namespace TileEditor
     /// </summary>
     public partial class MainWindow : Window
     {
-        private int i = 0;
         private DrawHandler _drawHandler;
+        private GridHandler _gridHandler;
+
         /// <summary>
         /// Initializes a new instance of the MainWindow class.
         /// </summary>
@@ -23,7 +24,8 @@ namespace TileEditor
             InitializeComponent();
             Closing += (s, e) => ViewModelLocator.Cleanup();
 
-            _drawHandler = new DrawHandler(DrawCanvas);
+            _gridHandler = new GridHandler(5, 10, 64);
+            _drawHandler = new DrawHandler(DrawCanvas, _gridHandler);
 
             KeyDown += new KeyEventHandler(OnButtonKeyDown);
             KeyUp += new KeyEventHandler(OnButtonKeyRelease);
@@ -31,18 +33,10 @@ namespace TileEditor
 
         private void OnButtonKeyDown(object sender, KeyEventArgs e)
         {
-            _drawHandler.Update();
-            Ellipse circle = new Ellipse()
+            if(e.Key == Key.Space)
             {
-                Width = 10,
-                Height = 10,
-                Stroke = Brushes.Red,
-                StrokeThickness = 6
-            };
-
-            i++;
-            circle.SetValue(Canvas.LeftProperty, (double)i);
-            DrawCanvas.Children.Add(circle);
+                _drawHandler.Update();
+            }
         }
 
         private void OnButtonKeyRelease(object sender, KeyEventArgs e)

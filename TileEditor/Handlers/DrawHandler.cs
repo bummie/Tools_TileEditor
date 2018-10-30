@@ -11,15 +11,17 @@ namespace TileEditor.Handlers
 {
     public class DrawHandler
     {
-        private const int MAP_SIZE_WIDTH = 48;
-        private const int MAP_SIZE_HEIGHT = 64;
-        private const int TILE_SIZE = 64;
-
         private Canvas _canvas;
+        private GridHandler _gridHandler;
 
-        public DrawHandler(Canvas canvas)
+        public int GridThickness { get; set; }
+
+        public DrawHandler(Canvas canvas, GridHandler gridHandler)
         {
             _canvas = canvas;
+            _gridHandler = gridHandler;
+
+            GridThickness = 1;
         }
 
         /// <summary>
@@ -36,15 +38,41 @@ namespace TileEditor.Handlers
         /// </summary>
         public void DrawGrid()
         {
+            double width = _gridHandler.TILE_SIZE * _gridHandler.MAP_SIZE_WIDTH;
+            double height = _gridHandler.TILE_SIZE * _gridHandler.MAP_SIZE_HEIGHT;
+
+            for (int i = 0; i <= _gridHandler.MAP_SIZE_WIDTH; i++)
+            {
+                int x = i * _gridHandler.TILE_SIZE;
+                CreateLine(x, 0, x, height);
+            }
+
+            for (int i = 0; i <= _gridHandler.MAP_SIZE_HEIGHT; i++)
+            {
+                int y = i * _gridHandler.TILE_SIZE;
+                CreateLine(0, y, width, y);
+            }
+        }
+
+        /// <summary>
+        /// Creates a line an adds it to the canvas
+        /// </summary>
+        /// <param name="x1"></param>
+        /// <param name="y1"></param>
+        /// <param name="x2"></param>
+        /// <param name="y2"></param>
+        private void CreateLine(double x1, double y1, double x2, double y2)
+        {
             Line line = new Line();
-            line.Stroke = Brushes.LightSteelBlue;
+            line.Stroke = Brushes.Black;
+            line.StrokeThickness = GridThickness;
 
-            line.X1 = 1;
-            line.X2 = 50;
-            line.Y1 = 1;
-            line.Y2 = 50;
+            line.X1 = x1;
+            line.Y1 = y1;
 
-            line.StrokeThickness = 2;
+            line.X2 = x2;
+            line.Y2 = y2;
+
             _canvas.Children.Add(line);
         }
 
