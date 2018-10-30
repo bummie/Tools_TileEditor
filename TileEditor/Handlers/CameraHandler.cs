@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows;
 
 namespace TileEditor.Handlers
 {
@@ -11,10 +12,10 @@ namespace TileEditor.Handlers
         private readonly float MIN_ZOOM = 0.5f;
         private readonly float MAX_ZOOM = 2.0f;
         public static readonly float ZOOM_LEVEL = 0.1f;
+        public readonly float MOVE_AMOUNT = 1f;
 
         #region Properties
-        public int X { get; set; }
-        public int Y { get; set; }
+        public Point Position { get; set; }
 
         private float _zoom;
         
@@ -30,8 +31,7 @@ namespace TileEditor.Handlers
 
         public CameraHandler()
         {
-            X = 0;
-            Y = 0;
+            Position = new Point(0, 0);
             Zoom = 1;
         }
 

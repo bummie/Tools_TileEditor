@@ -71,11 +71,11 @@ namespace TileEditor.Handlers
             line.Stroke = Brushes.Black;
             line.StrokeThickness = GridThickness;
 
-            line.X1 = (x1 + _cameraHandler.X) * _cameraHandler.Zoom;
-            line.Y1 = (y1 + _cameraHandler.Y) * _cameraHandler.Zoom;
+            line.X1 = (x1 + _cameraHandler.Position.X) * _cameraHandler.Zoom;
+            line.Y1 = (y1 + _cameraHandler.Position.Y) * _cameraHandler.Zoom;
 
-            line.X2 = (x2 + _cameraHandler.X) * _cameraHandler.Zoom;
-            line.Y2 = (y2 + _cameraHandler.Y) * _cameraHandler.Zoom;
+            line.X2 = (x2 + _cameraHandler.Position.X) * _cameraHandler.Zoom;
+            line.Y2 = (y2 + _cameraHandler.Position.Y) * _cameraHandler.Zoom;
 
             _canvas.Children.Add(line);
         }

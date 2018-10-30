@@ -26,7 +26,7 @@ namespace TileEditor
             Closing += (s, e) => ViewModelLocator.Cleanup();
 
             _cameraHandler = new CameraHandler();
-            _gridHandler = new GridHandler(32, 64, 32);
+            _gridHandler = new GridHandler(32, 32, 32, _cameraHandler);
             _drawHandler = new DrawHandler(DrawCanvas, _gridHandler, _cameraHandler);
 
             KeyDown += new KeyEventHandler(OnButtonKeyDown);
@@ -39,16 +39,16 @@ namespace TileEditor
             {
                 // Movement
                 case Key.W:
-                    _cameraHandler.Y++;
+                    _cameraHandler.Position = new Point(_cameraHandler.Position.X, _cameraHandler.Position.Y + _cameraHandler.MOVE_AMOUNT);
                     break;
                 case Key.S:
-                    _cameraHandler.Y--;
+                    _cameraHandler.Position = new Point(_cameraHandler.Position.X, _cameraHandler.Position.Y - _cameraHandler.MOVE_AMOUNT);
                     break;
                 case Key.A:
-                    _cameraHandler.X++;
+                    _cameraHandler.Position = new Point(_cameraHandler.Position.X + _cameraHandler.MOVE_AMOUNT, _cameraHandler.Position.Y);
                     break;
                 case Key.D:
-                    _cameraHandler.X--;
+                    _cameraHandler.Position = new Point(_cameraHandler.Position.X - _cameraHandler.MOVE_AMOUNT, _cameraHandler.Position.Y);
                     break;
 
                 // Zoom
@@ -66,6 +66,15 @@ namespace TileEditor
         private void OnButtonKeyRelease(object sender, KeyEventArgs e)
         {
 
+        }
+
+        private new void MouseMove(object sender, MouseEventArgs e)
+        {
+        }
+
+        private new void MouseDown(object sender, MouseButtonEventArgs e)
+        {
+            MessageBox.Show(e.GetPosition(DrawCanvas).ToString() + "\nTile: " + _gridHandler.GetPointFromCoords(e.GetPosition(DrawCanvas)) + "\nCamera: " + _cameraHandler.Position.ToString());
         }
     }
 }
