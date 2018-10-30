@@ -13,13 +13,15 @@ namespace TileEditor.Handlers
     {
         private Canvas _canvas;
         private GridHandler _gridHandler;
+        private CameraHandler _cameraHandler;
 
         public int GridThickness { get; set; }
 
-        public DrawHandler(Canvas canvas, GridHandler gridHandler)
+        public DrawHandler(Canvas canvas, GridHandler gridHandler, CameraHandler cameraHandler)
         {
             _canvas = canvas;
             _gridHandler = gridHandler;
+            _cameraHandler = cameraHandler;
 
             GridThickness = 1;
         }
@@ -41,16 +43,18 @@ namespace TileEditor.Handlers
             double width = _gridHandler.TILE_SIZE * _gridHandler.MAP_SIZE_WIDTH;
             double height = _gridHandler.TILE_SIZE * _gridHandler.MAP_SIZE_HEIGHT;
 
+            // Columns
             for (int i = 0; i <= _gridHandler.MAP_SIZE_WIDTH; i++)
             {
                 int x = i * _gridHandler.TILE_SIZE;
-                CreateLine(x, 0, x, height);
+                CreateLine(x + _cameraHandler.X, 0 + _cameraHandler.Y, x + _cameraHandler.X, height + _cameraHandler.Y);
             }
 
+            // Rows
             for (int i = 0; i <= _gridHandler.MAP_SIZE_HEIGHT; i++)
             {
                 int y = i * _gridHandler.TILE_SIZE;
-                CreateLine(0, y, width, y);
+                CreateLine(0 + _cameraHandler.X, y + _cameraHandler.Y, width + _cameraHandler.X, y + _cameraHandler.Y);
             }
         }
 

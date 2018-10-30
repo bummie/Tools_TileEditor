@@ -15,6 +15,7 @@ namespace TileEditor
     {
         private DrawHandler _drawHandler;
         private GridHandler _gridHandler;
+        private CameraHandler _cameraHandler;
 
         /// <summary>
         /// Initializes a new instance of the MainWindow class.
@@ -24,8 +25,9 @@ namespace TileEditor
             InitializeComponent();
             Closing += (s, e) => ViewModelLocator.Cleanup();
 
+            _cameraHandler = new CameraHandler();
             _gridHandler = new GridHandler(5, 10, 64);
-            _drawHandler = new DrawHandler(DrawCanvas, _gridHandler);
+            _drawHandler = new DrawHandler(DrawCanvas, _gridHandler, _cameraHandler);
 
             KeyDown += new KeyEventHandler(OnButtonKeyDown);
             KeyUp += new KeyEventHandler(OnButtonKeyRelease);
@@ -33,10 +35,32 @@ namespace TileEditor
 
         private void OnButtonKeyDown(object sender, KeyEventArgs e)
         {
-            if(e.Key == Key.Space)
+            switch (e.Key)
             {
-                _drawHandler.Update();
+                // Movement
+                case Key.W:
+                    _cameraHandler.Y++;
+                    break;
+                case Key.S:
+                    _cameraHandler.Y--;
+                    break;
+                case Key.A:
+                    _cameraHandler.X++;
+                    break;
+                case Key.D:
+                    _cameraHandler.X--;
+                    break;
+
+                // Zoom
+                case Key.Space:
+                    _cameraHandler.Zoom += CameraHandler.ZOOM_LEVEL;
+                    break;
+                case Key.LeftCtrl:
+                    _cameraHandler.Zoom -= CameraHandler.ZOOM_LEVEL;
+                    break;
             }
+
+            _drawHandler.Update();
         }
 
         private void OnButtonKeyRelease(object sender, KeyEventArgs e)
