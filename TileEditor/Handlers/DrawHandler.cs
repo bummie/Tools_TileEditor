@@ -121,6 +121,12 @@ namespace TileEditor.Handlers
             _canvas.Children.Add(rect);
         }
 
+        private void CreateBitmap()
+        {
+           // _canvas.DrawImage(_image, new Rect(0, 0, _image.PixelWidth, _image.PixelHeight));
+        }
+
+
         /// <summary>
         /// Clears the canvas
         /// </summary>

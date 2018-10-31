@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Drawing;
 
 namespace TileEditor.Handlers
@@ -41,6 +42,9 @@ namespace TileEditor.Handlers
                     AddTileBitmap(area);
                 }
             }
+
+            _tileSet.Dispose();
+            Console.WriteLine($"{horizontalTiles*verticalTiles} tiles were loaded!");
         }
 
         /// <summary>
@@ -49,15 +53,22 @@ namespace TileEditor.Handlers
         /// <param name="tilesetName"></param>
         private void LoadTileset(string tilesetName)
         {
-            string resourcesPath = System.IO.Path.Combine(System.IO.Path.GetFullPath(@"..\..\"), @"Resources\Tilesets");
+            string resourcesPath = System.IO.Path.Combine(System.IO.Path.GetFullPath(@"..\..\"), @"Resources\Tilesets\" + tilesetName);
+            Console.WriteLine(resourcesPath);
 
             try
             {
-                _tileSet = new Bitmap(resourcesPath + tilesetName);
+                _tileSet = new Bitmap(resourcesPath);
             }
             catch (System.IO.FileNotFoundException exception)
             {
                 _tileSet = null;
+                Console.WriteLine(exception.Message + ": " + resourcesPath);
+            }
+            catch (System.ArgumentException exception)
+            {
+                _tileSet = null;
+                Console.WriteLine(exception.Message + ": " + resourcesPath);
             }
         }
 
@@ -69,8 +80,8 @@ namespace TileEditor.Handlers
         {
             if(_tileSet == null) { return; }
 
+            //Console.WriteLine("Adding bitmap from area: " + area.ToString());
             TileBitmaps.Add(_tileSet.Clone(area, _tileSet.PixelFormat));
         }
-
     }
 }

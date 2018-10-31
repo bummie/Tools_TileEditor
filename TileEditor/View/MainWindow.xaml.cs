@@ -17,6 +17,7 @@ namespace TileEditor
         private DrawHandler _drawHandler;
         private GridHandler _gridHandler;
         private CameraHandler _cameraHandler;
+        private TilesetHandler _tilesetHander;
 
         /// <summary>
         /// Initializes a new instance of the MainWindow class.
@@ -29,11 +30,11 @@ namespace TileEditor
             _cameraHandler = new CameraHandler();
             _gridHandler = new GridHandler(32, 32, 32, _cameraHandler);
             _drawHandler = new DrawHandler(DrawCanvas, _gridHandler, _cameraHandler);
+            _tilesetHander = new TilesetHandler("set.gif", 16);
 
             KeyDown += new KeyEventHandler(OnButtonKeyDown);
             KeyUp += new KeyEventHandler(OnButtonKeyRelease);
             CompositionTarget.Rendering += Draw;
-
         }
 
         private void OnButtonKeyDown(object sender, KeyEventArgs e)
