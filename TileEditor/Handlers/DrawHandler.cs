@@ -26,6 +26,9 @@ namespace TileEditor.Handlers
             GridThickness = 1;
         }
 
+        [System.Runtime.InteropServices.DllImport("gdi32.dll")]
+        public static extern bool DeleteObject(IntPtr hObject);
+
         /// <summary>
         /// Redraws all the elements to the canvas
         /// </summary>
@@ -34,7 +37,7 @@ namespace TileEditor.Handlers
             Clear();
             DrawGrid();
 
-            DrawFirstTile();
+            DrawFirstTiles();
 
             DrawHoverSquare();
             DrawSelectedSquare();
@@ -44,10 +47,14 @@ namespace TileEditor.Handlers
         /// <summary>
         /// Draws the first loaded tile
         /// </summary>
-        private void DrawFirstTile()
+        private void DrawFirstTiles()
         {
             if (_tilesetHandler.TileBitmaps.Count <= 0) { return; }
-            CreateBitmap(_gridHandler.GetCoordsFromPoint(new Point(0, 0)), _gridHandler.TileSize, (System.Drawing.Bitmap)_tilesetHandler.TileBitmaps[0]);
+
+            for(int i = 0; i < 16; i++)
+            {
+                CreateBitmap(_gridHandler.GetCoordsFromPoint(new Point(i, 0)), _gridHandler.TileSize, (System.Drawing.Bitmap)_tilesetHandler.TileBitmaps[i]);
+            }
         }
 
         /// <summary>
@@ -140,15 +147,24 @@ namespace TileEditor.Handlers
         /// <param name="bitmap"></param>
         private void CreateBitmap(Point position, float size, System.Drawing.Bitmap bitmap)
         {
-            BitmapSource bitmapSource = System.Windows.Interop.Imaging.CreateBitmapSourceFromHBitmap( bitmap.GetHbitmap(), IntPtr.Zero, Int32Rect.Empty, BitmapSizeOptions.FromEmptyOptions());
-            Image ImageIcon = new Image();
-            ImageIcon.Source = new WriteableBitmap(bitmapSource);
-            ImageIcon.Width = size;
-            ImageIcon.Height = size;
-            _canvas.Children.Add(ImageIcon);
+            IntPtr hBitmap = bitmap.GetHbitmap();
 
-            Canvas.SetLeft(ImageIcon, position.X);
-            Canvas.SetTop(ImageIcon, position.Y);
+            try
+            {
+                var source = System.Windows.Interop.Imaging.CreateBitmapSourceFromHBitmap(hBitmap, IntPtr.Zero, Int32Rect.Empty, System.Windows.Media.Imaging.BitmapSizeOptions.FromEmptyOptions());
+                Image ImageIcon = new Image();
+                ImageIcon.Source = new WriteableBitmap(source);
+                ImageIcon.Width = size;
+                ImageIcon.Height = size;
+                _canvas.Children.Add(ImageIcon);
+
+                Canvas.SetLeft(ImageIcon, position.X);
+                Canvas.SetTop(ImageIcon, position.Y);
+            }
+            finally
+            {
+                DeleteObject(hBitmap);
+            }
         }
 
 

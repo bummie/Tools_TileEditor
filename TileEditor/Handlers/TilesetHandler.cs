@@ -37,8 +37,8 @@ namespace TileEditor.Handlers
             {
                 for (int y = 0; y < verticalTiles; y++)
                 {
-                    area.X = x;
-                    area.Y = y;
+                    area.X = x * area.Width;
+                    area.Y = y * area.Height;
                     AddTileBitmap(area);
                 }
             }
