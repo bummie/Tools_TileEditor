@@ -47,7 +47,7 @@ namespace TileEditor.Handlers
         private void DrawFirstTile()
         {
             if (_tilesetHandler.TileBitmaps.Count <= 0) { return; }
-            CreateBitmap(new Point(0, 0), (System.Drawing.Bitmap)_tilesetHandler.TileBitmaps[0]);
+            CreateBitmap(_gridHandler.GetCoordsFromPoint(new Point(0, 0)), _gridHandler.TileSize, (System.Drawing.Bitmap)_tilesetHandler.TileBitmaps[0]);
         }
 
         /// <summary>
@@ -138,11 +138,13 @@ namespace TileEditor.Handlers
         /// </summary>
         /// <param name="position"></param>
         /// <param name="bitmap"></param>
-        private void CreateBitmap(Point position, System.Drawing.Bitmap bitmap)
+        private void CreateBitmap(Point position, float size, System.Drawing.Bitmap bitmap)
         {
             BitmapSource bitmapSource = System.Windows.Interop.Imaging.CreateBitmapSourceFromHBitmap( bitmap.GetHbitmap(), IntPtr.Zero, Int32Rect.Empty, BitmapSizeOptions.FromEmptyOptions());
             Image ImageIcon = new Image();
             ImageIcon.Source = new WriteableBitmap(bitmapSource);
+            ImageIcon.Width = size;
+            ImageIcon.Height = size;
             _canvas.Children.Add(ImageIcon);
 
             Canvas.SetLeft(ImageIcon, position.X);
