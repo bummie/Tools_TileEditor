@@ -14,6 +14,10 @@ namespace TileEditor.Handlers
         private CameraHandler _cameraHandler;
         private TilesetHandler _tilesetHandler;
 
+        private WriteableBitmap _writeableBitmap;
+        private Image _canvasRender;
+        private System.Drawing.Bitmap _bitmapRender;
+
         public int GridThickness { get; set; }
 
         public DrawHandler(Canvas canvas, GridHandler gridHandler, CameraHandler cameraHandler, TilesetHandler tilesetHandler)
@@ -35,14 +39,60 @@ namespace TileEditor.Handlers
         public void Update()
         {
             Clear();
-            DrawGrid();
+            //DrawGrid();
+            //DrawFirstTiles();
+            //DrawHoverSquare();
+            //DrawSelectedSquare();
 
-            DrawFirstTiles();
-
-            DrawHoverSquare();
-            DrawSelectedSquare();
+            UpdateCanvasImage();
         }
 
+        private void CreateCanvasImage(WriteableBitmap bitmap)
+        {
+            _canvasRender = new Image();
+            _canvasRender.Width = _canvas.ActualWidth;
+            _canvasRender.Height = _canvas.ActualHeight;
+            _canvasRender.Source = bitmap;
+            _canvas.Children.Add(_canvasRender);
+
+            Canvas.SetLeft(_canvasRender, 0);
+            Canvas.SetTop(_canvasRender, 0);
+        }
+
+        /// <summary>
+        /// Updates the image on the canvas with the new bitmap
+        /// </summary>
+        private void UpdateCanvasImage()
+        {
+            if(_bitmapRender == null) { return; }
+
+            var source = BitmapToSource(_bitmapRender); //System.Windows.Interop.Imaging.CreateBitmapSourceFromHBitmap(hBitmap, IntPtr.Zero, Int32Rect.Empty, System.Windows.Media.Imaging.BitmapSizeOptions.FromEmptyOptions());
+            _writeableBitmap = new WriteableBitmap(source);
+            CreateCanvasImage(_writeableBitmap);
+        }
+
+        /// <summary>
+        /// Creates a bitmapsource from a bitmap
+        /// </summary>
+        /// <param name="bitmap"></param>
+        /// <returns></returns>
+        public BitmapSource BitmapToSource(System.Drawing.Bitmap bitmap)
+        {
+            var bitmapData = bitmap.LockBits(
+                new System.Drawing.Rectangle(0, 0, bitmap.Width, bitmap.Height),
+                System.Drawing.Imaging.ImageLockMode.ReadOnly, bitmap.PixelFormat);
+
+            var bitmapSource = BitmapSource.Create(
+                bitmapData.Width, bitmapData.Height,
+                bitmap.HorizontalResolution, bitmap.VerticalResolution,
+                PixelFormats.Bgr32, null,
+                bitmapData.Scan0, bitmapData.Stride * bitmapData.Height, bitmapData.Stride);
+
+            bitmap.UnlockBits(bitmapData);
+            return bitmapSource;
+        }
+
+        #region OldWay
         /// <summary>
         /// Draws the first loaded tile
         /// </summary>
@@ -166,14 +216,36 @@ namespace TileEditor.Handlers
             }
         }
 
+        #endregion
 
         /// <summary>
         /// Clears the canvas
         /// </summary>
         public void Clear()
         {
-            ImagePool.ReleaseAll();
+            _bitmapRender = CreateEmptyBitmap();
+            //ImagePool.ReleaseAll();
             _canvas.Children.Clear();
+        }
+        
+        /// <summary>
+        /// Creates the empty bitmap to render the content onto
+        /// </summary>
+        /// <returns></returns>
+        private System.Drawing.Bitmap CreateEmptyBitmap()
+        { 
+            int width = (int)_canvas.ActualWidth;
+            int height = (int)_canvas.ActualHeight;
+
+            if(width == 0) { return null; }
+
+            System.Drawing.Bitmap bmp = new System.Drawing.Bitmap(width, height);
+            using (System.Drawing.Graphics graph = System.Drawing.Graphics.FromImage(bmp))
+            {
+                System.Drawing.Rectangle ImageSize = new System.Drawing.Rectangle(0, 0, width, height);
+                graph.FillRectangle(System.Drawing.Brushes.Pink, ImageSize);
+            }
+            return bmp;
         }
 
     }
