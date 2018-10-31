@@ -19,8 +19,8 @@
     </Window.Resources>
     <Window.Background>
         <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
-            <GradientStop Color="#FF1F1F1F"/>
-            <GradientStop Color="#FF161616" Offset="1"/>
+            <GradientStop Color="#FF2E2E2E" Offset="0.01"/>
+            <GradientStop Color="#FF323232" Offset="1"/>
         </LinearGradientBrush>
     </Window.Background>
 
@@ -34,13 +34,14 @@
         <!-- Toolbar -->
         <Grid Grid.Row="0">
             <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="1*"/>
-                <ColumnDefinition Width="1*"/>
-                <ColumnDefinition Width="1*"/>
-                <ColumnDefinition Width="1*"/>
-                <ColumnDefinition Width="1*"/>
-                <ColumnDefinition Width="1*"/>
-                <ColumnDefinition Width="1*"/>
+                <ColumnDefinition Width="170*"/>
+                <ColumnDefinition Width="170*"/>
+                <ColumnDefinition Width="49*"/>
+                <ColumnDefinition Width="121*"/>
+                <ColumnDefinition Width="170*"/>
+                <ColumnDefinition Width="171*"/>
+                <ColumnDefinition Width="170*"/>
+                <ColumnDefinition Width="171*"/>
             </Grid.ColumnDefinitions>
 
             <Grid.Resources>
@@ -75,7 +76,7 @@
                     <Label Grid.Row="1">Draw</Label>
                 </Grid>
             </Button>
-            <Button Grid.Column="2">
+            <Button Grid.Column="2" Grid.ColumnSpan="2">
                 <Grid>
                     <Grid.RowDefinitions>
                         <RowDefinition Height="2*"></RowDefinition>
@@ -86,7 +87,7 @@
                     <Label Grid.Row="1">Save</Label>
                 </Grid>
             </Button>
-            <Button Grid.Column="3">
+            <Button Grid.Column="4">
                 <Grid>
                     <Grid.RowDefinitions>
                         <RowDefinition Height="2*"></RowDefinition>
@@ -97,7 +98,7 @@
                     <Label Grid.Row="1">Import</Label>
                 </Grid>
             </Button>
-            <Button Grid.Column="4">
+            <Button Grid.Column="5">
                 <Grid>
                     <Grid.RowDefinitions>
                         <RowDefinition Height="2*"></RowDefinition>
@@ -108,7 +109,7 @@
                     <Label Grid.Row="1">Host</Label>
                 </Grid>
             </Button>
-            <Button Grid.Column="5">
+            <Button Grid.Column="6">
                 <Grid>
                     <Grid.RowDefinitions>
                         <RowDefinition Height="2*"></RowDefinition>
@@ -119,7 +120,7 @@
                     <Label Grid.Row="1">Join</Label>
                 </Grid>
             </Button>
-            <Button Grid.Column="6">
+            <Button Grid.Column="7">
                 <Grid>
                     <Grid.RowDefinitions>
                         <RowDefinition Height="2*"></RowDefinition>
