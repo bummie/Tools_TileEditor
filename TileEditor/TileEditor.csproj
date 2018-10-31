@@ -74,6 +74,7 @@
     <Compile Include="Handlers\CameraHandler.cs" />
     <Compile Include="Handlers\DrawHandler.cs" />
     <Compile Include="Handlers\GridHandler.cs" />
+    <Compile Include="Handlers\ImagePool.cs" />
     <Compile Include="Handlers\TilesetHandler.cs" />
     <Compile Include="ViewModel\MainViewModel.cs" />
     <Compile Include="ViewModel\ViewModelLocator.cs" />

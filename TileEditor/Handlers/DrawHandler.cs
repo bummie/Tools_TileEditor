@@ -41,7 +41,6 @@ namespace TileEditor.Handlers
 
             DrawHoverSquare();
             DrawSelectedSquare();
-            
         }
 
         /// <summary>
@@ -51,7 +50,7 @@ namespace TileEditor.Handlers
         {
             if (_tilesetHandler.TileBitmaps.Count <= 0) { return; }
 
-            for(int i = 0; i < 16; i++)
+            for(int i = 0; i < 3; i++)
             {
                 CreateBitmap(_gridHandler.GetCoordsFromPoint(new Point(i, 0)), _gridHandler.TileSize, (System.Drawing.Bitmap)_tilesetHandler.TileBitmaps[i]);
             }
@@ -152,7 +151,7 @@ namespace TileEditor.Handlers
             try
             {
                 var source = System.Windows.Interop.Imaging.CreateBitmapSourceFromHBitmap(hBitmap, IntPtr.Zero, Int32Rect.Empty, System.Windows.Media.Imaging.BitmapSizeOptions.FromEmptyOptions());
-                Image ImageIcon = new Image();
+                Image ImageIcon = ImagePool.GetObject();
                 ImageIcon.Source = new WriteableBitmap(source);
                 ImageIcon.Width = size;
                 ImageIcon.Height = size;
@@ -173,6 +172,7 @@ namespace TileEditor.Handlers
         /// </summary>
         public void Clear()
         {
+            ImagePool.ReleaseAll();
             _canvas.Children.Clear();
         }
 
