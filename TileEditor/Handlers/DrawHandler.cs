@@ -1,11 +1,8 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media;
+using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
 
 namespace TileEditor.Handlers
@@ -15,14 +12,16 @@ namespace TileEditor.Handlers
         private Canvas _canvas;
         private GridHandler _gridHandler;
         private CameraHandler _cameraHandler;
+        private TilesetHandler _tilesetHandler;
 
         public int GridThickness { get; set; }
 
-        public DrawHandler(Canvas canvas, GridHandler gridHandler, CameraHandler cameraHandler)
+        public DrawHandler(Canvas canvas, GridHandler gridHandler, CameraHandler cameraHandler, TilesetHandler tilesetHandler)
         {
             _canvas = canvas;
             _gridHandler = gridHandler;
             _cameraHandler = cameraHandler;
+            _tilesetHandler = tilesetHandler;
 
             GridThickness = 1;
         }
@@ -34,8 +33,21 @@ namespace TileEditor.Handlers
         {
             Clear();
             DrawGrid();
+
+            DrawFirstTile();
+
             DrawHoverSquare();
             DrawSelectedSquare();
+            
+        }
+
+        /// <summary>
+        /// Draws the first loaded tile
+        /// </summary>
+        private void DrawFirstTile()
+        {
+            if (_tilesetHandler.TileBitmaps.Count <= 0) { return; }
+            CreateBitmap(new Point(0, 0), (System.Drawing.Bitmap)_tilesetHandler.TileBitmaps[0]);
         }
 
         /// <summary>
@@ -121,9 +133,20 @@ namespace TileEditor.Handlers
             _canvas.Children.Add(rect);
         }
 
-        private void CreateBitmap()
+        /// <summary>
+        /// Adds the given bitmap to the canvas
+        /// </summary>
+        /// <param name="position"></param>
+        /// <param name="bitmap"></param>
+        private void CreateBitmap(Point position, System.Drawing.Bitmap bitmap)
         {
-           // _canvas.DrawImage(_image, new Rect(0, 0, _image.PixelWidth, _image.PixelHeight));
+            BitmapSource bitmapSource = System.Windows.Interop.Imaging.CreateBitmapSourceFromHBitmap( bitmap.GetHbitmap(), IntPtr.Zero, Int32Rect.Empty, BitmapSizeOptions.FromEmptyOptions());
+            Image ImageIcon = new Image();
+            ImageIcon.Source = new WriteableBitmap(bitmapSource);
+            _canvas.Children.Add(ImageIcon);
+
+            Canvas.SetLeft(ImageIcon, position.X);
+            Canvas.SetTop(ImageIcon, position.Y);
         }
 
 
