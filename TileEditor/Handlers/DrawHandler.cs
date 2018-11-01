@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Diagnostics;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media;
@@ -21,9 +22,13 @@ namespace TileEditor.Handlers
         private System.Drawing.Pen _gridPen;
         private System.Drawing.Pen _hoverPen;
         private System.Drawing.Pen _selectedPen;
+        private System.Drawing.Font _fpsFont;
 
 
-
+        private Stopwatch _stopWatch;
+        private int _frames = 0;
+        private float _fpsCounter = 0;
+        
         public int GridThickness { get; set; }
 
         public DrawHandler(Canvas canvas, GridHandler gridHandler, CameraHandler cameraHandler, TilesetHandler tilesetHandler)
@@ -32,12 +37,15 @@ namespace TileEditor.Handlers
             _gridHandler = gridHandler;
             _cameraHandler = cameraHandler;
             _tilesetHandler = tilesetHandler;
+            _stopWatch = new Stopwatch();
 
             GridThickness = 1;
 
             _gridPen = new System.Drawing.Pen(System.Drawing.Color.NavajoWhite, GridThickness);
             _hoverPen = new System.Drawing.Pen(System.Drawing.Color.LightGray, 3);
             _selectedPen = new System.Drawing.Pen(System.Drawing.Color.GhostWhite, 3);
+
+            _fpsFont = new System.Drawing.Font("Monospace", 12);
         }
 
         [System.Runtime.InteropServices.DllImport("gdi32.dll")]
@@ -49,12 +57,33 @@ namespace TileEditor.Handlers
         public void Update()
         {
             Clear();
+
             DrawGrid();
             DrawFirstTiles();
             DrawHoverSquare();
             DrawSelectedSquare();
+            DrawFPS();
 
             UpdateCanvasImage();
+            CalculateFPS();
+        }
+
+        /// <summary>
+        /// Calculates FPS
+        /// </summary>
+        private void CalculateFPS()
+        {
+            if(!_stopWatch.IsRunning) { _stopWatch.Start(); }
+
+            if(_stopWatch.ElapsedMilliseconds >= 500)
+            {
+                _fpsCounter = ((float)_frames*1000 / (_stopWatch.ElapsedMilliseconds));
+                //Console.WriteLine("FPS: " + _fpsCounter);
+                _frames = 0;
+                _stopWatch.Restart();
+            }
+
+            _frames++;
         }
 
         private void CreateCanvasImage(WriteableBitmap bitmap)
@@ -129,6 +158,15 @@ namespace TileEditor.Handlers
             DrawHollowSquare(_gridHandler.GetCoordsFromPoint(_gridHandler.HoverTile), (int)_gridHandler.TileSize, _hoverPen);
         }
 
+        /// <summary>
+        /// Draws a string with the fps count
+        /// </summary>
+        private void DrawFPS()
+        {
+            if (_bitmapRender == null) { return; }
+
+            DrawText(new Point(0, 0), 250, 80, _fpsFont, $"FPS: {_fpsCounter}");
+        }
 
         /// <summary>
         /// Draws the square around the highlighted square
@@ -208,74 +246,21 @@ namespace TileEditor.Handlers
             }
         }
 
-        #region OldDrawing
         /// <summary>
-        /// Creates a line an adds it to the canvas
-        /// </summary>
-        /// <param name="x1"></param>
-        /// <param name="y1"></param>
-        /// <param name="x2"></param>
-        /// <param name="y2"></param>
-        private void CreateLine(double x1, double y1, double x2, double y2)
-        {
-            Line line = new Line();
-            line.Stroke = Brushes.NavajoWhite;
-            line.StrokeThickness = GridThickness;
-
-            line.X1 = (x1 + _cameraHandler.Position.X);
-            line.Y1 = (y1 + _cameraHandler.Position.Y);
-
-            line.X2 = (x2 + _cameraHandler.Position.X);
-            line.Y2 = (y2 + _cameraHandler.Position.Y);
-
-            _canvas.Children.Add(line);
-        }
-
-        /// <summary>
-        /// Creates a hollow square
-        /// </summary>
-        /// <param name="size"></param>
-        private void CreateSquare(Point position, float size, Color color)
-        {
-            Rectangle rect = new Rectangle();
-            rect.Stroke = new SolidColorBrush(color);
-            rect.StrokeThickness = 3;
-            rect.Width = size;
-            rect.Height = size;
-            Canvas.SetLeft(rect, position.X);
-            Canvas.SetTop(rect, position.Y);
-
-            _canvas.Children.Add(rect);
-        }
-
-        /// <summary>
-        /// Adds the given bitmap to the canvas
+        /// Draws a string onto the bitmap
         /// </summary>
         /// <param name="position"></param>
-        /// <param name="bitmap"></param>
-        private void CreateBitmap(Point position, float size, System.Drawing.Bitmap bitmap)
+        /// <param name="width"></param>
+        /// <param name="height"></param>
+        /// <param name="font"></param>
+        /// <param name="text"></param>
+        private void DrawText(Point position, int width, int height, System.Drawing.Font font, string text)
         {
-            IntPtr hBitmap = bitmap.GetHbitmap();
-
-            try
+            using (System.Drawing.Graphics graphics = System.Drawing.Graphics.FromImage(_bitmapRender))
             {
-                var source = System.Windows.Interop.Imaging.CreateBitmapSourceFromHBitmap(hBitmap, IntPtr.Zero, Int32Rect.Empty, System.Windows.Media.Imaging.BitmapSizeOptions.FromEmptyOptions());
-                Image ImageIcon = ImagePool.GetObject();
-                ImageIcon.Source = new WriteableBitmap(source);
-                ImageIcon.Width = size;
-                ImageIcon.Height = size;
-                _canvas.Children.Add(ImageIcon);
-
-                Canvas.SetLeft(ImageIcon, position.X);
-                Canvas.SetTop(ImageIcon, position.Y);
-            }
-            finally
-            {
-                DeleteObject(hBitmap);
+                graphics.DrawString(text, font, System.Drawing.Brushes.Black, new System.Drawing.Rectangle((int)position.X, (int)position.Y, width, height));
             }
         }
-
-        #endregion
 
         /// <summary>
         /// Clears the canvas
