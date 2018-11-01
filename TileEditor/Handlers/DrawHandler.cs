@@ -15,8 +15,11 @@ namespace TileEditor.Handlers
         private TilesetHandler _tilesetHandler;
 
         private WriteableBitmap _writeableBitmap;
-        private Image _canvasRender;
+        private Image _canvasRender = null;
         private System.Drawing.Bitmap _bitmapRender;
+
+        private System.Drawing.Pen _blackPen;
+
 
         public int GridThickness { get; set; }
 
@@ -28,6 +31,8 @@ namespace TileEditor.Handlers
             _tilesetHandler = tilesetHandler;
 
             GridThickness = 1;
+
+            _blackPen = new System.Drawing.Pen(System.Drawing.Color.Black, GridThickness);
         }
 
         [System.Runtime.InteropServices.DllImport("gdi32.dll")]
@@ -39,7 +44,7 @@ namespace TileEditor.Handlers
         public void Update()
         {
             Clear();
-            //DrawGrid();
+            DrawGrid();
             //DrawFirstTiles();
             //DrawHoverSquare();
             //DrawSelectedSquare();
@@ -49,7 +54,8 @@ namespace TileEditor.Handlers
 
         private void CreateCanvasImage(WriteableBitmap bitmap)
         {
-            _canvasRender = new Image();
+            if(_canvasRender == null) { _canvasRender = new Image(); }
+            
             _canvasRender.Width = _canvas.ActualWidth;
             _canvasRender.Height = _canvas.ActualHeight;
             _canvasRender.Source = bitmap;
@@ -92,7 +98,6 @@ namespace TileEditor.Handlers
             return bitmapSource;
         }
 
-        #region OldWay
         /// <summary>
         /// Draws the first loaded tile
         /// </summary>
@@ -132,24 +137,47 @@ namespace TileEditor.Handlers
         /// </summary>
         public void DrawGrid()
         {
+            if (_bitmapRender == null) { return; }
+
             double width = _gridHandler.TileSize * _gridHandler.MAP_SIZE_WIDTH;
             double height = _gridHandler.TileSize * _gridHandler.MAP_SIZE_HEIGHT;
 
             // Columns
             for (int i = 0; i <= _gridHandler.MAP_SIZE_WIDTH; i++)
             {
-                int x = i * (int)_gridHandler.TileSize;
-                CreateLine(x, 0, x, height);
+                int x = (i * (int)_gridHandler.TileSize) + (int)_cameraHandler.Position.X;
+                int y = (int)_cameraHandler.Position.Y;
+                DrawLine(new Point(x, y), new Point(x, height+y));
             }
 
             // Rows
             for (int i = 0; i <= _gridHandler.MAP_SIZE_HEIGHT; i++)
             {
-                int y = i * (int)_gridHandler.TileSize;
-                CreateLine(0, y, width, y);
+                int x = (int)_cameraHandler.Position.X;
+                int y = (i * (int)_gridHandler.TileSize) + (int)_cameraHandler.Position.Y;
+                DrawLine(new Point(x, y), new Point(width+x, y));
             }
         }
 
+        /// <summary>
+        /// Draws a line on top of the bitmap
+        /// </summary>
+        /// <param name="start"></param>
+        /// <param name="end"></param>
+        private void DrawLine(Point start, Point end)
+        {
+            using (var graphics = System.Drawing.Graphics.FromImage(_bitmapRender))
+            {
+                graphics.DrawLine(_blackPen, (float)start.X, (float)start.Y, (float)end.X, (float)end.Y);
+            }
+        }
+
+        private void DrawHollowSquare()
+        {
+
+        }
+
+        #region OldDrawing
         /// <summary>
         /// Creates a line an adds it to the canvas
         /// </summary>
