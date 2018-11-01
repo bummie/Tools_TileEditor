@@ -18,7 +18,7 @@ namespace TileEditor.Handlers
         private Image _canvasRender = null;
         private System.Drawing.Bitmap _bitmapRender;
 
-        private System.Drawing.Pen _blackPen;
+        private System.Drawing.Pen _gridPen;
         private System.Drawing.Pen _hoverPen;
         private System.Drawing.Pen _selectedPen;
 
@@ -35,8 +35,8 @@ namespace TileEditor.Handlers
 
             GridThickness = 1;
 
-            _blackPen = new System.Drawing.Pen(System.Drawing.Color.Black, GridThickness);
-            _hoverPen = new System.Drawing.Pen(System.Drawing.Color.Honeydew, 3);
+            _gridPen = new System.Drawing.Pen(System.Drawing.Color.NavajoWhite, GridThickness);
+            _hoverPen = new System.Drawing.Pen(System.Drawing.Color.LightGray, 3);
             _selectedPen = new System.Drawing.Pen(System.Drawing.Color.GhostWhite, 3);
         }
 
@@ -50,7 +50,7 @@ namespace TileEditor.Handlers
         {
             Clear();
             DrawGrid();
-            //DrawFirstTiles();
+            DrawFirstTiles();
             DrawHoverSquare();
             DrawSelectedSquare();
 
@@ -108,11 +108,14 @@ namespace TileEditor.Handlers
         /// </summary>
         private void DrawFirstTiles()
         {
-            if (_tilesetHandler.TileBitmaps.Count <= 0) { return; }
+            if (_tilesetHandler.TileBitmaps.Count <= 0 || _bitmapRender == null) { return; }
 
-            for(int i = 0; i < 3; i++)
+            for(int i = 0; i < 32; i++)
             {
-                CreateBitmap(_gridHandler.GetCoordsFromPoint(new Point(i, 0)), _gridHandler.TileSize, (System.Drawing.Bitmap)_tilesetHandler.TileBitmaps[i]);
+                for (int j = 0; j < 32; j++)
+                {
+                    DrawTile(_gridHandler.GetCoordsFromPoint(new Point(i, j)), (int)_gridHandler.TileSize, (System.Drawing.Bitmap)_tilesetHandler.TileBitmaps[i+j]);
+                }
             }
         }
 
@@ -173,7 +176,7 @@ namespace TileEditor.Handlers
         {
             using (var graphics = System.Drawing.Graphics.FromImage(_bitmapRender))
             {
-                graphics.DrawLine(_blackPen, (float)start.X, (float)start.Y, (float)end.X, (float)end.Y);
+                graphics.DrawLine(_gridPen, (float)start.X, (float)start.Y, (float)end.X, (float)end.Y);
             }
         }
 
@@ -188,6 +191,20 @@ namespace TileEditor.Handlers
             using (System.Drawing.Graphics graphics = System.Drawing.Graphics.FromImage(_bitmapRender))
             {
                 graphics.DrawRectangle(pen, new System.Drawing.Rectangle((int)position.X, (int)position.Y, size, size));
+            }
+        }
+
+        /// <summary>
+        /// Draws given bitmap tile to the canvasRenderBitmap
+        /// </summary>
+        /// <param name="position"></param>
+        /// <param name="size"></param>
+        /// <param name="bitmap"></param>
+        private void DrawTile(Point position, int size, System.Drawing.Bitmap bitmap)
+        {
+            using (System.Drawing.Graphics graphics = System.Drawing.Graphics.FromImage(_bitmapRender))
+            {
+                graphics.DrawImage(bitmap, new System.Drawing.Rectangle((int)position.X, (int)position.Y, size, size));
             }
         }
 
@@ -285,7 +302,7 @@ namespace TileEditor.Handlers
             using (System.Drawing.Graphics graph = System.Drawing.Graphics.FromImage(bmp))
             {
                 System.Drawing.Rectangle ImageSize = new System.Drawing.Rectangle(0, 0, width, height);
-                graph.FillRectangle(System.Drawing.Brushes.CadetBlue, ImageSize);
+                graph.FillRectangle(System.Drawing.Brushes.RoyalBlue, ImageSize);
             }
             return bmp;
         }
