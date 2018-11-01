@@ -57,14 +57,24 @@ namespace TileEditor.Handlers
         {
             Clear();
 
-            DrawGrid();
-            DrawFirstTiles();
-            DrawHoverSquare();
-            DrawSelectedSquare();
-            DrawFPS();
+            Draw();
+           
+            CalculateFPS();
+        }
+
+        private void Draw()
+        {
+            if(_bitmapRender == null) { return; }
+            using (var graphics = System.Drawing.Graphics.FromImage(_bitmapRender))
+            {
+                DrawFirstTiles(graphics);
+                DrawGrid(graphics);
+                DrawHoverSquare(graphics);
+                DrawSelectedSquare(graphics);
+                DrawFPS(graphics);
+            }
 
             UpdateCanvasImage();
-            CalculateFPS();
         }
 
         /// <summary>
@@ -74,10 +84,9 @@ namespace TileEditor.Handlers
         {
             if(!_stopWatch.IsRunning) { _stopWatch.Start(); }
 
-            if(_stopWatch.ElapsedMilliseconds >= 500)
+            if(_stopWatch.ElapsedMilliseconds >= 1000)
             {
                 _fpsCounter = ((float)_frames*1000 / (_stopWatch.ElapsedMilliseconds));
-                //Console.WriteLine("FPS: " + _fpsCounter);
                 _frames = 0;
                 _stopWatch.Restart();
             }
@@ -130,15 +139,15 @@ namespace TileEditor.Handlers
         /// <summary>
         /// Draws the first loaded tile
         /// </summary>
-        private void DrawFirstTiles()
+        private void DrawFirstTiles(System.Drawing.Graphics graphics)
         {
-            if (_tilesetHandler.TileBitmaps.Count <= 0 || _bitmapRender == null) { return; }
+            if (_tilesetHandler.TileBitmaps.Count <= 0) { return; }
 
             for(int i = 0; i < 32; i++)
             {
                 for (int j = 0; j < 32; j++)
                 {
-                    DrawTile(_gridHandler.GetCoordsFromPoint(new Point(i, j)), (int)_gridHandler.TileSize, (System.Drawing.Bitmap)_tilesetHandler.TileBitmaps[i+j]);
+                    DrawTile(_gridHandler.GetCoordsFromPoint(new Point(i, j)), (int)_gridHandler.TileSize, (System.Drawing.Bitmap)_tilesetHandler.TileBitmaps[i+j], graphics);
                 }
             }
         }
@@ -146,37 +155,37 @@ namespace TileEditor.Handlers
         /// <summary>
         /// Draws the square around the highlighted square
         /// </summary>
-        private void DrawHoverSquare()
+        private void DrawHoverSquare(System.Drawing.Graphics graphics)
         {
             if(_gridHandler.HoverTile == new Point(-1, -1) || _bitmapRender == null) { return; };
 
-            DrawHollowSquare(_gridHandler.GetCoordsFromPoint(_gridHandler.HoverTile), (int)_gridHandler.TileSize, _hoverPen);
+            DrawHollowSquare(_gridHandler.GetCoordsFromPoint(_gridHandler.HoverTile), (int)_gridHandler.TileSize, _hoverPen, graphics);
         }
 
         /// <summary>
         /// Draws a string with the fps count
         /// </summary>
-        private void DrawFPS()
+        private void DrawFPS(System.Drawing.Graphics graphics)
         {
             if (_bitmapRender == null) { return; }
 
-            DrawText(new Point(0, 0), 250, 80, _fpsFont, $"FPS: {_fpsCounter}");
+            DrawText(new Point(0, 0), 250, 80, _fpsFont, $"FPS: {_fpsCounter}", graphics);
         }
 
         /// <summary>
         /// Draws the square around the highlighted square
         /// </summary>
-        private void DrawSelectedSquare()
+        private void DrawSelectedSquare(System.Drawing.Graphics graphics)
         {
             if (_gridHandler.SelectedTilePoint == new Point(-1, -1) || _bitmapRender == null) { return; };
 
-            DrawHollowSquare(_gridHandler.GetCoordsFromPoint(_gridHandler.SelectedTilePoint), (int)_gridHandler.TileSize, _selectedPen);
+            DrawHollowSquare(_gridHandler.GetCoordsFromPoint(_gridHandler.SelectedTilePoint), (int)_gridHandler.TileSize, _selectedPen, graphics);
         }
 
         /// <summary>
         /// Draws a grid based on the defined size
         /// </summary>
-        public void DrawGrid()
+        public void DrawGrid(System.Drawing.Graphics graphics)
         {
             if (_bitmapRender == null) { return; }
 
@@ -188,7 +197,7 @@ namespace TileEditor.Handlers
             {
                 int x = (i * (int)_gridHandler.TileSize) + (int)_cameraHandler.Position.X;
                 int y = (int)_cameraHandler.Position.Y;
-                DrawLine(new Point(x, y), new Point(x, height+y));
+                DrawLine(new Point(x, y), new Point(x, height+y), graphics);
             }
 
             // Rows
@@ -196,7 +205,7 @@ namespace TileEditor.Handlers
             {
                 int x = (int)_cameraHandler.Position.X;
                 int y = (i * (int)_gridHandler.TileSize) + (int)_cameraHandler.Position.Y;
-                DrawLine(new Point(x, y), new Point(width+x, y));
+                DrawLine(new Point(x, y), new Point(width+x, y), graphics);
             }
         }
 
@@ -205,12 +214,9 @@ namespace TileEditor.Handlers
         /// </summary>
         /// <param name="start"></param>
         /// <param name="end"></param>
-        private void DrawLine(Point start, Point end)
+        private void DrawLine(Point start, Point end, System.Drawing.Graphics graphics)
         {
-            using (var graphics = System.Drawing.Graphics.FromImage(_bitmapRender))
-            {
-                graphics.DrawLine(_gridPen, (float)start.X, (float)start.Y, (float)end.X, (float)end.Y);
-            }
+            graphics.DrawLine(_gridPen, (float)start.X, (float)start.Y, (float)end.X, (float)end.Y);
         }
 
         /// <summary>
@@ -219,12 +225,9 @@ namespace TileEditor.Handlers
         /// <param name="position"></param>
         /// <param name="size"></param>
         /// <param name="pen"></param>
-        private void DrawHollowSquare(Point position, int size, System.Drawing.Pen pen)
+        private void DrawHollowSquare(Point position, int size, System.Drawing.Pen pen, System.Drawing.Graphics graphics)
         {
-            using (System.Drawing.Graphics graphics = System.Drawing.Graphics.FromImage(_bitmapRender))
-            {
-                graphics.DrawRectangle(pen, new System.Drawing.Rectangle((int)position.X, (int)position.Y, size, size));
-            }
+            graphics.DrawRectangle(pen, new System.Drawing.Rectangle((int)position.X, (int)position.Y, size, size));
         }
 
         /// <summary>
@@ -233,12 +236,9 @@ namespace TileEditor.Handlers
         /// <param name="position"></param>
         /// <param name="size"></param>
         /// <param name="bitmap"></param>
-        private void DrawTile(Point position, int size, System.Drawing.Bitmap bitmap)
+        private void DrawTile(Point position, int size, System.Drawing.Bitmap bitmap, System.Drawing.Graphics graphics)
         {
-            using (System.Drawing.Graphics graphics = System.Drawing.Graphics.FromImage(_bitmapRender))
-            {
-                graphics.DrawImage(bitmap, new System.Drawing.Rectangle((int)position.X, (int)position.Y, size, size));
-            }
+            graphics.DrawImage(bitmap, new System.Drawing.Rectangle((int)position.X, (int)position.Y, size, size));
         }
 
         /// <summary>
@@ -249,12 +249,9 @@ namespace TileEditor.Handlers
         /// <param name="height"></param>
         /// <param name="font"></param>
         /// <param name="text"></param>
-        private void DrawText(Point position, int width, int height, System.Drawing.Font font, string text)
+        private void DrawText(Point position, int width, int height, System.Drawing.Font font, string text, System.Drawing.Graphics graphics)
         {
-            using (System.Drawing.Graphics graphics = System.Drawing.Graphics.FromImage(_bitmapRender))
-            {
-                graphics.DrawString(text, font, System.Drawing.Brushes.Black, new System.Drawing.Rectangle((int)position.X, (int)position.Y, width, height));
-            }
+            graphics.DrawString(text, font, System.Drawing.Brushes.Black, new System.Drawing.Rectangle((int)position.X, (int)position.Y, width, height));
         }
 
         /// <summary>
