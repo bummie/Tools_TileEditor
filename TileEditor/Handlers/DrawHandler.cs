@@ -24,7 +24,6 @@ namespace TileEditor.Handlers
         private System.Drawing.Pen _selectedPen;
         private System.Drawing.Font _fpsFont;
 
-
         private Stopwatch _stopWatch;
         private int _frames = 0;
         private float _fpsCounter = 0;
@@ -106,8 +105,7 @@ namespace TileEditor.Handlers
         {
             if(_bitmapRender == null) { return; }
 
-            var source = BitmapToSource(_bitmapRender); //System.Windows.Interop.Imaging.CreateBitmapSourceFromHBitmap(hBitmap, IntPtr.Zero, Int32Rect.Empty, System.Windows.Media.Imaging.BitmapSizeOptions.FromEmptyOptions());
-            _writeableBitmap = new WriteableBitmap(source);
+            _writeableBitmap = new WriteableBitmap(BitmapToSource(_bitmapRender));
             CreateCanvasImage(_writeableBitmap);
         }
 
@@ -122,10 +120,7 @@ namespace TileEditor.Handlers
                 new System.Drawing.Rectangle(0, 0, bitmap.Width, bitmap.Height),
                 System.Drawing.Imaging.ImageLockMode.ReadOnly, bitmap.PixelFormat);
 
-            var bitmapSource = BitmapSource.Create(
-                bitmapData.Width, bitmapData.Height,
-                bitmap.HorizontalResolution, bitmap.VerticalResolution,
-                PixelFormats.Bgr32, null,
+            var bitmapSource = BitmapSource.Create(bitmapData.Width, bitmapData.Height, bitmap.HorizontalResolution, bitmap.VerticalResolution, PixelFormats.Bgr32, null,
                 bitmapData.Scan0, bitmapData.Stride * bitmapData.Height, bitmapData.Stride);
 
             bitmap.UnlockBits(bitmapData);
@@ -268,7 +263,6 @@ namespace TileEditor.Handlers
         public void Clear()
         {
             _bitmapRender = CreateEmptyBitmap();
-            //ImagePool.ReleaseAll();
             _canvas.Children.Clear();
         }
         
