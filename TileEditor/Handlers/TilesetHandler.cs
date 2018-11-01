@@ -10,7 +10,13 @@ namespace TileEditor.Handlers
         private Bitmap _tileSet = null;
         public ArrayList TileBitmaps { get; set; }
 
-
+        /// <summary>
+        /// Constructor for tilesethander
+        /// Loads the given tileset into memory
+        /// //TODO:: Thread the loading operation
+        /// </summary>
+        /// <param name="tilesetName"></param>
+        /// <param name="tileSize"></param>
         public TilesetHandler(string tilesetName, int tileSize)
         {
             TileBitmaps = new ArrayList();

@@ -94,6 +94,10 @@ namespace TileEditor.Handlers
             _frames++;
         }
 
+        /// <summary>
+        /// Updates the image in the canvas with the new bitmap
+        /// </summary>
+        /// <param name="bitmap"></param>
         private void CreateCanvasImage(WriteableBitmap bitmap)
         {
             if(_canvasRender == null) { _canvasRender = new Image(); }
