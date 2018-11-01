@@ -19,6 +19,9 @@ namespace TileEditor.Handlers
         private System.Drawing.Bitmap _bitmapRender;
 
         private System.Drawing.Pen _blackPen;
+        private System.Drawing.Pen _hoverPen;
+        private System.Drawing.Pen _selectedPen;
+
 
 
         public int GridThickness { get; set; }
@@ -33,6 +36,8 @@ namespace TileEditor.Handlers
             GridThickness = 1;
 
             _blackPen = new System.Drawing.Pen(System.Drawing.Color.Black, GridThickness);
+            _hoverPen = new System.Drawing.Pen(System.Drawing.Color.Honeydew, 3);
+            _selectedPen = new System.Drawing.Pen(System.Drawing.Color.GhostWhite, 3);
         }
 
         [System.Runtime.InteropServices.DllImport("gdi32.dll")]
@@ -46,8 +51,8 @@ namespace TileEditor.Handlers
             Clear();
             DrawGrid();
             //DrawFirstTiles();
-            //DrawHoverSquare();
-            //DrawSelectedSquare();
+            DrawHoverSquare();
+            DrawSelectedSquare();
 
             UpdateCanvasImage();
         }
@@ -116,9 +121,9 @@ namespace TileEditor.Handlers
         /// </summary>
         private void DrawHoverSquare()
         {
-            if(_gridHandler.HoverTile == new Point(-1, -1)) { return; };
+            if(_gridHandler.HoverTile == new Point(-1, -1) || _bitmapRender == null) { return; };
 
-            CreateSquare(_gridHandler.GetCoordsFromPoint(_gridHandler.HoverTile), _gridHandler.TileSize, Colors.DarkGray);
+            DrawHollowSquare(_gridHandler.GetCoordsFromPoint(_gridHandler.HoverTile), (int)_gridHandler.TileSize, _hoverPen);
         }
 
 
@@ -127,9 +132,9 @@ namespace TileEditor.Handlers
         /// </summary>
         private void DrawSelectedSquare()
         {
-            if (_gridHandler.SelectedTilePoint == new Point(-1, -1)) { return; };
+            if (_gridHandler.SelectedTilePoint == new Point(-1, -1) || _bitmapRender == null) { return; };
 
-            CreateSquare(_gridHandler.GetCoordsFromPoint(_gridHandler.SelectedTilePoint), _gridHandler.TileSize, Colors.White);
+            DrawHollowSquare(_gridHandler.GetCoordsFromPoint(_gridHandler.SelectedTilePoint), (int)_gridHandler.TileSize, _selectedPen);
         }
 
         /// <summary>
@@ -172,9 +177,18 @@ namespace TileEditor.Handlers
             }
         }
 
-        private void DrawHollowSquare()
+        /// <summary>
+        /// Draws a hollow square with size and position
+        /// </summary>
+        /// <param name="position"></param>
+        /// <param name="size"></param>
+        /// <param name="pen"></param>
+        private void DrawHollowSquare(Point position, int size, System.Drawing.Pen pen)
         {
-
+            using (System.Drawing.Graphics graphics = System.Drawing.Graphics.FromImage(_bitmapRender))
+            {
+                graphics.DrawRectangle(pen, new System.Drawing.Rectangle((int)position.X, (int)position.Y, size, size));
+            }
         }
 
         #region OldDrawing
@@ -271,7 +285,7 @@ namespace TileEditor.Handlers
             using (System.Drawing.Graphics graph = System.Drawing.Graphics.FromImage(bmp))
             {
                 System.Drawing.Rectangle ImageSize = new System.Drawing.Rectangle(0, 0, width, height);
-                graph.FillRectangle(System.Drawing.Brushes.Pink, ImageSize);
+                graph.FillRectangle(System.Drawing.Brushes.CadetBlue, ImageSize);
             }
             return bmp;
         }
