@@ -12,6 +12,16 @@ namespace TileEditor.Model
         public int TextureId { get; set; }
         public Point Position { get; set; }
 
-        public Tile() { }
+        public Tile(Point position, int textureId)
+        {
+            Position = position;
+            TextureId = textureId;
+        }
+
+        private void Reset()
+        {
+            TextureId = 0;
+            Position = new Point(0, 0);
+        }
     }
 }

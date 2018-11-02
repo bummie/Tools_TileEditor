@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace TileEditor.Model
 {
-    public class TileProperties
+    public class TileProperty
     {
         #region Properties
 
@@ -21,9 +21,10 @@ namespace TileEditor.Model
 
         #endregion
 
-        public TileProperties()
+        public TileProperty(int textureId)
         {
             Reset();
+            TextureId = textureId;
         }
 
         /// <summary>

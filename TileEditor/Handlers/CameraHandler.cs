@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
+using System.Windows.Input;
 
 namespace TileEditor.Handlers
 {
@@ -45,6 +46,38 @@ namespace TileEditor.Handlers
         private float Clamp(float value, float min, float max)
         {
             return (value < min) ? min : (value > max) ? max : value;
+        }
+
+        /// <summary>
+        /// Updates the position and zoom of the camera based on keyboard input
+        /// </summary>
+        /// <param name="key"></param>
+        public void UpdateMovement(Key key)
+        {
+            switch (key)
+            {
+                // Movement
+                case Key.W:
+                    Position = new Point(Position.X, Position.Y + MOVE_AMOUNT);
+                    break;
+                case Key.S:
+                    Position = new Point(Position.X, Position.Y - MOVE_AMOUNT);
+                    break;
+                case Key.A:
+                    Position = new Point(Position.X + MOVE_AMOUNT, Position.Y);
+                    break;
+                case Key.D:
+                    Position = new Point(Position.X - MOVE_AMOUNT, Position.Y);
+                    break;
+
+                // Zoom
+                case Key.Space:
+                    Zoom += ZOOM_LEVEL;
+                    break;
+                case Key.LeftCtrl:
+                    Zoom -= ZOOM_LEVEL;
+                    break;
+            }
         }
     }
 }

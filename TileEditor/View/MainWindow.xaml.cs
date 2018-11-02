@@ -39,30 +39,7 @@ namespace TileEditor
 
         private void OnButtonKeyDown(object sender, KeyEventArgs e)
         {
-            switch (e.Key)
-            {
-                // Movement
-                case Key.W:
-                    _cameraHandler.Position = new Point(_cameraHandler.Position.X, _cameraHandler.Position.Y + _cameraHandler.MOVE_AMOUNT);
-                    break;
-                case Key.S:
-                    _cameraHandler.Position = new Point(_cameraHandler.Position.X, _cameraHandler.Position.Y - _cameraHandler.MOVE_AMOUNT);
-                    break;
-                case Key.A:
-                    _cameraHandler.Position = new Point(_cameraHandler.Position.X + _cameraHandler.MOVE_AMOUNT, _cameraHandler.Position.Y);
-                    break;
-                case Key.D:
-                    _cameraHandler.Position = new Point(_cameraHandler.Position.X - _cameraHandler.MOVE_AMOUNT, _cameraHandler.Position.Y);
-                    break;
-
-                // Zoom
-                case Key.Space:
-                    _cameraHandler.Zoom += CameraHandler.ZOOM_LEVEL;
-                    break;
-                case Key.LeftCtrl:
-                    _cameraHandler.Zoom -= CameraHandler.ZOOM_LEVEL;
-                    break;
-            }
+            _cameraHandler.UpdateMovement(e.Key);
         }
 
         /// <summary>

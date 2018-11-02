@@ -147,9 +147,9 @@ namespace TileEditor.Handlers
         {
             if (_tilesetHandler.TileBitmaps.Count <= 0) { return; }
 
-            for(int i = 0; i < 32; i++)
+            for(int i = 0; i < 16; i++)
             {
-                for (int j = 0; j < 32; j++)
+                for (int j = 0; j < 16; j++)
                 {
                     DrawTile(_gridHandler.GetCoordsFromPoint(new Point(i, j)), (int)_gridHandler.TileSize, (System.Drawing.Bitmap)_tilesetHandler.TileBitmaps[i+j], graphics);
                 }
