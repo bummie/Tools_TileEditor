@@ -15,6 +15,8 @@ namespace TileEditor.Handlers
         private TilesetHandler _tilesetHandler;
         private TileHandler _tileHandler;
 
+        public int SelectedTileTextureId { get; set; }
+
         private WriteableBitmap _writeableBitmap;
         private Image _canvasRender = null;
         private System.Drawing.Bitmap _bitmapRender;
@@ -39,6 +41,7 @@ namespace TileEditor.Handlers
             _tileHandler = tileHandler;
 
             _stopWatch = new Stopwatch();
+            SelectedTileTextureId = 0;
 
             GridThickness = 1;
 
@@ -71,6 +74,7 @@ namespace TileEditor.Handlers
             {
                 DrawTiles(graphics);
                 DrawGrid(graphics);
+                DrawSelectedTileTexture(graphics);
                 DrawHoverSquare(graphics);
                 DrawSelectedSquare(graphics);
                 DrawFPS(graphics);
@@ -154,6 +158,16 @@ namespace TileEditor.Handlers
             {
                 DrawTile(_gridHandler.GetCoordsFromPoint(tile.Position), (int)_gridHandler.TileSize, (System.Drawing.Bitmap)_tilesetHandler.TileBitmaps[tile.TextureId], graphics);
             }
+        }
+
+        /// <summary>
+        /// Draws the first loaded tile
+        /// </summary>
+        private void DrawSelectedTileTexture(System.Drawing.Graphics graphics)
+        {
+            if (_tilesetHandler.TileBitmaps.Count <= 0) { return; }
+
+            DrawTile(_gridHandler.GetCoordsFromPoint(_gridHandler.HoverTile), (int)_gridHandler.TileSize, (System.Drawing.Bitmap)_tilesetHandler.TileBitmaps[SelectedTileTextureId], graphics);
         }
 
         /// <summary>

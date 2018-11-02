@@ -21,6 +21,7 @@ namespace TileEditor
         private TileHandler _tileHandler;
 
         private bool _mouseDown = false;
+        private int selectedTileId = 0;
 
         /// <summary>
         /// Initializes a new instance of the MainWindow class.
@@ -44,6 +45,18 @@ namespace TileEditor
         private void OnButtonKeyDown(object sender, KeyEventArgs e)
         {
             _cameraHandler.UpdateMovement(e.Key);
+
+            switch (e.Key)
+            {
+                case Key.Q:
+                        if(selectedTileId > 0) { selectedTileId--; }
+                        _drawHandler.SelectedTileTextureId = selectedTileId;
+                    break;
+                case Key.E:
+                    if (selectedTileId < _tilesetHander.TileBitmaps.Count - 1) { selectedTileId++; }
+                    _drawHandler.SelectedTileTextureId = selectedTileId;
+                    break;
+            }
         }
 
         /// <summary>
@@ -76,7 +89,7 @@ namespace TileEditor
         {
             if (_mouseDown)
             {
-                _tileHandler.AddTile(_gridHandler.GetPointFromCoords(e.GetPosition(DrawCanvas)), 0);
+                _tileHandler.AddTile(_gridHandler.GetPointFromCoords(e.GetPosition(DrawCanvas)), selectedTileId);
             }
 
             _gridHandler.HoverTile = _gridHandler.GetPointFromCoords(e.GetPosition(DrawCanvas));
