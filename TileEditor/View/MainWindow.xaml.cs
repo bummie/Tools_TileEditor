@@ -53,8 +53,8 @@ namespace TileEditor
                         _drawHandler.SelectedTileTextureId = selectedTileId;
                     break;
                 case Key.E:
-                    if (selectedTileId < _tilesetHander.TileBitmaps.Count - 1) { selectedTileId++; }
-                    _drawHandler.SelectedTileTextureId = selectedTileId;
+                        if (selectedTileId < _tilesetHander.TileBitmaps.Count - 1) { selectedTileId++; }
+                        _drawHandler.SelectedTileTextureId = selectedTileId;
                     break;
             }
         }

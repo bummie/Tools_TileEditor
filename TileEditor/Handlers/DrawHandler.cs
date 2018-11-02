@@ -166,6 +166,7 @@ namespace TileEditor.Handlers
         private void DrawSelectedTileTexture(System.Drawing.Graphics graphics)
         {
             if (_tilesetHandler.TileBitmaps.Count <= 0) { return; }
+            if(_gridHandler.HoverTile == new Point(-1, -1)) { return; }
 
             DrawTile(_gridHandler.GetCoordsFromPoint(_gridHandler.HoverTile), (int)_gridHandler.TileSize, (System.Drawing.Bitmap)_tilesetHandler.TileBitmaps[SelectedTileTextureId], graphics);
         }
