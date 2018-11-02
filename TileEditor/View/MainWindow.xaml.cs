@@ -18,6 +18,9 @@ namespace TileEditor
         private GridHandler _gridHandler;
         private CameraHandler _cameraHandler;
         private TilesetHandler _tilesetHander;
+        private TileHandler _tileHandler;
+
+        private bool _mouseDown = false;
 
         /// <summary>
         /// Initializes a new instance of the MainWindow class.
@@ -30,7 +33,8 @@ namespace TileEditor
             _cameraHandler = new CameraHandler();
             _gridHandler = new GridHandler(32, 32, 16, _cameraHandler);
             _tilesetHander = new TilesetHandler("set.gif", 16);
-            _drawHandler = new DrawHandler(DrawCanvas, _gridHandler, _cameraHandler, _tilesetHander);
+            _tileHandler = new TileHandler();
+            _drawHandler = new DrawHandler(DrawCanvas, _gridHandler, _cameraHandler, _tilesetHander, _tileHandler);
 
             KeyDown += new KeyEventHandler(OnButtonKeyDown);
             KeyUp += new KeyEventHandler(OnButtonKeyRelease);
@@ -70,17 +74,23 @@ namespace TileEditor
         /// <param name="e"></param>
         private new void MouseMove(object sender, MouseEventArgs e)
         {
+            if (_mouseDown)
+            {
+                _tileHandler.AddTile(_gridHandler.GetPointFromCoords(e.GetPosition(DrawCanvas)), 0);
+            }
+
             _gridHandler.HoverTile = _gridHandler.GetPointFromCoords(e.GetPosition(DrawCanvas));
         }
 
         private new void MouseDown(object sender, MouseButtonEventArgs e)
         {
+            _mouseDown = true;
         }
 
         private new void MouseUp(object sender, MouseButtonEventArgs e)
         {
             _gridHandler.SelectedTilePoint = _gridHandler.GetPointFromCoords(e.GetPosition(DrawCanvas));
-            //MessageBox.Show(e.GetPosition(DrawCanvas).ToString() + "\nTile: " + _gridHandler.GetPointFromCoords(e.GetPosition(DrawCanvas)) + "\nCamera: " + _cameraHandler.Position.ToString() + "\n TileSize: " + _gridHandler.TileSize + "\n Camera Zoom: " + _cameraHandler.Zoom);
+            _mouseDown = false;
         }
     }
 }

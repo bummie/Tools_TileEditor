@@ -4,7 +4,6 @@ using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
-using System.Windows.Shapes;
 
 namespace TileEditor.Handlers
 {
@@ -14,6 +13,7 @@ namespace TileEditor.Handlers
         private GridHandler _gridHandler;
         private CameraHandler _cameraHandler;
         private TilesetHandler _tilesetHandler;
+        private TileHandler _tileHandler;
 
         private WriteableBitmap _writeableBitmap;
         private Image _canvasRender = null;
@@ -30,12 +30,14 @@ namespace TileEditor.Handlers
         
         public int GridThickness { get; set; }
 
-        public DrawHandler(Canvas canvas, GridHandler gridHandler, CameraHandler cameraHandler, TilesetHandler tilesetHandler)
+        public DrawHandler(Canvas canvas, GridHandler gridHandler, CameraHandler cameraHandler, TilesetHandler tilesetHandler, TileHandler tileHandler)
         {
             _canvas = canvas;
             _gridHandler = gridHandler;
             _cameraHandler = cameraHandler;
             _tilesetHandler = tilesetHandler;
+            _tileHandler = tileHandler;
+
             _stopWatch = new Stopwatch();
 
             GridThickness = 1;
@@ -67,7 +69,7 @@ namespace TileEditor.Handlers
             if(_bitmapRender == null) { return; }
             using (var graphics = System.Drawing.Graphics.FromImage(_bitmapRender))
             {
-                DrawFirstTiles(graphics);
+                DrawTiles(graphics);
                 DrawGrid(graphics);
                 DrawHoverSquare(graphics);
                 DrawSelectedSquare(graphics);
@@ -143,16 +145,14 @@ namespace TileEditor.Handlers
         /// <summary>
         /// Draws the first loaded tile
         /// </summary>
-        private void DrawFirstTiles(System.Drawing.Graphics graphics)
+        private void DrawTiles(System.Drawing.Graphics graphics)
         {
             if (_tilesetHandler.TileBitmaps.Count <= 0) { return; }
+            if(_tileHandler.TileDictionary.Count <= 0) { return; }
 
-            for(int i = 0; i < 16; i++)
+            foreach(var tile in _tileHandler.TileDictionary.Values)
             {
-                for (int j = 0; j < 16; j++)
-                {
-                    DrawTile(_gridHandler.GetCoordsFromPoint(new Point(i, j)), (int)_gridHandler.TileSize, (System.Drawing.Bitmap)_tilesetHandler.TileBitmaps[i+j], graphics);
-                }
+                DrawTile(_gridHandler.GetCoordsFromPoint(tile.Position), (int)_gridHandler.TileSize, (System.Drawing.Bitmap)_tilesetHandler.TileBitmaps[tile.TextureId], graphics);
             }
         }
 

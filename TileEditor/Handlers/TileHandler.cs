@@ -17,6 +17,17 @@ namespace TileEditor.Handlers
         {
             TilePropertyDictionary = new Dictionary<int, TileProperty>();
             TileDictionary = new Dictionary<Point, Tile>();
+            DemoAddTiles();
+        }
+
+        private void DemoAddTiles()
+        {
+            AddTile(new Point(0, 0), 3);
+            AddTile(new Point(10, 12), 3);
+            AddTile(new Point(1, 12), 4);
+            AddTile(new Point(3, 2), 1);
+            AddTile(new Point(4, 4), 33);
+            AddTile(new Point(1, 1), 23);
         }
 
         /// <summary>
