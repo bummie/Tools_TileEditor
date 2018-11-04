@@ -5,6 +5,7 @@ using System.Windows.Media;
 using System.Windows.Shapes;
 using TileEditor.ViewModel;
 using TileEditor.Handlers;
+using TileEditor.Loaders;
 using System;
 
 namespace TileEditor
@@ -17,7 +18,7 @@ namespace TileEditor
         private DrawHandler _drawHandler;
         private GridHandler _gridHandler;
         private CameraHandler _cameraHandler;
-        private TilesetHandler _tilesetHander;
+        private TilesetLoader _tilesetHander;
         private TileHandler _tileHandler;
 
         private bool _mouseDown = false;
@@ -33,7 +34,7 @@ namespace TileEditor
 
             _cameraHandler = new CameraHandler();
             _gridHandler = new GridHandler(32, 32, 16, _cameraHandler);
-            _tilesetHander = new TilesetHandler("set.gif", 16);
+            _tilesetHander = new TilesetLoader("set.gif", 16);
             _tileHandler = new TileHandler();
             _drawHandler = new DrawHandler(DrawCanvas, _gridHandler, _cameraHandler, _tilesetHander, _tileHandler);
 

@@ -4,6 +4,7 @@ using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
+using TileEditor.Loaders;
 
 namespace TileEditor.Handlers
 {
@@ -12,7 +13,7 @@ namespace TileEditor.Handlers
         private Canvas _canvas;
         private GridHandler _gridHandler;
         private CameraHandler _cameraHandler;
-        private TilesetHandler _tilesetHandler;
+        private TilesetLoader _tilesetHandler;
         private TileHandler _tileHandler;
 
         public int SelectedTileTextureId { get; set; }
@@ -32,7 +33,7 @@ namespace TileEditor.Handlers
         
         public int GridThickness { get; set; }
 
-        public DrawHandler(Canvas canvas, GridHandler gridHandler, CameraHandler cameraHandler, TilesetHandler tilesetHandler, TileHandler tileHandler)
+        public DrawHandler(Canvas canvas, GridHandler gridHandler, CameraHandler cameraHandler, TilesetLoader tilesetHandler, TileHandler tileHandler)
         {
             _canvas = canvas;
             _gridHandler = gridHandler;

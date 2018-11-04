@@ -2,9 +2,9 @@
 using System.Collections;
 using System.Drawing;
 
-namespace TileEditor.Handlers
+namespace TileEditor.Loaders
 {
-    public class TilesetHandler
+    public class TilesetLoader
     {
         private int _tileSize;
         private Bitmap _tileSet = null;
@@ -17,7 +17,7 @@ namespace TileEditor.Handlers
         /// </summary>
         /// <param name="tilesetName"></param>
         /// <param name="tileSize"></param>
-        public TilesetHandler(string tilesetName, int tileSize)
+        public TilesetLoader(string tilesetName, int tileSize)
         {
             TileBitmaps = new ArrayList();
             _tileSize = tileSize;
@@ -60,7 +60,6 @@ namespace TileEditor.Handlers
         private void LoadTileset(string tilesetName)
         {
             string resourcesPath = System.IO.Path.Combine(System.IO.Path.GetFullPath(@"..\..\"), @"Resources\Tilesets\" + tilesetName);
-            Console.WriteLine(resourcesPath);
 
             try
             {

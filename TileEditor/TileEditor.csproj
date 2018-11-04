@@ -74,8 +74,10 @@
     <Compile Include="Handlers\CameraHandler.cs" />
     <Compile Include="Handlers\DrawHandler.cs" />
     <Compile Include="Handlers\GridHandler.cs" />
+    <Compile Include="Handlers\IOHandler.cs" />
     <Compile Include="Handlers\TileHandler.cs" />
-    <Compile Include="Handlers\TilesetHandler.cs" />
+    <Compile Include="Loaders\TilesetLoader.cs" />
+    <Compile Include="Loaders\MapLoader.cs" />
     <Compile Include="Model\Tile.cs" />
     <Compile Include="Model\TileProperty.cs" />
     <Compile Include="ViewModel\MainViewModel.cs" />
@@ -125,7 +127,9 @@
   <ItemGroup>
     <None Include="App.config" />
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <Folder Include="Resources\Maps\" />
+  </ItemGroup>
   <ItemGroup>
     <Resource Include="Resources\Icons\bin_empty.png" />
     <Resource Include="Resources\Icons\disk.png" />
