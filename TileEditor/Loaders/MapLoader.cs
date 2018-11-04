@@ -1,6 +1,7 @@
 ﻿using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using System.Threading.Tasks;
+using System.Windows;
 using TileEditor.Handlers;
 
 namespace TileEditor.Loaders
@@ -47,17 +48,31 @@ namespace TileEditor.Loaders
         {
             Task.Factory.StartNew(() =>
             {
-                string path = MAPS_PATH + MapName + MAPS_FILETYPE;
+                string path = CreateMapPath(MapName);
                 IOHandler.WriteToFile(path, CreateMapToJSON());
             });
         }
         
         /// <summary>
+        /// Creates a path to the given mapname
+        /// </summary>
+        /// <param name="mapName"></param>
+        /// <returns></returns>
+        private string CreateMapPath(string mapName)
+        {
+            return MAPS_PATH + MapName + MAPS_FILETYPE;
+        }
+
+        /// <summary>
         /// Loads given map
         /// </summary>
         public void LoadMap(string mapName)
         {
+            string data = IOHandler.ReadFromFile(CreateMapPath(mapName));
 
+            if(data == null) { MessageBox.Show("Could not load map"); return; }
+
+            JSONToMap(JObject.Parse(data));
             ResetEditor();
         }
 
@@ -146,6 +161,17 @@ namespace TileEditor.Loaders
             }
 
             return tilesArray;
+        }
+
+        /// <summary>
+        /// Turns a JSONObjectfile into the map?
+        /// </summary>
+        /// <param name="mapObject"></param>
+        private void JSONToMap(JObject mapObject)
+        {
+            if( mapObject == null) { return; }
+
+            throw new System.NotImplementedException();
         }
     }
 }
