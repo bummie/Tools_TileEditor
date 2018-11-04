@@ -13,7 +13,7 @@ namespace TileEditor.Handlers
         public readonly int MAP_SIZE_HEIGHT;
 
         private float _tileSize;
-        private CameraHandler _cameraHandler;
+        private readonly CameraHandler _cameraHandler;
 
         public float TileSize
         {

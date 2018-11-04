@@ -70,7 +70,7 @@ namespace TileEditor.Loaders
                 Tileset = null;
                 Console.WriteLine(exception.Message + ": " + resourcesPath);
             }
-            catch (System.ArgumentException exception)
+            catch (ArgumentException exception)
             {
                 Tileset = null;
                 Console.WriteLine(exception.Message + ": " + resourcesPath);
@@ -78,7 +78,7 @@ namespace TileEditor.Loaders
         }
 
         /// <summary>
-        /// Clones given area and adds it to the list of bitmaptiles
+        /// Receives a rectangle and ass it to the Tile Arraylist
         /// </summary>
         /// <param name="area"></param>
         private void AddTileBitmap(Rectangle area )

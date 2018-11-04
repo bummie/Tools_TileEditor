@@ -10,11 +10,11 @@ namespace TileEditor.Handlers
 {
     public class DrawHandler
     {
-        private Canvas _canvas;
-        private GridHandler _gridHandler;
-        private CameraHandler _cameraHandler;
-        private TilesetLoader _tilesetHandler;
-        private TileHandler _tileHandler;
+        private readonly Canvas _canvas;
+        private readonly GridHandler _gridHandler;
+        private readonly CameraHandler _cameraHandler;
+        private readonly TilesetLoader _tilesetHandler;
+        private readonly TileHandler _tileHandler;
 
         public int SelectedTileTextureId { get; set; }
 
@@ -22,10 +22,10 @@ namespace TileEditor.Handlers
         private Image _canvasRender = null;
         private System.Drawing.Bitmap _bitmapRender;
 
-        private System.Drawing.Pen _gridPen;
-        private System.Drawing.Pen _hoverPen;
-        private System.Drawing.Pen _selectedPen;
-        private System.Drawing.Font _fpsFont;
+        private readonly System.Drawing.Pen _gridPen;
+        private readonly System.Drawing.Pen _hoverPen;
+        private readonly System.Drawing.Pen _selectedPen;
+        private readonly System.Drawing.Font _fpsFont;
 
         private Stopwatch _stopWatch;
         private int _frames = 0;

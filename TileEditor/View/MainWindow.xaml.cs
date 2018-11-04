@@ -50,6 +50,7 @@ namespace TileEditor
             _gridHandler = new GridHandler(_mapLoader.GridWidth, _mapLoader.GridWidth, _mapLoader.TileSize, _cameraHandler);
             _tilesetHander = new TilesetLoader(_mapLoader.Tileset, _mapLoader.TileSize);
             _tileHandler = new TileHandler();
+            _mapLoader.TileHandler = _tileHandler;
             _drawHandler = new DrawHandler(DrawCanvas, _gridHandler, _cameraHandler, _tilesetHander, _tileHandler);
         }
 

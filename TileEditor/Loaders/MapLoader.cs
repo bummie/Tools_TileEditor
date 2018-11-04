@@ -1,4 +1,6 @@
-﻿
+﻿using Newtonsoft.Json.Linq;
+using TileEditor.Handlers;
+
 namespace TileEditor.Loaders
 {
     public class MapLoader
@@ -13,8 +15,11 @@ namespace TileEditor.Loaders
         public int GridWidth { get; set; }
         public int GridHeight { get; set; }
 
+        public TileHandler TileHandler;
+
         public MapLoader()
         {
+            
             Reset();
         }
 
@@ -27,6 +32,28 @@ namespace TileEditor.Loaders
             GridWidth = 16;
             GridHeight = 16;
         }
+
+        /// <summary>
+        /// Creates a jsonobject containing the map data
+        /// </summary>
+        private void CreateMapToJSON()
+        {
+            JObject MapObject = new JObject
+            {
+                { "Name", MapName },
+                { "Created", System.DateTime.Today.ToString() },
+                { "Width", GridWidth },
+                { "Height", GridHeight },
+                { "Tileset", Tileset },
+                { "TileSize", TileSize },
+                { "TileProperties", new JArray() },
+                { "Tiles", new JArray() }
+            };
+
+
+        }
+
+
 
     }
 }
