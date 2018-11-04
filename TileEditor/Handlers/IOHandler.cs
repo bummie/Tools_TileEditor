@@ -1,8 +1,6 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using System.IO;
+using System.Windows;
 
 namespace TileEditor.Handlers
 {
@@ -13,7 +11,6 @@ namespace TileEditor.Handlers
         public IOHandler()
         { }
 
-
         /// <summary>
         /// Writes to given file the given data
         /// </summary>
@@ -21,7 +18,17 @@ namespace TileEditor.Handlers
         /// <param name="data"></param>
         public void WriteToFile(string filePath, string data)
         {
-            throw new NotImplementedException();
+            try
+            {
+                StreamWriter file = new StreamWriter(filePath);
+                file.Write(data);
+                file.Close();
+            }
+            catch(DirectoryNotFoundException exception)
+            {
+                Console.WriteLine("IOHandler: " + exception.Message);
+                MessageBox.Show("Could not save map.");
+            }
         }
 
         /// <summary>
@@ -31,7 +38,17 @@ namespace TileEditor.Handlers
         /// <returns>Content from the file being read from</returns>
         public string ReadFromFile(string filePath)
         {
-            throw new NotImplementedException();
+            try
+            {
+                return File.ReadAllText(filePath);
+            }
+            catch (FileNotFoundException exception)
+            {
+                Console.WriteLine("IOHandler: " + exception.Message);
+                MessageBox.Show("Map was not found!");
+            }
+
+            return null;
         }
     }
 }

@@ -40,7 +40,7 @@ namespace TileEditor
 
             KeyDown += new KeyEventHandler(OnButtonKeyDown);
             KeyUp += new KeyEventHandler(OnButtonKeyRelease);
-            CompositionTarget.Rendering += Draw;
+            CompositionTarget.Rendering += Update;
         }
 
         private void OnButtonKeyDown(object sender, KeyEventArgs e)
@@ -65,7 +65,7 @@ namespace TileEditor
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
-        protected void Draw(object sender, EventArgs e)
+        protected void Update(object sender, EventArgs e)
         {
             _drawHandler.Update();
         }
