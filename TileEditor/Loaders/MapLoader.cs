@@ -15,11 +15,11 @@ namespace TileEditor.Loaders
         public int GridWidth { get; set; }
         public int GridHeight { get; set; }
 
-        public TileHandler TileHandler;
+        public TileHandler _tileHandler;
 
-        public MapLoader()
+        public MapLoader(TileHandler tileHandler)
         {
-            
+            _tileHandler = tileHandler;
             Reset();
         }
 
@@ -34,23 +34,85 @@ namespace TileEditor.Loaders
         }
 
         /// <summary>
-        /// Creates a jsonobject containing the map data
+        /// Saves the map to the maps folder in resources
         /// </summary>
-        private void CreateMapToJSON()
+        public void SaveMap()
         {
-            JObject MapObject = new JObject
+            string path = MAPS_PATH + MapName + MAPS_FILETYPE;
+            IOHandler.WriteToFile(path, CreateMapToJSON());
+        }
+
+        /// <summary>
+        /// Creates a jsonobject containing the map data
+        /// TODO:: Cleaner more dynamic solution
+        /// </summary>
+        private string CreateMapToJSON()
+        {
+            if(_tileHandler == null) { return null; }
+
+            JObject mapObject = new JObject
             {
                 { "Name", MapName },
                 { "Created", System.DateTime.Today.ToString() },
                 { "Width", GridWidth },
                 { "Height", GridHeight },
                 { "Tileset", Tileset },
-                { "TileSize", TileSize },
-                { "TileProperties", new JArray() },
-                { "Tiles", new JArray() }
+                { "TileSize", TileSize }
             };
 
+            mapObject.Add("TileProperties", CreateTilePropertyArray());
+            mapObject.Add("Tiles", CreateTileArray());
 
+            return mapObject.ToString();
+        }
+
+        /// <summary>
+        /// Creates an JArray filled with JSONObjects based on the tileproperty dara
+        /// </summary>
+        /// <returns></returns>
+        private JArray CreateTilePropertyArray()
+        {
+            JArray tilePropertiesArray = new JArray();
+            foreach (var tileProperty in _tileHandler.TilePropertyDictionary.Values)
+            {
+                JObject tilePropertyObject = new JObject()
+                {
+                    {"Id", tileProperty.TextureId },
+                    {"SpeedMultiplier", tileProperty.SpeedMultiplier},
+                    {"Damage", tileProperty.Damage },
+                    {"DamageInterval", tileProperty.DamageInterval },
+                    {"Walkable", tileProperty.Walkable },
+                    {"Water", tileProperty.Water }
+                };
+                tilePropertiesArray.Add(tilePropertyObject);
+            }
+
+            return tilePropertiesArray;
+        }
+
+        /// <summary>
+        /// Creats an JSON array from the data in TileHandler
+        /// </summary>
+        /// <returns>Json array</returns>
+        private JArray CreateTileArray()
+        {
+            JArray tilesArray = new JArray();
+            foreach (var tile in _tileHandler.TileDictionary.Values)
+            {
+                JObject tileObject = new JObject()
+                {
+                    {"Id", tile.TextureId },
+                    {"Position", new JObject()
+                        {
+                            {"X", tile.Position.X},
+                            {"Y", tile.Position.Y}
+                        }
+                    }
+                };
+                tilesArray.Add(tileObject);
+            }
+
+            return tilesArray;
         }
 
 

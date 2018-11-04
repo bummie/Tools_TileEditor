@@ -34,7 +34,8 @@ namespace TileEditor
             Closing += (s, e) => ViewModelLocator.Cleanup();
 
             _cameraHandler = new CameraHandler();
-            _mapLoader = new MapLoader();
+            _tileHandler = new TileHandler();
+            _mapLoader = new MapLoader(_tileHandler);
             ReloadEditor();
 
             KeyDown += new KeyEventHandler(OnButtonKeyDown);
@@ -49,8 +50,7 @@ namespace TileEditor
         {
             _gridHandler = new GridHandler(_mapLoader.GridWidth, _mapLoader.GridWidth, _mapLoader.TileSize, _cameraHandler);
             _tilesetHander = new TilesetLoader(_mapLoader.Tileset, _mapLoader.TileSize);
-            _tileHandler = new TileHandler();
-            _mapLoader.TileHandler = _tileHandler;
+            _tileHandler.Reset();
             _drawHandler = new DrawHandler(DrawCanvas, _gridHandler, _cameraHandler, _tilesetHander, _tileHandler);
         }
 
@@ -67,6 +67,10 @@ namespace TileEditor
                 case Key.E:
                         if (selectedTileId < _tilesetHander.TileBitmaps.Count - 1) { selectedTileId++; }
                         _drawHandler.SelectedTileTextureId = selectedTileId;
+                    break;
+
+                case Key.P:
+                    _mapLoader.SaveMap();
                     break;
             }
         }

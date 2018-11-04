@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Windows;
 using TileEditor.Model;
 
@@ -45,6 +46,15 @@ namespace TileEditor.Handlers
         private void CreateTileProperty(int textureId)
         {
             TilePropertyDictionary.Add(textureId, new TileProperty(textureId));            
+        }
+
+        /// <summary>
+        /// Resets the stored tiles and properties
+        /// </summary>
+        public void Reset()
+        {
+            TilePropertyDictionary.Clear();
+            TileDictionary.Clear();
         }
 
         /* EXPORT */
