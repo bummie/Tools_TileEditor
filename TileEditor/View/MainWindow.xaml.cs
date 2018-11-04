@@ -20,6 +20,7 @@ namespace TileEditor
         private CameraHandler _cameraHandler;
         private TilesetLoader _tilesetHander;
         private TileHandler _tileHandler;
+        private MapLoader _mapLoader;
 
         private bool _mouseDown = false;
         private int selectedTileId = 0;
@@ -33,14 +34,23 @@ namespace TileEditor
             Closing += (s, e) => ViewModelLocator.Cleanup();
 
             _cameraHandler = new CameraHandler();
-            _gridHandler = new GridHandler(32, 32, 16, _cameraHandler);
-            _tilesetHander = new TilesetLoader("set.gif", 16);
-            _tileHandler = new TileHandler();
-            _drawHandler = new DrawHandler(DrawCanvas, _gridHandler, _cameraHandler, _tilesetHander, _tileHandler);
+            _mapLoader = new MapLoader();
+            ReloadEditor();
 
             KeyDown += new KeyEventHandler(OnButtonKeyDown);
             KeyUp += new KeyEventHandler(OnButtonKeyRelease);
             CompositionTarget.Rendering += Update;
+        }
+
+        /// <summary>
+        /// Initializes the handles with given values from map loaded
+        /// </summary>
+        private void ReloadEditor()
+        {
+            _gridHandler = new GridHandler(_mapLoader.GridWidth, _mapLoader.GridWidth, _mapLoader.TileSize, _cameraHandler);
+            _tilesetHander = new TilesetLoader(_mapLoader.Tileset, _mapLoader.TileSize);
+            _tileHandler = new TileHandler();
+            _drawHandler = new DrawHandler(DrawCanvas, _gridHandler, _cameraHandler, _tilesetHander, _tileHandler);
         }
 
         private void OnButtonKeyDown(object sender, KeyEventArgs e)

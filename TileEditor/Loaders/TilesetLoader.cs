@@ -7,7 +7,7 @@ namespace TileEditor.Loaders
     public class TilesetLoader
     {
         private int _tileSize;
-        private Bitmap _tileSet = null;
+        public Bitmap Tileset { get; set; }
         public ArrayList TileBitmaps { get; set; }
 
         /// <summary>
@@ -31,10 +31,10 @@ namespace TileEditor.Loaders
         /// </summary>
         private void LoadAllTiles()
         {
-            if (_tileSet == null) { return; }
+            if (Tileset == null) { return; }
 
-            int horizontalTiles = _tileSet.Size.Width / _tileSize;
-            int verticalTiles = _tileSet.Size.Height / _tileSize;
+            int horizontalTiles = Tileset.Size.Width / _tileSize;
+            int verticalTiles = Tileset.Size.Height / _tileSize;
 
             Rectangle area = new Rectangle();
             area.Height = _tileSize;
@@ -49,7 +49,7 @@ namespace TileEditor.Loaders
                 }
             }
 
-            _tileSet.Dispose();
+            //_tileSet.Dispose();
             Console.WriteLine($"{horizontalTiles*verticalTiles} tiles were loaded!");
         }
 
@@ -63,16 +63,16 @@ namespace TileEditor.Loaders
 
             try
             {
-                _tileSet = new Bitmap(resourcesPath);
+                Tileset = new Bitmap(resourcesPath);
             }
             catch (System.IO.FileNotFoundException exception)
             {
-                _tileSet = null;
+                Tileset = null;
                 Console.WriteLine(exception.Message + ": " + resourcesPath);
             }
             catch (System.ArgumentException exception)
             {
-                _tileSet = null;
+                Tileset = null;
                 Console.WriteLine(exception.Message + ": " + resourcesPath);
             }
         }
@@ -81,12 +81,12 @@ namespace TileEditor.Loaders
         /// Clones given area and adds it to the list of bitmaptiles
         /// </summary>
         /// <param name="area"></param>
-        private void AddTileBitmap(RectangleF area )
+        private void AddTileBitmap(Rectangle area )
         {
-            if(_tileSet == null) { return; }
+            if(Tileset == null) { return; }
 
-            //Console.WriteLine("Adding bitmap from area: " + area.ToString());
-            TileBitmaps.Add(_tileSet.Clone(area, _tileSet.PixelFormat));
+            TileBitmaps.Add(area);
+            //TileBitmaps.Add(_tileSet.Clone(area, _tileSet.PixelFormat));
         }
     }
 }

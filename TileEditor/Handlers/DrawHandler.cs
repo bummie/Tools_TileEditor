@@ -157,7 +157,7 @@ namespace TileEditor.Handlers
 
             foreach(var tile in _tileHandler.TileDictionary.Values)
             {
-                DrawTile(_gridHandler.GetCoordsFromPoint(tile.Position), (int)_gridHandler.TileSize, (System.Drawing.Bitmap)_tilesetHandler.TileBitmaps[tile.TextureId], graphics);
+                DrawTile(_gridHandler.GetCoordsFromPoint(tile.Position), (int)_gridHandler.TileSize, (System.Drawing.Rectangle)_tilesetHandler.TileBitmaps[tile.TextureId], graphics);
             }
         }
 
@@ -169,7 +169,7 @@ namespace TileEditor.Handlers
             if (_tilesetHandler.TileBitmaps.Count <= 0) { return; }
             if(_gridHandler.HoverTile == new Point(-1, -1)) { return; }
 
-            DrawTile(_gridHandler.GetCoordsFromPoint(_gridHandler.HoverTile), (int)_gridHandler.TileSize, (System.Drawing.Bitmap)_tilesetHandler.TileBitmaps[SelectedTileTextureId], graphics);
+            DrawTile(_gridHandler.GetCoordsFromPoint(_gridHandler.HoverTile), (int)_gridHandler.TileSize, (System.Drawing.Rectangle)_tilesetHandler.TileBitmaps[SelectedTileTextureId], graphics);
         }
 
         /// <summary>
@@ -256,9 +256,10 @@ namespace TileEditor.Handlers
         /// <param name="position"></param>
         /// <param name="size"></param>
         /// <param name="bitmap"></param>
-        private void DrawTile(Point position, int size, System.Drawing.Bitmap bitmap, System.Drawing.Graphics graphics)
+        private void DrawTile(Point position, int size, System.Drawing.Rectangle bitmap, System.Drawing.Graphics graphics)
         {
-            graphics.DrawImage(bitmap, new System.Drawing.Rectangle((int)position.X, (int)position.Y, size, size));
+            System.Drawing.Rectangle positionRectangle = new System.Drawing.Rectangle((int)position.X, (int)position.Y, size, size);
+            graphics.DrawImage(_tilesetHandler.Tileset, positionRectangle, bitmap.X, bitmap.Y, bitmap.Width, bitmap.Height, System.Drawing.GraphicsUnit.Pixel);
         }
 
         /// <summary>
@@ -295,10 +296,10 @@ namespace TileEditor.Handlers
             if(width == 0) { return null; }
 
             System.Drawing.Bitmap bmp = new System.Drawing.Bitmap(width, height);
-            using (System.Drawing.Graphics graph = System.Drawing.Graphics.FromImage(bmp))
+            using (System.Drawing.Graphics graphics = System.Drawing.Graphics.FromImage(bmp))
             {
                 System.Drawing.Rectangle ImageSize = new System.Drawing.Rectangle(0, 0, width, height);
-                graph.FillRectangle(System.Drawing.Brushes.RoyalBlue, ImageSize);
+                graphics.FillRectangle(System.Drawing.Brushes.RoyalBlue, ImageSize);
             }
             return bmp;
         }

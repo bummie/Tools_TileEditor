@@ -4,19 +4,14 @@ using System.Windows;
 
 namespace TileEditor.Handlers
 {
-    public class IOHandler
+    public static class IOHandler
     {
-        //private readonly string MAPS_PATH = System.IO.Path.Combine(System.IO.Path.GetFullPath(@"..\..\"), @"Resources\Maps\");
-
-        public IOHandler()
-        { }
-
         /// <summary>
         /// Writes to given file the given data
         /// </summary>
         /// <param name="filePath"></param>
         /// <param name="data"></param>
-        public void WriteToFile(string filePath, string data)
+        public static void WriteToFile(string filePath, string data)
         {
             try
             {
@@ -36,7 +31,7 @@ namespace TileEditor.Handlers
         /// </summary>
         /// <param name="filePath"></param>
         /// <returns>Content from the file being read from</returns>
-        public string ReadFromFile(string filePath)
+        public static string ReadFromFile(string filePath)
         {
             try
             {
