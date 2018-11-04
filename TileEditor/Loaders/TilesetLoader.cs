@@ -1,12 +1,13 @@
 ﻿using System;
 using System.Collections;
 using System.Drawing;
+using System.Threading.Tasks;
 
 namespace TileEditor.Loaders
 {
     public class TilesetLoader
     {
-        private int _tileSize;
+        public int TileSize { get; set; }
         public Bitmap Tileset { get; set; }
         public ArrayList TileBitmaps { get; set; }
 
@@ -17,13 +18,27 @@ namespace TileEditor.Loaders
         /// </summary>
         /// <param name="tilesetName"></param>
         /// <param name="tileSize"></param>
-        public TilesetLoader(string tilesetName, int tileSize)
+        public TilesetLoader()
         {
             TileBitmaps = new ArrayList();
-            _tileSize = tileSize;
+            LoadTileset("set.gif", 16);
+        }
 
-            LoadTileset(tilesetName);
-            LoadAllTiles();
+        /// <summary>
+        /// Loads in given tileset
+        /// </summary>
+        /// <param name="tilesetName"></param>
+        /// <param name="tileSize"></param>
+        public void LoadTileset(string tilesetName, int tileSize)
+        {
+            TileBitmaps.Clear();
+            TileSize = tileSize;
+
+            Task.Factory.StartNew(() =>
+            {
+                LoadTilesetFile(tilesetName);
+                LoadAllTiles();
+            });
         }
 
         /// <summary>
@@ -33,12 +48,12 @@ namespace TileEditor.Loaders
         {
             if (Tileset == null) { return; }
 
-            int horizontalTiles = Tileset.Size.Width / _tileSize;
-            int verticalTiles = Tileset.Size.Height / _tileSize;
+            int horizontalTiles = Tileset.Size.Width / TileSize;
+            int verticalTiles = Tileset.Size.Height / TileSize;
 
             Rectangle area = new Rectangle();
-            area.Height = _tileSize;
-            area.Width = _tileSize;
+            area.Height = TileSize;
+            area.Width = TileSize;
             for (int x = 0; x < horizontalTiles; x++)
             {
                 for (int y = 0; y < verticalTiles; y++)
@@ -57,7 +72,7 @@ namespace TileEditor.Loaders
         /// Loads the tileset into memory
         /// </summary>
         /// <param name="tilesetName"></param>
-        private void LoadTileset(string tilesetName)
+        private void LoadTilesetFile(string tilesetName)
         {
             string resourcesPath = System.IO.Path.Combine(System.IO.Path.GetFullPath(@"..\..\"), @"Resources\Tilesets\" + tilesetName);
 
@@ -86,7 +101,6 @@ namespace TileEditor.Loaders
             if(Tileset == null) { return; }
 
             TileBitmaps.Add(area);
-            //TileBitmaps.Add(_tileSet.Clone(area, _tileSet.PixelFormat));
         }
     }
 }

@@ -18,7 +18,7 @@ namespace TileEditor
         private DrawHandler _drawHandler;
         private GridHandler _gridHandler;
         private CameraHandler _cameraHandler;
-        private TilesetLoader _tilesetHander;
+        private TilesetLoader _tilesetLoader;
         private TileHandler _tileHandler;
         private MapLoader _mapLoader;
 
@@ -33,10 +33,7 @@ namespace TileEditor
             InitializeComponent();
             Closing += (s, e) => ViewModelLocator.Cleanup();
 
-            _cameraHandler = new CameraHandler();
-            _tileHandler = new TileHandler();
-            _mapLoader = new MapLoader(_tileHandler);
-            ReloadEditor();
+            InitHandlers();
 
             KeyDown += new KeyEventHandler(OnButtonKeyDown);
             KeyUp += new KeyEventHandler(OnButtonKeyRelease);
@@ -46,12 +43,16 @@ namespace TileEditor
         /// <summary>
         /// Initializes the handles with given values from map loaded
         /// </summary>
-        private void ReloadEditor()
+        private void InitHandlers()
         {
-            _gridHandler = new GridHandler(_mapLoader.GridWidth, _mapLoader.GridWidth, _mapLoader.TileSize, _cameraHandler);
-            _tilesetHander = new TilesetLoader(_mapLoader.Tileset, _mapLoader.TileSize);
-            _tileHandler.Reset();
-            _drawHandler = new DrawHandler(DrawCanvas, _gridHandler, _cameraHandler, _tilesetHander, _tileHandler);
+            _cameraHandler = new CameraHandler();
+            _tileHandler = new TileHandler();
+
+            _gridHandler = new GridHandler(_cameraHandler);
+            _tilesetLoader = new TilesetLoader();
+
+            _mapLoader = new MapLoader(_tileHandler, _gridHandler, _tilesetLoader);
+            _drawHandler = new DrawHandler(DrawCanvas, _gridHandler, _cameraHandler, _tilesetLoader, _tileHandler);
         }
 
         private void OnButtonKeyDown(object sender, KeyEventArgs e)
@@ -65,7 +66,7 @@ namespace TileEditor
                         _drawHandler.SelectedTileTextureId = selectedTileId;
                     break;
                 case Key.E:
-                        if (selectedTileId < _tilesetHander.TileBitmaps.Count - 1) { selectedTileId++; }
+                        if (selectedTileId < _tilesetLoader.TileBitmaps.Count - 1) { selectedTileId++; }
                         _drawHandler.SelectedTileTextureId = selectedTileId;
                     break;
 

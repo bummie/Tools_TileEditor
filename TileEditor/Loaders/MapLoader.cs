@@ -1,4 +1,6 @@
-﻿using Newtonsoft.Json.Linq;
+﻿using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
+using System.Threading.Tasks;
 using TileEditor.Handlers;
 
 namespace TileEditor.Loaders
@@ -15,11 +17,16 @@ namespace TileEditor.Loaders
         public int GridWidth { get; set; }
         public int GridHeight { get; set; }
 
-        public TileHandler _tileHandler;
+        public readonly TileHandler _tileHandler;
+        public readonly GridHandler _gridHandler;
+        public readonly TilesetLoader _tilesetLoader;
 
-        public MapLoader(TileHandler tileHandler)
+        public MapLoader(TileHandler tileHandler, GridHandler gridHandler, TilesetLoader tilesetLoader)
         {
             _tileHandler = tileHandler;
+            _gridHandler = gridHandler;
+            _tilesetLoader = tilesetLoader;
+
             Reset();
         }
 
@@ -38,8 +45,34 @@ namespace TileEditor.Loaders
         /// </summary>
         public void SaveMap()
         {
-            string path = MAPS_PATH + MapName + MAPS_FILETYPE;
-            IOHandler.WriteToFile(path, CreateMapToJSON());
+            Task.Factory.StartNew(() =>
+            {
+                string path = MAPS_PATH + MapName + MAPS_FILETYPE;
+                IOHandler.WriteToFile(path, CreateMapToJSON());
+            });
+        }
+        
+        /// <summary>
+        /// Loads given map
+        /// </summary>
+        public void LoadMap(string mapName)
+        {
+
+            ResetEditor();
+        }
+
+        /// <summary>
+        /// Resets the tilehandler, gridhandler, and tilesethandler
+        /// </summary>
+        private void ResetEditor()
+        {
+            _tileHandler.Reset();
+
+            _gridHandler.GridWidth = GridWidth;
+            _gridHandler.GridHeight = GridHeight;
+            _gridHandler.TileSize = TileSize;
+
+            _tilesetLoader.LoadTileset(Tileset, TileSize);
         }
 
         /// <summary>
@@ -63,7 +96,7 @@ namespace TileEditor.Loaders
             mapObject.Add("TileProperties", CreateTilePropertyArray());
             mapObject.Add("Tiles", CreateTileArray());
 
-            return mapObject.ToString();
+            return mapObject.ToString(Formatting.None);
         }
 
         /// <summary>
@@ -114,8 +147,5 @@ namespace TileEditor.Loaders
 
             return tilesArray;
         }
-
-
-
     }
 }

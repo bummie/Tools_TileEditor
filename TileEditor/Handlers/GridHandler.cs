@@ -9,8 +9,8 @@ namespace TileEditor.Handlers
 {
     public class GridHandler
     {
-        public readonly int MAP_SIZE_WIDTH;
-        public readonly int MAP_SIZE_HEIGHT;
+        public int GridWidth { get; set; }
+        public int GridHeight { get; set; }
 
         private float _tileSize;
         private readonly CameraHandler _cameraHandler;
@@ -24,10 +24,19 @@ namespace TileEditor.Handlers
         public Point SelectedTilePoint { get; set; }
         public Point HoverTile { get; set; }
 
+        public GridHandler(CameraHandler cameraHandler)
+        {
+            GridWidth = 16;
+            GridHeight = 16;
+            TileSize = 16;
+
+            _cameraHandler = cameraHandler;
+        }
+
         public GridHandler(int width, int height, int tileSize, CameraHandler cameraHandler)
         {
-            MAP_SIZE_WIDTH = width;
-            MAP_SIZE_HEIGHT = height;
+            GridWidth = width;
+            GridHeight = height;
             _cameraHandler = cameraHandler;
 
             TileSize = tileSize;
@@ -46,8 +55,8 @@ namespace TileEditor.Handlers
             coord.X -= _cameraHandler.Position.X;
             coord.Y -= _cameraHandler.Position.Y;
 
-            if (oldPoint.X < _cameraHandler.Position.X || coord.X > (MAP_SIZE_WIDTH * TileSize)) { return new Point(-1, -1); }
-            if (oldPoint.Y < _cameraHandler.Position.Y || coord.Y > (MAP_SIZE_HEIGHT * TileSize)) { return new Point(-1, -1); }
+            if (oldPoint.X < _cameraHandler.Position.X || coord.X > (GridWidth * TileSize)) { return new Point(-1, -1); }
+            if (oldPoint.Y < _cameraHandler.Position.Y || coord.Y > (GridHeight * TileSize)) { return new Point(-1, -1); }
 
             int x = (int)(coord.X / TileSize);
             int y = (int)(coord.Y / TileSize);

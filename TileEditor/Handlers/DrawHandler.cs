@@ -209,11 +209,11 @@ namespace TileEditor.Handlers
         {
             if (_bitmapRender == null) { return; }
 
-            double width = _gridHandler.TileSize * _gridHandler.MAP_SIZE_WIDTH;
-            double height = _gridHandler.TileSize * _gridHandler.MAP_SIZE_HEIGHT;
+            double width = _gridHandler.TileSize * _gridHandler.GridWidth;
+            double height = _gridHandler.TileSize * _gridHandler.GridHeight;
 
             // Columns
-            for (int i = 0; i <= _gridHandler.MAP_SIZE_WIDTH; i++)
+            for (int i = 0; i <= _gridHandler.GridWidth; i++)
             {
                 int x = (i * (int)_gridHandler.TileSize) + (int)_cameraHandler.Position.X;
                 int y = (int)_cameraHandler.Position.Y;
@@ -221,7 +221,7 @@ namespace TileEditor.Handlers
             }
 
             // Rows
-            for (int i = 0; i <= _gridHandler.MAP_SIZE_HEIGHT; i++)
+            for (int i = 0; i <= _gridHandler.GridHeight; i++)
             {
                 int x = (int)_cameraHandler.Position.X;
                 int y = (i * (int)_gridHandler.TileSize) + (int)_cameraHandler.Position.Y;
