@@ -73,10 +73,13 @@ namespace TileEditor.Loaders
 
             if(data == null) { MessageBox.Show("Could not load map"); return; }
 
-            _tileHandler.Reset();
+            Task.Factory.StartNew(() =>
+            {
+                _tileHandler.Reset();
 
-            JSONToMap(JObject.Parse(data));
-            ResetEditor();
+                JSONToMap(JObject.Parse(data));
+                ResetEditor();
+            });
         }
 
         /// <summary>
