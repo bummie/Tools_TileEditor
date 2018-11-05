@@ -49,6 +49,15 @@ namespace TileEditor.Handlers
         }
 
         /// <summary>
+        /// Adds given tileproperty to the dictionary
+        /// </summary>
+        /// <param name="tileProperty"></param>
+        public void AddTileProperty(TileProperty tileProperty)
+        {
+            TilePropertyDictionary.Add(tileProperty.TextureId, tileProperty);
+        }
+
+        /// <summary>
         /// Resets the stored tiles and properties
         /// </summary>
         public void Reset()

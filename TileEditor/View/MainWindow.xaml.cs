@@ -73,6 +73,10 @@ namespace TileEditor
                 case Key.P:
                     _mapLoader.SaveMap();
                     break;
+
+                case Key.O:
+                    _mapLoader.LoadMap("Unnamed");
+                    break;
             }
         }
 

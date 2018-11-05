@@ -3,6 +3,7 @@ using Newtonsoft.Json.Linq;
 using System.Threading.Tasks;
 using System.Windows;
 using TileEditor.Handlers;
+using TileEditor.Model;
 
 namespace TileEditor.Loaders
 {
@@ -60,7 +61,7 @@ namespace TileEditor.Loaders
         /// <returns></returns>
         private string CreateMapPath(string mapName)
         {
-            return MAPS_PATH + MapName + MAPS_FILETYPE;
+            return MAPS_PATH + MapName.ToLower() + MAPS_FILETYPE;
         }
 
         /// <summary>
@@ -72,6 +73,8 @@ namespace TileEditor.Loaders
 
             if(data == null) { MessageBox.Show("Could not load map"); return; }
 
+            _tileHandler.Reset();
+
             JSONToMap(JObject.Parse(data));
             ResetEditor();
         }
@@ -81,8 +84,6 @@ namespace TileEditor.Loaders
         /// </summary>
         private void ResetEditor()
         {
-            _tileHandler.Reset();
-
             _gridHandler.GridWidth = GridWidth;
             _gridHandler.GridHeight = GridHeight;
             _gridHandler.TileSize = TileSize;
@@ -111,7 +112,7 @@ namespace TileEditor.Loaders
             mapObject.Add("TileProperties", CreateTilePropertyArray());
             mapObject.Add("Tiles", CreateTileArray());
 
-            return mapObject.ToString(Formatting.None);
+            return mapObject.ToString(Formatting.Indented);
         }
 
         /// <summary>
@@ -171,7 +172,53 @@ namespace TileEditor.Loaders
         {
             if( mapObject == null) { return; }
 
-            throw new System.NotImplementedException();
+            MapName = (string)mapObject["Name"];
+            Date = (string)mapObject["Created"];
+            GridWidth = (int)mapObject["Width"];
+            GridHeight = (int)mapObject["Width"];
+            Tileset = (string)mapObject["Tileset"];
+            TileSize = (int)mapObject["TileSize"];
+
+            LoadTilePropertiesFromJSON((JArray)mapObject["TileProperties"]);
+            LoadTilesFromJSON((JArray)mapObject["Tiles"]);
+        }
+
+        /// <summary>
+        /// Loads tileproperties from a json array into the tilehandlers array
+        /// </summary>
+        /// <param name="mapProperties"></param>
+        private void LoadTilePropertiesFromJSON(JArray mapProperties)
+        {
+            if(mapProperties == null) { return; }
+
+            foreach(var jsonProperty in mapProperties)
+            {
+                TileProperty tileProperty = new TileProperty((int)jsonProperty["Id"]);
+                tileProperty.SpeedMultiplier = (float)jsonProperty["SpeedMultiplier"];
+                tileProperty.Damage = (float)jsonProperty["Damage"];
+                tileProperty.DamageInterval = (float)jsonProperty["DamageInterval"];
+                tileProperty.Walkable = (bool)jsonProperty["Walkable"];
+                tileProperty.Water = (bool)jsonProperty["Water"];
+                
+                _tileHandler.AddTileProperty(tileProperty);
+            }
+        }
+
+        /// <summary>
+        /// Loads tiles from a json array into the tilehandlers array
+        /// </summary>
+        /// <param name="mapProperties"></param>
+        private void LoadTilesFromJSON(JArray mapTiles)
+        {
+            if (mapTiles == null) { return; }
+
+            foreach (var jsonProperty in mapTiles)
+            {
+                var jsonPosition = jsonProperty["Position"];
+                Point position = new Point((int)jsonPosition["X"], (int)jsonPosition["Y"]);
+                
+                _tileHandler.AddTile(position, (int)jsonProperty["Id"]);
+            }
         }
     }
 }
