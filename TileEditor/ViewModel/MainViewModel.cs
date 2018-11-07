@@ -111,7 +111,7 @@ namespace TileEditor.ViewModel
         [return: MarshalAs(UnmanagedType.Bool)]
         public static extern bool DeleteObject([In] IntPtr hObject);
 
-        public ImageSource ImageSourceForBitmap(Bitmap bmp)
+        public BitmapSource ImageSourceForBitmap(Bitmap bmp)
         {
             var handle = bmp.GetHbitmap();
             try
