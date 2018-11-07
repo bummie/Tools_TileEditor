@@ -149,6 +149,11 @@
   <ItemGroup>
     <Resource Include="Resources\Tilesets\set.gif" />
   </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\Icons\application_view_tile.png" />
+    <Resource Include="Resources\Icons\camera.png" />
+    <Resource Include="Resources\Icons\mouse.png" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

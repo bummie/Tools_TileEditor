@@ -25,20 +25,29 @@ namespace TileEditor.ViewModel
         public RelayCommand<EventArgs> CmdKeyUp { get; set; }
         public RelayCommand<EventArgs> CmdMouseDown { get; set; }
         public RelayCommand<EventArgs> CmdMouseUp { get; set; }
-        public RelayCommand<EventArgs> CmdMouseMove{ get; set; }
+        public RelayCommand<EventArgs> CmdMouseMove { get; set; }
         #endregion
 
         #region InfoStrings
-        public string InfoCameraPosition { get; set; }
-        public string InfoMousePos { get; set; }
-        public string InfoTilePos { get; set; }
+        private string _infoMousePos;
+        public string InfoMousePos { get => _infoMousePos; set { _infoMousePos = $"[{value}]"; RaisePropertyChanged("InfoMousePos"); } }
+        private string _infoTilePos;
+        public string InfoTilePos { get => _infoTilePos; set { _infoTilePos = $"[{value}]"; RaisePropertyChanged("InfoTilePos"); } }
+
+        private string _infoCameraPosition;
+
+        public string InfoCameraPosition { get => _infoCameraPosition; set { _infoCameraPosition = $"[{value}]"; RaisePropertyChanged("InfoCameraPosition"); }
+        }
+
         #endregion
 
         public Canvas DrawCanvas { get; set; }
         public ObservableCollection<TileTextureItem> SelectableTileTextures { get; set; }
 
         private TileTextureItem _selectedTileTextureItem = null;
-        public TileTextureItem SelectedTileTexture { get { return _selectedTileTextureItem; }
+        public TileTextureItem SelectedTileTexture
+        {
+            get { return _selectedTileTextureItem; }
             set
             {
                 _selectedTileTextureItem = value;
@@ -113,7 +122,7 @@ namespace TileEditor.ViewModel
         /// </summary>
         private void FillSelectableTileTextures()
         {
-            if(_tilesetLoader.Tileset == null) { return; }
+            if (_tilesetLoader.Tileset == null) { return; }
 
             var source = ImageSourceForBitmap(_tilesetLoader.Tileset);
 
@@ -154,6 +163,7 @@ namespace TileEditor.ViewModel
             var pressedKey = (e != null) ? (KeyEventArgs)e : null;
 
             _cameraHandler.UpdateMovement(pressedKey.Key);
+            InfoCameraPosition = _cameraHandler.Position.ToString();
 
             switch (pressedKey.Key)
             {
@@ -175,7 +185,7 @@ namespace TileEditor.ViewModel
         {
             var pressedKey = (e != null) ? (KeyEventArgs)e : null;
         }
-        
+
         /// <summary>
         /// The event fires when the mouse moves over the canvas
         /// </summary>
@@ -188,6 +198,9 @@ namespace TileEditor.ViewModel
 
             AddTile(mouseEvent);
             _gridHandler.HoverTile = _gridHandler.GetPointFromCoords(mouseEvent.GetPosition(DrawCanvas));
+
+            InfoMousePos = mouseEvent.GetPosition(DrawCanvas).ToString();
+            InfoTilePos = _gridHandler.GetPointFromCoords(mouseEvent.GetPosition(DrawCanvas)).ToString();
         }
 
         /// <summary>
@@ -223,10 +236,11 @@ namespace TileEditor.ViewModel
         {
             var mouseEvent = (e != null) ? (MouseEventArgs)e : null;
 
-            if(mouseEvent == null) { return; }
+            if (mouseEvent == null) { return; }
 
             _gridHandler.SelectedTilePoint = _gridHandler.GetPointFromCoords(mouseEvent.GetPosition(DrawCanvas));
             _mouseDown = false;
+
         }
     }
 }
