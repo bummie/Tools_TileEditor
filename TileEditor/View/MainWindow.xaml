@@ -164,9 +164,21 @@
             <Label Grid.Column="0">Properties</Label>
             <Canvas x:Name="DrawCanvas" Focusable="True" Grid.Column="1" ClipToBounds="True" MouseMove="MouseMove" MouseDown="MouseDown" MouseUp="MouseUp" Background="#FF3D6AB5"/>
             <Label Grid.Column="2">Tiles</Label>
+
+            <ListView Grid.Column="2" ItemsSource="{Binding SelectableTileTextures, Mode=TwoWay}" SelectedItem="{Binding SelectedTileTexture, Mode=TwoWay}">
+                <ListView.ItemTemplate>
+                    <DataTemplate>
+                        <Image>
+                            <Image.Source>
+                                <CroppedBitmap Source="{Binding Bitmap}" SourceRect="{Binding Rectangle}"/>
+                            </Image.Source>
+                        </Image>
+                    </DataTemplate>
+                </ListView.ItemTemplate>
+            </ListView>
         </Grid>
 
-        <!-- Canvas and properties -->
+        <!-- Information -->
         <Grid Grid.Row="2"></Grid>
     </Grid>
 </Window>

@@ -83,6 +83,7 @@
     <Compile Include="Loaders\MapLoader.cs" />
     <Compile Include="Model\Tile.cs" />
     <Compile Include="Model\TileProperty.cs" />
+    <Compile Include="Model\TileTextureItem.cs" />
     <Compile Include="ViewModel\MainViewModel.cs" />
     <Compile Include="ViewModel\ViewModelLocator.cs" />
     <Page Include="View\MainWindow.xaml">

@@ -8,7 +8,7 @@ using TileEditor.Loaders;
 
 namespace TileEditor.Handlers
 {
-    public class DrawHandler
+    public class DrawHandler : IDisposable
     {
         private readonly Canvas _canvas;
         private readonly GridHandler _gridHandler;
@@ -54,7 +54,7 @@ namespace TileEditor.Handlers
         }
 
         [System.Runtime.InteropServices.DllImport("gdi32.dll")]
-        public static extern bool DeleteObject(IntPtr hObject);
+        private static extern bool DeleteObject(IntPtr hObject);
 
         /// <summary>
         /// Redraws all the elements to the canvas
@@ -304,6 +304,14 @@ namespace TileEditor.Handlers
             return bmp;
         }
 
+        public void Dispose()
+        {
+            _bitmapRender.Dispose();
+            _gridPen.Dispose();
+            _hoverPen.Dispose();
+            _selectedPen.Dispose();
+            _fpsFont.Dispose();
+        }
     }
 
 }

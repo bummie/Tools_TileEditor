@@ -2,32 +2,43 @@
 using GalaSoft.MvvmLight.CommandWpf;
 using GalaSoft.MvvmLight.Messaging;
 using System;
+using System.Collections.ObjectModel;
+using System.Drawing;
+using System.Runtime.InteropServices;
+using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
+using System.Windows.Interop;
 using System.Windows.Media;
+using System.Windows.Media.Imaging;
 using TileEditor.Handlers;
 using TileEditor.Loaders;
+using TileEditor.Model;
 
 namespace TileEditor.ViewModel
 {
     public class MainViewModel : ViewModelBase
     {
 
+        #region Commands
         public RelayCommand<EventArgs> CmdKeyDown { get; set; }
         public RelayCommand<EventArgs> CmdKeyUp { get; set; }
         public RelayCommand<EventArgs> CmdMouseDown { get; set; }
         public RelayCommand<EventArgs> CmdMouseUp { get; set; }
         public RelayCommand<EventArgs> CmdMouseMove{ get; set; }
+        #endregion
 
-        private Canvas _canvas = null;
         public Canvas DrawCanvas { get; set; }
+        public ObservableCollection<TileTextureItem> SelectableTileTextures { get; set; }
 
+        #region Handlers
         private DrawHandler _drawHandler;
         private GridHandler _gridHandler;
         private CameraHandler _cameraHandler;
         private TilesetLoader _tilesetLoader;
         private TileHandler _tileHandler;
         private MapLoader _mapLoader;
+        #endregion
 
         private bool _mouseDown = false;
         private int selectedTileId = 0;
@@ -38,9 +49,14 @@ namespace TileEditor.ViewModel
 
             InitCommands();
 
+            SelectableTileTextures = new ObservableCollection<TileTextureItem>();
+
             Messenger.Default.Register<Canvas>(this, (canvas) => { DrawCanvas = canvas; InitHandlers(); });
         }
 
+        /// <summary>
+        /// Initializes the commands
+        /// </summary>
         private void InitCommands()
         {
             CmdKeyDown = new RelayCommand<EventArgs>(KeyDown);
@@ -64,6 +80,37 @@ namespace TileEditor.ViewModel
 
             _mapLoader = new MapLoader(_tileHandler, _gridHandler, _tilesetLoader);
             _drawHandler = new DrawHandler(DrawCanvas, _gridHandler, _cameraHandler, _tilesetLoader, _tileHandler);
+
+            FillSelectableTileTextures();
+        }
+
+        /// <summary>
+        /// Fills the selectable tile textures with textures from tileset
+        /// </summary>
+        private void FillSelectableTileTextures()
+        {
+            if(_tilesetLoader.Tileset ==  null) { return; }
+
+            var source = ImageSourceForBitmap(_tilesetLoader.Tileset);
+
+            for (int i = 0; i < _tilesetLoader.TileBitmaps.Count; i++)
+            {
+                SelectableTileTextures.Add(new TileTextureItem(i, (System.Drawing.Rectangle)_tilesetLoader.TileBitmaps[i], source));
+            }
+        }
+
+        [DllImport("gdi32.dll", EntryPoint = "DeleteObject")]
+        [return: MarshalAs(UnmanagedType.Bool)]
+        public static extern bool DeleteObject([In] IntPtr hObject);
+
+        public ImageSource ImageSourceForBitmap(Bitmap bmp)
+        {
+            var handle = bmp.GetHbitmap();
+            try
+            {
+                return Imaging.CreateBitmapSourceFromHBitmap(handle, IntPtr.Zero, Int32Rect.Empty, BitmapSizeOptions.FromEmptyOptions());
+            }
+            finally { DeleteObject(handle); }
         }
 
         /// <summary>
