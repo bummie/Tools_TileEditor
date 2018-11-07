@@ -7,6 +7,7 @@ using TileEditor.ViewModel;
 using TileEditor.Handlers;
 using TileEditor.Loaders;
 using System;
+using GalaSoft.MvvmLight.Messaging;
 
 namespace TileEditor
 {
@@ -33,11 +34,14 @@ namespace TileEditor
             InitializeComponent();
             Closing += (s, e) => ViewModelLocator.Cleanup();
 
-            InitHandlers();
+            /*InitHandlers();
 
             KeyDown += new KeyEventHandler(OnButtonKeyDown);
             KeyUp += new KeyEventHandler(OnButtonKeyRelease);
             CompositionTarget.Rendering += Update;
+            */
+
+            Messenger.Default.Send<Canvas>(DrawCanvas);
         }
 
         /// <summary>
@@ -57,6 +61,7 @@ namespace TileEditor
 
         private void OnButtonKeyDown(object sender, KeyEventArgs e)
         {
+            return;
             _cameraHandler.UpdateMovement(e.Key);
 
             switch (e.Key)
@@ -87,7 +92,7 @@ namespace TileEditor
         /// <param name="e"></param>
         protected void Update(object sender, EventArgs e)
         {
-            _drawHandler.Update();
+            //_drawHandler.Update();
         }
 
 
@@ -108,23 +113,26 @@ namespace TileEditor
         /// <param name="e"></param>
         private new void MouseMove(object sender, MouseEventArgs e)
         {
-            if (_mouseDown)
+            /*if (_mouseDown)
             {
                 _tileHandler.AddTile(_gridHandler.GetPointFromCoords(e.GetPosition(DrawCanvas)), selectedTileId);
             }
 
             _gridHandler.HoverTile = _gridHandler.GetPointFromCoords(e.GetPosition(DrawCanvas));
+            */
         }
 
         private new void MouseDown(object sender, MouseButtonEventArgs e)
         {
-            _mouseDown = true;
+            //_mouseDown = true;
         }
 
         private new void MouseUp(object sender, MouseButtonEventArgs e)
         {
-            _gridHandler.SelectedTilePoint = _gridHandler.GetPointFromCoords(e.GetPosition(DrawCanvas));
+           /* _gridHandler.SelectedTilePoint = _gridHandler.GetPointFromCoords(e.GetPosition(DrawCanvas));
             _mouseDown = false;
+            */
         }
+
     }
 }
