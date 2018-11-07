@@ -280,7 +280,7 @@ namespace TileEditor.Handlers
         /// </summary>
         public void Clear()
         {
-            _bitmapRender = CreateEmptyBitmap();
+            CreateEmptyBitmap();
             _canvas.Children.Clear();
         }
         
@@ -288,20 +288,19 @@ namespace TileEditor.Handlers
         /// Creates the empty bitmap to render the content onto
         /// </summary>
         /// <returns></returns>
-        private System.Drawing.Bitmap CreateEmptyBitmap()
+        private void CreateEmptyBitmap()
         { 
             int width = (int)_canvas.ActualWidth;
             int height = (int)_canvas.ActualHeight;
 
-            if(width == 0) { return null; }
+            if(width == 0) { return; }
 
-            System.Drawing.Bitmap bmp = new System.Drawing.Bitmap(width, height);
-            using (System.Drawing.Graphics graphics = System.Drawing.Graphics.FromImage(bmp))
+            if(_bitmapRender == null) { _bitmapRender = new System.Drawing.Bitmap(width, height); }
+            using (System.Drawing.Graphics graphics = System.Drawing.Graphics.FromImage(_bitmapRender))
             {
                 System.Drawing.Rectangle ImageSize = new System.Drawing.Rectangle(0, 0, width, height);
                 graphics.FillRectangle(System.Drawing.Brushes.RoyalBlue, ImageSize);
             }
-            return bmp;
         }
 
         public void Dispose()

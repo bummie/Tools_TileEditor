@@ -163,7 +163,7 @@ namespace TileEditor.ViewModel
             var pressedKey = (e != null) ? (KeyEventArgs)e : null;
 
             _cameraHandler.UpdateMovement(pressedKey.Key);
-            InfoCameraPosition = _cameraHandler.Position.ToString();
+            InfoCameraPosition = _cameraHandler.Position.ToString() + " Zoom: " + _cameraHandler.Zoom;
 
             switch (pressedKey.Key)
             {
