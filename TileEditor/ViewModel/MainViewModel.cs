@@ -15,7 +15,9 @@ namespace TileEditor.ViewModel
 
         public RelayCommand<EventArgs> CmdKeyDown { get; set; }
         public RelayCommand<EventArgs> CmdKeyUp { get; set; }
-
+        public RelayCommand<EventArgs> CmdMouseDown { get; set; }
+        public RelayCommand<EventArgs> CmdMouseUp { get; set; }
+        public RelayCommand<EventArgs> CmdMouseMove{ get; set; }
 
         private Canvas _canvas = null;
         public Canvas DrawCanvas { get; set; }
@@ -44,6 +46,9 @@ namespace TileEditor.ViewModel
             CmdKeyDown = new RelayCommand<EventArgs>(KeyDown);
             CmdKeyUp = new RelayCommand<EventArgs>(KeyUp);
 
+            CmdMouseDown = new RelayCommand<EventArgs>(MouseDown);
+            CmdMouseUp = new RelayCommand<EventArgs>(MouseUp);
+            CmdMouseMove = new RelayCommand<EventArgs>(MouseMove);
         }
 
         /// <summary>
@@ -111,32 +116,45 @@ namespace TileEditor.ViewModel
             if(DrawCanvas == null) { return; }
             _drawHandler.Update();
         }
-
- 
-
+        
         /// <summary>
         /// The event fires when the mouse moves over the canvas
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
-        private new void MouseMove(object sender, MouseEventArgs e)
+        private void MouseMove(EventArgs e)
         {
+            var mouseEvent = (e != null) ? (MouseEventArgs)e : null;
+            if (mouseEvent == null) { return; }
+
             if (_mouseDown)
             {
-                _tileHandler.AddTile(_gridHandler.GetPointFromCoords(e.GetPosition(DrawCanvas)), selectedTileId);
+                _tileHandler.AddTile(_gridHandler.GetPointFromCoords(mouseEvent.GetPosition(DrawCanvas)), selectedTileId);
             }
 
-            _gridHandler.HoverTile = _gridHandler.GetPointFromCoords(e.GetPosition(DrawCanvas));
+            _gridHandler.HoverTile = _gridHandler.GetPointFromCoords(mouseEvent.GetPosition(DrawCanvas));
         }
 
-        private new void MouseDown(object sender, MouseButtonEventArgs e)
+        /// <summary>
+        /// Hits when left mousebutton is down
+        /// </summary>
+        /// <param name="e"></param>
+        private void MouseDown(EventArgs e)
         {
             _mouseDown = true;
         }
 
-        private new void MouseUp(object sender, MouseButtonEventArgs e)
+        /// <summary>
+        /// Hits when left mouse button is up
+        /// </summary>
+        /// <param name="e"></param>
+        private void MouseUp(EventArgs e)
         {
-            _gridHandler.SelectedTilePoint = _gridHandler.GetPointFromCoords(e.GetPosition(DrawCanvas));
+            var mouseEvent = (e != null) ? (MouseEventArgs)e : null;
+
+            if(mouseEvent == null) { return; }
+
+            _gridHandler.SelectedTilePoint = _gridHandler.GetPointFromCoords(mouseEvent.GetPosition(DrawCanvas));
             _mouseDown = false;
         }
     }

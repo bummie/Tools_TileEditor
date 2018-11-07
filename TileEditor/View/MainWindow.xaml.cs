@@ -16,16 +16,6 @@ namespace TileEditor
     /// </summary>
     public partial class MainWindow : Window
     {
-        private DrawHandler _drawHandler;
-        private GridHandler _gridHandler;
-        private CameraHandler _cameraHandler;
-        private TilesetLoader _tilesetLoader;
-        private TileHandler _tileHandler;
-        private MapLoader _mapLoader;
-
-        private bool _mouseDown = false;
-        private int selectedTileId = 0;
-
         /// <summary>
         /// Initializes a new instance of the MainWindow class.
         /// </summary>

@@ -30,6 +30,18 @@
         <i:EventTrigger EventName="KeyDown">
             <cmd:EventToCommand Command="{Binding CmdKeyDown}" PassEventArgsToCommand="True"/>
         </i:EventTrigger>
+        <i:EventTrigger EventName="KeyUp">
+            <cmd:EventToCommand Command="{Binding CmdKeyUp}" PassEventArgsToCommand="True"/>
+        </i:EventTrigger>
+        <i:EventTrigger EventName="MouseLeftButtonDown">
+            <cmd:EventToCommand Command="{Binding CmdMouseDown}" PassEventArgsToCommand="True"/>
+        </i:EventTrigger>
+        <i:EventTrigger EventName="MouseLeftButtonUp">
+            <cmd:EventToCommand Command="{Binding CmdMouseUp}" PassEventArgsToCommand="True"/>
+        </i:EventTrigger>
+        <i:EventTrigger EventName="MouseMove">
+            <cmd:EventToCommand Command="{Binding CmdMouseMove}" PassEventArgsToCommand="True"/>
+        </i:EventTrigger>
     </i:Interaction.Triggers>
 
     <Grid x:Name="LayoutRoot">
