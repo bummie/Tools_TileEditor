@@ -28,6 +28,12 @@ namespace TileEditor.ViewModel
         public RelayCommand<EventArgs> CmdMouseMove{ get; set; }
         #endregion
 
+        #region InfoStrings
+        public string InfoCameraPosition { get; set; }
+        public string InfoMousePos { get; set; }
+        public string InfoTilePos { get; set; }
+        #endregion
+
         public Canvas DrawCanvas { get; set; }
         public ObservableCollection<TileTextureItem> SelectableTileTextures { get; set; }
 
@@ -59,6 +65,17 @@ namespace TileEditor.ViewModel
             SelectableTileTextures = new ObservableCollection<TileTextureItem>();
 
             Messenger.Default.Register<Canvas>(this, (canvas) => { DrawCanvas = canvas; InitHandlers(); });
+        }
+
+        /// <summary>
+        /// Redraw the content in the canvas
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        protected void Update(object sender, EventArgs e)
+        {
+            if (DrawCanvas == null) { return; }
+            _drawHandler.Update();
         }
 
         /// <summary>
@@ -96,7 +113,7 @@ namespace TileEditor.ViewModel
         /// </summary>
         private void FillSelectableTileTextures()
         {
-            if(_tilesetLoader.Tileset ==  null) { return; }
+            if(_tilesetLoader.Tileset == null) { return; }
 
             var source = ImageSourceForBitmap(_tilesetLoader.Tileset);
 
@@ -157,17 +174,6 @@ namespace TileEditor.ViewModel
         private void KeyUp(EventArgs e)
         {
             var pressedKey = (e != null) ? (KeyEventArgs)e : null;
-        }
-
-        /// <summary>
-        /// Redraw the content in the canvas
-        /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
-        protected void Update(object sender, EventArgs e)
-        {
-            if(DrawCanvas == null) { return; }
-            _drawHandler.Update();
         }
         
         /// <summary>

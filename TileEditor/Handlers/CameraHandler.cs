@@ -32,7 +32,7 @@ namespace TileEditor.Handlers
 
         public CameraHandler()
         {
-            Position = new Point(0, 0);
+            Position = new Point(100, 100);
             Zoom = 1;
         }
 
