@@ -71,10 +71,10 @@ namespace TileEditor.Handlers
                     break;
 
                 // Zoom
-                case Key.Space:
+                case Key.Q:
                     Zoom += ZOOM_LEVEL;
                     break;
-                case Key.LeftCtrl:
+                case Key.E:
                     Zoom -= ZOOM_LEVEL;
                     break;
             }

@@ -31,6 +31,14 @@ namespace TileEditor.ViewModel
         public Canvas DrawCanvas { get; set; }
         public ObservableCollection<TileTextureItem> SelectableTileTextures { get; set; }
 
+        private TileTextureItem _selectedTileTextureItem = null;
+        public TileTextureItem SelectedTileTexture { get { return _selectedTileTextureItem; }
+            set
+            {
+                _selectedTileTextureItem = value;
+                _drawHandler.SelectedTileTextureId = _selectedTileTextureItem.TextureId;
+            }
+        }
         #region Handlers
         private DrawHandler _drawHandler;
         private GridHandler _gridHandler;
@@ -41,7 +49,6 @@ namespace TileEditor.ViewModel
         #endregion
 
         private bool _mouseDown = false;
-        private int selectedTileId = 0;
 
         public MainViewModel()
         {
@@ -133,15 +140,6 @@ namespace TileEditor.ViewModel
 
             switch (pressedKey.Key)
             {
-                case Key.Q:
-                    if (selectedTileId > 0) { selectedTileId--; }
-                    _drawHandler.SelectedTileTextureId = selectedTileId;
-                    break;
-                case Key.E:
-                    if (selectedTileId < _tilesetLoader.TileBitmaps.Count - 1) { selectedTileId++; }
-                    _drawHandler.SelectedTileTextureId = selectedTileId;
-                    break;
-
                 case Key.P:
                     _mapLoader.SaveMap();
                     break;
@@ -182,11 +180,7 @@ namespace TileEditor.ViewModel
             var mouseEvent = (e != null) ? (MouseEventArgs)e : null;
             if (mouseEvent == null) { return; }
 
-            if (_mouseDown)
-            {
-                _tileHandler.AddTile(_gridHandler.GetPointFromCoords(mouseEvent.GetPosition(DrawCanvas)), selectedTileId);
-            }
-
+            AddTile(mouseEvent);
             _gridHandler.HoverTile = _gridHandler.GetPointFromCoords(mouseEvent.GetPosition(DrawCanvas));
         }
 
@@ -196,7 +190,23 @@ namespace TileEditor.ViewModel
         /// <param name="e"></param>
         private void MouseDown(EventArgs e)
         {
+            var mouseEvent = (e != null) ? (MouseEventArgs)e : null;
+            if (mouseEvent == null) { return; }
+
             _mouseDown = true;
+            AddTile(mouseEvent);
+        }
+
+        /// <summary>
+        /// Adds a tile to the grid
+        /// </summary>
+        private void AddTile(MouseEventArgs mouseEvent)
+        {
+            if (_mouseDown)
+            {
+                int textureId = (SelectedTileTexture == null) ? 0 : SelectedTileTexture.TextureId;
+                _tileHandler.AddTile(_gridHandler.GetPointFromCoords(mouseEvent.GetPosition(DrawCanvas)), textureId);
+            }
         }
 
         /// <summary>
