@@ -95,7 +95,15 @@ namespace TileEditor.ViewModel
 
             for (int i = 0; i < _tilesetLoader.TileBitmaps.Count; i++)
             {
-                SelectableTileTextures.Add(new TileTextureItem(i, (System.Drawing.Rectangle)_tilesetLoader.TileBitmaps[i], source));
+                Int32Rect rect = new Int32Rect
+                {
+                    X = ((Rectangle)_tilesetLoader.TileBitmaps[i]).X,
+                    Y = ((Rectangle)_tilesetLoader.TileBitmaps[i]).Y,
+                    Width = ((Rectangle)_tilesetLoader.TileBitmaps[i]).Width,
+                    Height = ((Rectangle)_tilesetLoader.TileBitmaps[i]).Height
+                };
+
+                SelectableTileTextures.Add(new TileTextureItem(i, rect, source));
             }
         }
 

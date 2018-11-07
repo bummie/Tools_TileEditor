@@ -168,9 +168,9 @@
             <ListView Grid.Column="2" ItemsSource="{Binding SelectableTileTextures, Mode=TwoWay}" SelectedItem="{Binding SelectedTileTexture, Mode=TwoWay}">
                 <ListView.ItemTemplate>
                     <DataTemplate>
-                        <Image>
+                        <Image Width="64" Height="64">
                             <Image.Source>
-                                <CroppedBitmap Source="{Binding Bitmap}" SourceRect="{Binding Rectangle}"/>
+                                <CroppedBitmap Source="{Binding Bitmap}" SourceRect="{Binding Rectangle}"></CroppedBitmap>
                             </Image.Source>
                         </Image>
                     </DataTemplate>
