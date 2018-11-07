@@ -1,4 +1,5 @@
 ﻿using GalaSoft.MvvmLight;
+using GalaSoft.MvvmLight.CommandWpf;
 using GalaSoft.MvvmLight.Messaging;
 using System;
 using System.Windows.Controls;
@@ -11,14 +12,13 @@ namespace TileEditor.ViewModel
 {
     public class MainViewModel : ViewModelBase
     {
+
+        public RelayCommand<EventArgs> CmdKeyDown { get; set; }
+        public RelayCommand<EventArgs> CmdKeyUp { get; set; }
+
+
         private Canvas _canvas = null;
-        public Canvas DrawCanvas { get { return _canvas; }
-            set
-            {
-                _canvas = value;
-                InitHandlers();
-            }
-        }
+        public Canvas DrawCanvas { get; set; }
 
         private DrawHandler _drawHandler;
         private GridHandler _gridHandler;
@@ -34,7 +34,16 @@ namespace TileEditor.ViewModel
         {
             CompositionTarget.Rendering += Update;
 
-            Messenger.Default.Register<Canvas>(this, (canvas) => { DrawCanvas = canvas; });
+            InitCommands();
+
+            Messenger.Default.Register<Canvas>(this, (canvas) => { DrawCanvas = canvas; InitHandlers(); });
+        }
+
+        private void InitCommands()
+        {
+            CmdKeyDown = new RelayCommand<EventArgs>(KeyDown);
+            CmdKeyUp = new RelayCommand<EventArgs>(KeyUp);
+
         }
 
         /// <summary>
@@ -52,11 +61,17 @@ namespace TileEditor.ViewModel
             _drawHandler = new DrawHandler(DrawCanvas, _gridHandler, _cameraHandler, _tilesetLoader, _tileHandler);
         }
 
-        private void OnButtonKeyDown(object sender, KeyEventArgs e)
+        /// <summary>
+        /// Key pressed down
+        /// </summary>
+        /// <param name="e"></param>
+        private void KeyDown(EventArgs e)
         {
-            _cameraHandler.UpdateMovement(e.Key);
+            var pressedKey = (e != null) ? (KeyEventArgs)e : null;
 
-            switch (e.Key)
+            _cameraHandler.UpdateMovement(pressedKey.Key);
+
+            switch (pressedKey.Key)
             {
                 case Key.Q:
                     if (selectedTileId > 0) { selectedTileId--; }
@@ -78,6 +93,15 @@ namespace TileEditor.ViewModel
         }
 
         /// <summary>
+        /// Key release
+        /// </summary>
+        /// <param name="e"></param>
+        private void KeyUp(EventArgs e)
+        {
+            var pressedKey = (e != null) ? (KeyEventArgs)e : null;
+        }
+
+        /// <summary>
         /// Redraw the content in the canvas
         /// </summary>
         /// <param name="sender"></param>
@@ -88,15 +112,7 @@ namespace TileEditor.ViewModel
             _drawHandler.Update();
         }
 
-        /// <summary>
-        /// The event fires when the canvas is clicked
-        /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
-        private void OnButtonKeyRelease(object sender, KeyEventArgs e)
-        {
-
-        }
+ 
 
         /// <summary>
         /// The event fires when the mouse moves over the canvas
