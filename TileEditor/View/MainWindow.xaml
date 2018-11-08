@@ -73,7 +73,7 @@
 
             </Grid.Resources>
 
-            <Button Grid.Column="0">
+            <Button Grid.Column="0" Command="{Binding CmdButtonSelect}">
                 <Grid>
                     <Grid.RowDefinitions>
                         <RowDefinition Height="2*"></RowDefinition>
@@ -85,7 +85,7 @@
                 </Grid>
             </Button>
 
-            <Button Grid.Column="1">
+            <Button Grid.Column="1" Command="{Binding CmdButtonDraw}">
                 <Grid>
                     <Grid.RowDefinitions>
                         <RowDefinition Height="2*"></RowDefinition>
@@ -96,7 +96,7 @@
                     <Label Grid.Row="1">Draw</Label>
                 </Grid>
             </Button>
-            <Button Grid.Column="2" Grid.ColumnSpan="2">
+            <Button Grid.Column="2" Grid.ColumnSpan="2" Command="{Binding CmdButtonSave}">
                 <Grid>
                     <Grid.RowDefinitions>
                         <RowDefinition Height="2*"></RowDefinition>
@@ -107,7 +107,7 @@
                     <Label Grid.Row="1">Save</Label>
                 </Grid>
             </Button>
-            <Button Grid.Column="4">
+            <Button Grid.Column="4" Command="{Binding CmdButtonLoad}">
                 <Grid>
                     <Grid.RowDefinitions>
                         <RowDefinition Height="2*"></RowDefinition>
@@ -118,7 +118,7 @@
                     <Label Grid.Row="1">Import</Label>
                 </Grid>
             </Button>
-            <Button Grid.Column="5">
+            <Button Grid.Column="5" Command="{Binding CmdButtonHost}">
                 <Grid>
                     <Grid.RowDefinitions>
                         <RowDefinition Height="2*"></RowDefinition>
@@ -129,7 +129,7 @@
                     <Label Grid.Row="1">Host</Label>
                 </Grid>
             </Button>
-            <Button Grid.Column="6">
+            <Button Grid.Column="6" Command="{Binding CmdButtonJoin}">
                 <Grid>
                     <Grid.RowDefinitions>
                         <RowDefinition Height="2*"></RowDefinition>
@@ -140,7 +140,7 @@
                     <Label Grid.Row="1">Join</Label>
                 </Grid>
             </Button>
-            <Button Grid.Column="7">
+            <Button Grid.Column="7" Command="{Binding CmdButtonClear}">
                 <Grid>
                     <Grid.RowDefinitions>
                         <RowDefinition Height="2*"></RowDefinition>

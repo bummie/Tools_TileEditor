@@ -97,12 +97,17 @@ namespace TileEditor.ViewModel
         /// </summary>
         private void InitCommands()
         {
-            CmdKeyDown = new RelayCommand<EventArgs>((e) => { if (_inputHandler == null) { return;  } _inputHandler.KeyDown(e);});
-            CmdKeyUp = new RelayCommand<EventArgs>((e) => { if (_inputHandler == null) { return; } _inputHandler.KeyUp(e); });
+            CmdKeyDown = new RelayCommand<EventArgs>((e) => { if (_inputHandler != null) {  _inputHandler.KeyDown(e); }});
+            CmdKeyUp = new RelayCommand<EventArgs>((e) => { if (_inputHandler != null) {  _inputHandler.KeyUp(e); }});
 
-            CmdMouseDown = new RelayCommand<EventArgs>((e) => { if (_inputHandler == null) { return; } _inputHandler.MouseDown(e); });
-            CmdMouseUp = new RelayCommand<EventArgs>((e) => { if (_inputHandler == null) { return; } _inputHandler.MouseUp(e); });
-            CmdMouseMove = new RelayCommand<EventArgs>((e) => { if (_inputHandler == null) { return; } _inputHandler.MouseMove(e); });
+            CmdMouseDown = new RelayCommand<EventArgs>((e) => { if (_inputHandler != null) {  _inputHandler.MouseDown(e); }});
+            CmdMouseUp = new RelayCommand<EventArgs>((e) => { if (_inputHandler != null) {  _inputHandler.MouseUp(e); }});
+            CmdMouseMove = new RelayCommand<EventArgs>((e) => { if (_inputHandler != null) { _inputHandler.MouseMove(e); }});
+
+            CmdButtonSelect = new RelayCommand(() => { if (_modeHandler != null) { _modeHandler.CurrentMode = ModeHandler.MODE.SELECT; } });
+            CmdButtonDraw = new RelayCommand(() => { if (_modeHandler != null) { _modeHandler.CurrentMode = ModeHandler.MODE.DRAW; } });
+
+            CmdButtonClear = new RelayCommand(() => { if (_tileHandler != null) { _tileHandler.Reset(); } });
         }
 
         /// <summary>

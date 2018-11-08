@@ -54,8 +54,6 @@ namespace TileEditor.Handlers
         {
             var pressedKey = (e != null) ? (KeyEventArgs)e : null;
 
-            Console.WriteLine("HLELO");
-
             _cameraHandler.UpdateMovement(pressedKey.Key);
             InfoCameraPosition = _cameraHandler.Position.ToString() + " Zoom: " + _cameraHandler.Zoom;
 
@@ -134,7 +132,6 @@ namespace TileEditor.Handlers
 
             _gridHandler.SelectedTilePoint = _gridHandler.GetPointFromCoords(mouseEvent.GetPosition(_canvas));
             _mouseDown = false;
-
         }
 
     }
