@@ -37,19 +37,6 @@ namespace TileEditor.ViewModel
         
         #endregion
 
-        #region InfoStrings
-        private string _infoMousePos;
-        public string InfoMousePos { get => _infoMousePos; set { _infoMousePos = $"[{value}]"; RaisePropertyChanged("InfoMousePos"); } }
-        private string _infoTilePos;
-        public string InfoTilePos { get => _infoTilePos; set { _infoTilePos = $"[{value}]"; RaisePropertyChanged("InfoTilePos"); } }
-
-        private string _infoCameraPosition;
-
-        public string InfoCameraPosition { get => _infoCameraPosition; set { _infoCameraPosition = $"[{value}]"; RaisePropertyChanged("InfoCameraPosition"); }
-        }
-
-        #endregion
-
         public Canvas DrawCanvas { get; set; }
         public ObservableCollection<TileTextureItem> SelectableTileTextures { get; set; }
 
@@ -72,19 +59,26 @@ namespace TileEditor.ViewModel
         private TileHandler _tileHandler;
         private MapLoader _mapLoader;
         private ModeHandler _modeHandler;
+        private InputHandler _inputHandler;
         #endregion
-
-        private bool _mouseDown = false;
 
         public MainViewModel()
         {
             CompositionTarget.Rendering += Update;
-
             InitCommands();
-
             SelectableTileTextures = new ObservableCollection<TileTextureItem>();
+            Messenger.Default.Register<Canvas>(this, (canvas) => { InitEditor(canvas); });
+        }
 
-            Messenger.Default.Register<Canvas>(this, (canvas) => { DrawCanvas = canvas; InitHandlers(); });
+        /// <summary>
+        /// Init the editor when we have received the canvas context from the view
+        /// </summary>
+        /// <param name="canvas"></param>
+        private void InitEditor(Canvas canvas)
+        {
+            DrawCanvas = canvas;
+            InitHandlers();
+            FillSelectableTileTextures();
         }
 
         /// <summary>
@@ -103,12 +97,12 @@ namespace TileEditor.ViewModel
         /// </summary>
         private void InitCommands()
         {
-            CmdKeyDown = new RelayCommand<EventArgs>(KeyDown);
-            CmdKeyUp = new RelayCommand<EventArgs>(KeyUp);
+            CmdKeyDown = new RelayCommand<EventArgs>((e) => { if (_inputHandler == null) { return;  } _inputHandler.KeyDown(e);});
+            CmdKeyUp = new RelayCommand<EventArgs>((e) => { if (_inputHandler == null) { return; } _inputHandler.KeyUp(e); });
 
-            CmdMouseDown = new RelayCommand<EventArgs>(MouseDown);
-            CmdMouseUp = new RelayCommand<EventArgs>(MouseUp);
-            CmdMouseMove = new RelayCommand<EventArgs>(MouseMove);
+            CmdMouseDown = new RelayCommand<EventArgs>((e) => { if (_inputHandler == null) { return; } _inputHandler.MouseDown(e); });
+            CmdMouseUp = new RelayCommand<EventArgs>((e) => { if (_inputHandler == null) { return; } _inputHandler.MouseUp(e); });
+            CmdMouseMove = new RelayCommand<EventArgs>((e) => { if (_inputHandler == null) { return; } _inputHandler.MouseMove(e); });
         }
 
         /// <summary>
@@ -119,14 +113,11 @@ namespace TileEditor.ViewModel
             _modeHandler = new ModeHandler();
             _cameraHandler = new CameraHandler();
             _tileHandler = new TileHandler();
-
             _gridHandler = new GridHandler(_cameraHandler);
             _tilesetLoader = new TilesetLoader();
-
             _mapLoader = new MapLoader(_tileHandler, _gridHandler, _tilesetLoader);
             _drawHandler = new DrawHandler(DrawCanvas, _gridHandler, _cameraHandler, _tilesetLoader, _tileHandler, _modeHandler);
-
-            FillSelectableTileTextures();
+            _inputHandler = new InputHandler(_gridHandler, _cameraHandler, _tileHandler, _modeHandler, DrawCanvas);
         }
 
         /// <summary>
@@ -164,95 +155,6 @@ namespace TileEditor.ViewModel
                 return Imaging.CreateBitmapSourceFromHBitmap(handle, IntPtr.Zero, Int32Rect.Empty, BitmapSizeOptions.FromEmptyOptions());
             }
             finally { DeleteObject(handle); }
-        }
-
-        /// <summary>
-        /// Key pressed down
-        /// </summary>
-        /// <param name="e"></param>
-        private void KeyDown(EventArgs e)
-        {
-            var pressedKey = (e != null) ? (KeyEventArgs)e : null;
-
-            _cameraHandler.UpdateMovement(pressedKey.Key);
-            InfoCameraPosition = _cameraHandler.Position.ToString() + " Zoom: " + _cameraHandler.Zoom;
-
-            switch (pressedKey.Key)
-            {
-                case Key.P:
-                    _mapLoader.SaveMap();
-                    break;
-
-                case Key.O:
-                    _mapLoader.LoadMap("Unnamed");
-                    break;
-            }
-        }
-
-        /// <summary>
-        /// Key release
-        /// </summary>
-        /// <param name="e"></param>
-        private void KeyUp(EventArgs e)
-        {
-            var pressedKey = (e != null) ? (KeyEventArgs)e : null;
-        }
-
-        /// <summary>
-        /// The event fires when the mouse moves over the canvas
-        /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
-        private void MouseMove(EventArgs e)
-        {
-            var mouseEvent = (e != null) ? (MouseEventArgs)e : null;
-            if (mouseEvent == null) { return; }
-
-            AddTile(mouseEvent);
-            _gridHandler.HoverTile = _gridHandler.GetPointFromCoords(mouseEvent.GetPosition(DrawCanvas));
-
-            InfoMousePos = mouseEvent.GetPosition(DrawCanvas).ToString();
-            InfoTilePos = _gridHandler.GetPointFromCoords(mouseEvent.GetPosition(DrawCanvas)).ToString();
-        }
-
-        /// <summary>
-        /// Hits when left mousebutton is down
-        /// </summary>
-        /// <param name="e"></param>
-        private void MouseDown(EventArgs e)
-        {
-            var mouseEvent = (e != null) ? (MouseEventArgs)e : null;
-            if (mouseEvent == null) { return; }
-
-            _mouseDown = true;
-            AddTile(mouseEvent);
-        }
-
-        /// <summary>
-        /// Adds a tile to the grid
-        /// </summary>
-        private void AddTile(MouseEventArgs mouseEvent)
-        {
-            if (_mouseDown && _modeHandler.CurrentMode == ModeHandler.MODE.DRAW)
-            {
-                int textureId = (SelectedTileTexture == null) ? 0 : SelectedTileTexture.TextureId;
-                _tileHandler.AddTile(_gridHandler.GetPointFromCoords(mouseEvent.GetPosition(DrawCanvas)), textureId);
-            }
-        }
-
-        /// <summary>
-        /// Hits when left mouse button is up
-        /// </summary>
-        /// <param name="e"></param>
-        private void MouseUp(EventArgs e)
-        {
-            var mouseEvent = (e != null) ? (MouseEventArgs)e : null;
-
-            if (mouseEvent == null) { return; }
-
-            _gridHandler.SelectedTilePoint = _gridHandler.GetPointFromCoords(mouseEvent.GetPosition(DrawCanvas));
-            _mouseDown = false;
-
         }
     }
 }
