@@ -1,10 +1,7 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Controls;
 using System.Windows.Input;
+using System.Windows;
 
 namespace TileEditor.Handlers
 {
@@ -95,6 +92,7 @@ namespace TileEditor.Handlers
 
             _mouseDown = true;
             AddTile(mouseEvent);
+            Fill(mouseEvent);
         }
 
         /// <summary>
@@ -105,6 +103,19 @@ namespace TileEditor.Handlers
             if (_mouseDown && _modeHandler.CurrentMode == ModeHandler.MODE.DRAW)
             {
                 _tileHandler.AddTile(_gridHandler.GetPointFromCoords(mouseEvent.GetPosition(_canvas)));
+            }
+        }
+
+        /// <summary>
+        /// Fills the tiles
+        /// </summary>
+        private void Fill(MouseEventArgs mouseEvent)
+        {
+            if (_mouseDown && _modeHandler.CurrentMode == ModeHandler.MODE.FILL)
+            {
+                Point targetPoint = _gridHandler.GetPointFromCoords(mouseEvent.GetPosition(_canvas));
+                int targetTexture = (!_tileHandler.TileDictionary.ContainsKey(targetPoint)) ? -1 : _tileHandler.TileDictionary[targetPoint].TextureId;
+                _tileHandler.FillTiles(_gridHandler.GetPointFromCoords(mouseEvent.GetPosition(_canvas)), targetTexture);
             }
         }
 

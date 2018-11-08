@@ -29,6 +29,7 @@ namespace TileEditor.ViewModel
 
         public RelayCommand CmdButtonSelect { get; set; }
         public RelayCommand CmdButtonDraw { get; set; }
+        public RelayCommand CmdButtonFill { get; set; }
         public RelayCommand CmdButtonSave { get; set; }
         public RelayCommand CmdButtonLoad { get; set; }
         public RelayCommand CmdButtonHost { get; set; }
@@ -107,6 +108,7 @@ namespace TileEditor.ViewModel
 
             CmdButtonSelect = new RelayCommand(() => { if (_modeHandler != null) { _modeHandler.CurrentMode = ModeHandler.MODE.SELECT; } });
             CmdButtonDraw = new RelayCommand(() => { if (_modeHandler != null) { _modeHandler.CurrentMode = ModeHandler.MODE.DRAW; } });
+            CmdButtonFill = new RelayCommand(() => { if (_modeHandler != null) { _modeHandler.CurrentMode = ModeHandler.MODE.FILL; } });
             CmdButtonSave = new RelayCommand(() => { if (_mapLoader != null) { _mapLoader.SaveMap();} });
             CmdButtonLoad = new RelayCommand(() => { if (_mapLoader != null) { _mapLoader.LoadMap("Unnamed"); } });
 
@@ -120,8 +122,8 @@ namespace TileEditor.ViewModel
         {
             _modeHandler = new ModeHandler();
             _cameraHandler = new CameraHandler();
-            _tileHandler = new TileHandler(SelectedTileTexture);
             _gridHandler = new GridHandler(_cameraHandler);
+            _tileHandler = new TileHandler(SelectedTileTexture, _gridHandler);
             _tilesetLoader = new TilesetLoader();
             _mapLoader = new MapLoader(_tileHandler, _gridHandler, _tilesetLoader);
             _drawHandler = new DrawHandler(DrawCanvas, _gridHandler, _cameraHandler, _tilesetLoader, _tileHandler, _modeHandler);

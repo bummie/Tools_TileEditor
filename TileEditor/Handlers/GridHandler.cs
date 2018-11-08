@@ -73,5 +73,18 @@ namespace TileEditor.Handlers
         {
             return new Point((tilePoint.X * TileSize) + _cameraHandler.Position.X, (tilePoint.Y * TileSize) + _cameraHandler.Position.Y);
         }
+
+        /// <summary>
+        /// Returns whether a given tile is inside the bounds of the grid
+        /// </summary>
+        /// <param name="tile"></param>
+        /// <returns></returns>
+        public bool IsTileInsideGrid(Point tile)
+        {
+            if(tile.X < 0 || tile.X >= GridWidth) { return false; }
+            if (tile.Y < 0 || tile.Y >= GridHeight) { return false; }
+
+            return true;
+        }
     }
 }

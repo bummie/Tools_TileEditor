@@ -7,18 +7,20 @@ namespace TileEditor.Handlers
 {
     public class TileHandler
     {
-        // Tileprop array
-        // Tiles array
+        private GridHandler _gridHandler;
+
         public Dictionary<int, TileProperty> TilePropertyDictionary { get; set; }
         public Dictionary<Point, Tile> TileDictionary { get; set; }
         public int SelectedTileTextureId { get; set; }
 
-        public TileHandler(TileTextureItem selectedTexture)
+        public TileHandler(TileTextureItem selectedTexture, GridHandler gridHandler)
         {
             TilePropertyDictionary = new Dictionary<int, TileProperty>();
             TileDictionary = new Dictionary<Point, Tile>();
 
             SelectedTileTextureId = 0;
+
+            _gridHandler = gridHandler;
         }
 
         /// <summary>
@@ -62,6 +64,30 @@ namespace TileEditor.Handlers
             TileDictionary[position] = new Tile(position, textureId);
         }
 
+        /// <summary>
+        /// Fills tiles with given textureid
+        /// </summary>
+        /// <param name="tile"></param>
+        /// <param name="targetTexture"></param>
+        /// <param name="replacementTexture"></param>
+        public void FillTiles(Point tile, int targetTexture)
+        {
+            if (!_gridHandler.IsTileInsideGrid(tile)) { return; }
+            if (!TileDictionary.ContainsKey(tile)) { AddTile(tile, -1); }
+            if (targetTexture == SelectedTileTextureId) { if (TileDictionary[tile].TextureId == -1) { TileDictionary.Remove(tile); } return; }
+            if (TileDictionary[tile].TextureId != targetTexture) { if (TileDictionary[tile].TextureId == -1) { TileDictionary.Remove(tile); } return; }
+
+            TileDictionary[tile].TextureId = SelectedTileTextureId;
+
+            //FillTiles(new Point(tile.X + 1, tile.Y + 1), targetTexture);
+            FillTiles(new Point(tile.X + 1, tile.Y), targetTexture);
+            FillTiles(new Point(tile.X, tile.Y + 1), targetTexture);
+            //FillTiles(new Point(tile.X - 1, tile.Y - 1), targetTexture);
+            FillTiles(new Point(tile.X - 1, tile.Y), targetTexture);
+            FillTiles(new Point(tile.X, tile.Y - 1), targetTexture);
+            //FillTiles(new Point(tile.X + 1, tile.Y - 1), targetTexture);
+            //FillTiles(new Point(tile.X - 1, tile.Y + 1), targetTexture);
+        }
 
         /// <summary>
         /// Creates a new tileproperty
