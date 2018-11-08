@@ -56,17 +56,6 @@ namespace TileEditor.Handlers
 
             _cameraHandler.UpdateMovement(pressedKey.Key);
             InfoCameraPosition = _cameraHandler.Position.ToString() + " Zoom: " + _cameraHandler.Zoom;
-
-           /* switch (pressedKey.Key)
-            {
-                case Key.P:
-                    _mapLoader.SaveMap();
-                    break;
-
-                case Key.O:
-                    _mapLoader.LoadMap("Unnamed");
-                    break;
-            }*/
         }
 
         /// <summary>
@@ -115,8 +104,7 @@ namespace TileEditor.Handlers
         {
             if (_mouseDown && _modeHandler.CurrentMode == ModeHandler.MODE.DRAW)
             {
-                int textureId = 0; //(SelectedTileTexture == null) ? 0 : SelectedTileTexture.TextureId;
-                _tileHandler.AddTile(_gridHandler.GetPointFromCoords(mouseEvent.GetPosition(_canvas)), textureId);
+                _tileHandler.AddTile(_gridHandler.GetPointFromCoords(mouseEvent.GetPosition(_canvas)));
             }
         }
 

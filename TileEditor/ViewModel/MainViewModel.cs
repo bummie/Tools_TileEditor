@@ -48,6 +48,7 @@ namespace TileEditor.ViewModel
             {
                 _selectedTileTextureItem = value;
                 _drawHandler.SelectedTileTextureId = _selectedTileTextureItem.TextureId;
+                _tileHandler.SelectedTileTextureId = _selectedTileTextureItem.TextureId;
             }
         }
 
@@ -106,6 +107,8 @@ namespace TileEditor.ViewModel
 
             CmdButtonSelect = new RelayCommand(() => { if (_modeHandler != null) { _modeHandler.CurrentMode = ModeHandler.MODE.SELECT; } });
             CmdButtonDraw = new RelayCommand(() => { if (_modeHandler != null) { _modeHandler.CurrentMode = ModeHandler.MODE.DRAW; } });
+            CmdButtonSave = new RelayCommand(() => { if (_mapLoader != null) { _mapLoader.SaveMap();} });
+            CmdButtonLoad = new RelayCommand(() => { if (_mapLoader != null) { _mapLoader.LoadMap("Unnamed"); } });
 
             CmdButtonClear = new RelayCommand(() => { if (_tileHandler != null) { _tileHandler.Reset(); } });
         }
@@ -117,7 +120,7 @@ namespace TileEditor.ViewModel
         {
             _modeHandler = new ModeHandler();
             _cameraHandler = new CameraHandler();
-            _tileHandler = new TileHandler();
+            _tileHandler = new TileHandler(SelectedTileTexture);
             _gridHandler = new GridHandler(_cameraHandler);
             _tilesetLoader = new TilesetLoader();
             _mapLoader = new MapLoader(_tileHandler, _gridHandler, _tilesetLoader);

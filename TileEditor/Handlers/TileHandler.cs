@@ -11,11 +11,14 @@ namespace TileEditor.Handlers
         // Tiles array
         public Dictionary<int, TileProperty> TilePropertyDictionary { get; set; }
         public Dictionary<Point, Tile> TileDictionary { get; set; }
+        public int SelectedTileTextureId { get; set; }
 
-        public TileHandler()
+        public TileHandler(TileTextureItem selectedTexture)
         {
             TilePropertyDictionary = new Dictionary<int, TileProperty>();
             TileDictionary = new Dictionary<Point, Tile>();
+
+            SelectedTileTextureId = 0;
         }
 
         /// <summary>
@@ -23,9 +26,30 @@ namespace TileEditor.Handlers
         /// </summary>
         /// <param name="position"></param>
         /// <param name="textureId"></param>
-        public void AddTile(Point position, int textureId)
+        public void AddTile(Point position)
         {
             if(position == new Point(-1, -1)) { return; }
+
+
+            if (!TilePropertyDictionary.ContainsKey(SelectedTileTextureId)) { CreateTileProperty(SelectedTileTextureId); }
+
+            if (TileDictionary.ContainsKey(position))
+            {
+                TileDictionary[position].TextureId = SelectedTileTextureId;
+                return;
+            }
+
+            TileDictionary[position] = new Tile(position, SelectedTileTextureId);
+        }
+
+        /// <summary>
+        /// Add tile with textureid
+        /// </summary>
+        /// <param name="position"></param>
+        /// <param name="textureId"></param>
+        public void AddTile(Point position, int textureId)
+        {
+            if (position == new Point(-1, -1)) { return; }
 
             if (!TilePropertyDictionary.ContainsKey(textureId)) { CreateTileProperty(textureId); }
 
@@ -37,7 +61,7 @@ namespace TileEditor.Handlers
 
             TileDictionary[position] = new Tile(position, textureId);
         }
-        
+
 
         /// <summary>
         /// Creates a new tileproperty
