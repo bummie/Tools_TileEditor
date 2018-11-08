@@ -78,6 +78,7 @@
     <Compile Include="Handlers\DrawHandler.cs" />
     <Compile Include="Handlers\GridHandler.cs" />
     <Compile Include="Handlers\IOHandler.cs" />
+    <Compile Include="Handlers\ModeHandler.cs" />
     <Compile Include="Handlers\TileHandler.cs" />
     <Compile Include="Loaders\TilesetLoader.cs" />
     <Compile Include="Loaders\MapLoader.cs" />

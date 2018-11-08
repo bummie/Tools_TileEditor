@@ -15,7 +15,7 @@ namespace TileEditor.Handlers
         private readonly CameraHandler _cameraHandler;
         private readonly TilesetLoader _tilesetHandler;
         private readonly TileHandler _tileHandler;
-
+        private readonly ModeHandler _modeHandler;
         public int SelectedTileTextureId { get; set; }
 
         private WriteableBitmap _writeableBitmap;
@@ -33,13 +33,14 @@ namespace TileEditor.Handlers
         
         public int GridThickness { get; set; }
 
-        public DrawHandler(Canvas canvas, GridHandler gridHandler, CameraHandler cameraHandler, TilesetLoader tilesetHandler, TileHandler tileHandler)
+        public DrawHandler(Canvas canvas, GridHandler gridHandler, CameraHandler cameraHandler, TilesetLoader tilesetHandler, TileHandler tileHandler, ModeHandler modeHandler)
         {
             _canvas = canvas;
             _gridHandler = gridHandler;
             _cameraHandler = cameraHandler;
             _tilesetHandler = tilesetHandler;
             _tileHandler = tileHandler;
+            _modeHandler = modeHandler;
 
             _stopWatch = new Stopwatch();
             SelectedTileTextureId = 0;
@@ -75,9 +76,9 @@ namespace TileEditor.Handlers
             {
                 DrawTiles(graphics);
                 DrawGrid(graphics);
-                DrawSelectedTileTexture(graphics);
+                if (_modeHandler.CurrentMode == ModeHandler.MODE.DRAW) { DrawSelectedTileTexture(graphics); }
                 DrawHoverSquare(graphics);
-                DrawSelectedSquare(graphics);
+                if (_modeHandler.CurrentMode == ModeHandler.MODE.SELECT) { DrawSelectedSquare(graphics); } 
                 DrawFPS(graphics);
             }
 
@@ -91,9 +92,9 @@ namespace TileEditor.Handlers
         {
             if(!_stopWatch.IsRunning) { _stopWatch.Start(); }
 
-            if(_stopWatch.ElapsedMilliseconds >= 1000)
+            if(_stopWatch.ElapsedMilliseconds >= 3000)
             {
-                _fpsCounter = ((float)_frames*1000 / (_stopWatch.ElapsedMilliseconds));
+                _fpsCounter = ((((float)_frames*1000)/3) / (_stopWatch.ElapsedMilliseconds));
                 _frames = 0;
                 _stopWatch.Restart();
             }

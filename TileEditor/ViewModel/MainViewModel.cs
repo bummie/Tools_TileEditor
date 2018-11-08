@@ -26,6 +26,15 @@ namespace TileEditor.ViewModel
         public RelayCommand<EventArgs> CmdMouseDown { get; set; }
         public RelayCommand<EventArgs> CmdMouseUp { get; set; }
         public RelayCommand<EventArgs> CmdMouseMove { get; set; }
+
+        public RelayCommand CmdButtonSelect { get; set; }
+        public RelayCommand CmdButtonDraw { get; set; }
+        public RelayCommand CmdButtonSave { get; set; }
+        public RelayCommand CmdButtonLoad { get; set; }
+        public RelayCommand CmdButtonHost { get; set; }
+        public RelayCommand CmdButtonJoin { get; set; }
+        public RelayCommand CmdButtonClear { get; set; }
+        
         #endregion
 
         #region InfoStrings
@@ -54,6 +63,7 @@ namespace TileEditor.ViewModel
                 _drawHandler.SelectedTileTextureId = _selectedTileTextureItem.TextureId;
             }
         }
+
         #region Handlers
         private DrawHandler _drawHandler;
         private GridHandler _gridHandler;
@@ -61,6 +71,7 @@ namespace TileEditor.ViewModel
         private TilesetLoader _tilesetLoader;
         private TileHandler _tileHandler;
         private MapLoader _mapLoader;
+        private ModeHandler _modeHandler;
         #endregion
 
         private bool _mouseDown = false;
@@ -105,6 +116,7 @@ namespace TileEditor.ViewModel
         /// </summary>
         private void InitHandlers()
         {
+            _modeHandler = new ModeHandler();
             _cameraHandler = new CameraHandler();
             _tileHandler = new TileHandler();
 
@@ -112,7 +124,7 @@ namespace TileEditor.ViewModel
             _tilesetLoader = new TilesetLoader();
 
             _mapLoader = new MapLoader(_tileHandler, _gridHandler, _tilesetLoader);
-            _drawHandler = new DrawHandler(DrawCanvas, _gridHandler, _cameraHandler, _tilesetLoader, _tileHandler);
+            _drawHandler = new DrawHandler(DrawCanvas, _gridHandler, _cameraHandler, _tilesetLoader, _tileHandler, _modeHandler);
 
             FillSelectableTileTextures();
         }
@@ -221,7 +233,7 @@ namespace TileEditor.ViewModel
         /// </summary>
         private void AddTile(MouseEventArgs mouseEvent)
         {
-            if (_mouseDown)
+            if (_mouseDown && _modeHandler.CurrentMode == ModeHandler.MODE.DRAW)
             {
                 int textureId = (SelectedTileTexture == null) ? 0 : SelectedTileTexture.TextureId;
                 _tileHandler.AddTile(_gridHandler.GetPointFromCoords(mouseEvent.GetPosition(DrawCanvas)), textureId);
