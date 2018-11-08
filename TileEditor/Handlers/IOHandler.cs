@@ -33,6 +33,7 @@ namespace TileEditor.Handlers
         /// <returns>Content from the file being read from</returns>
         public static string ReadFromFile(string filePath)
         {
+            if(filePath == "") { return null; }
             try
             {
                 return File.ReadAllText(filePath);

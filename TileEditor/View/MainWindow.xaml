@@ -10,6 +10,7 @@
         Height="900"
         Width="1200"
         Title="Level Editor"
+        ResizeMode="CanMinimize"
         DataContext="{Binding Main, Source={StaticResource Locator}}">
 
     <Window.Resources>
@@ -169,7 +170,7 @@
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="2*"/>
                 <ColumnDefinition Width="8*"/>
-                <ColumnDefinition Width="1*"/>
+                <ColumnDefinition Width=".6*"/>
             </Grid.ColumnDefinitions>
 
             <Label Grid.Column="0">Properties</Label>

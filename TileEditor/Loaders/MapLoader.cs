@@ -1,4 +1,5 @@
-﻿using Newtonsoft.Json;
+﻿using Microsoft.Win32;
+using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using System.Threading.Tasks;
 using System.Windows;
@@ -10,7 +11,7 @@ namespace TileEditor.Loaders
     public class MapLoader
     {
         private readonly string MAPS_PATH = System.IO.Path.Combine(System.IO.Path.GetFullPath(@"..\..\"), @"Resources\Maps\");
-        private readonly string MAPS_FILETYPE = ".json";
+        private readonly string MAPS_FILETYPE = ".tm";
 
         public string MapName { get; set; }
         public string Date { get; set; }
@@ -51,6 +52,7 @@ namespace TileEditor.Loaders
             {
                 string path = CreateMapPath(MapName);
                 IOHandler.WriteToFile(path, CreateMapToJSON());
+                MessageBox.Show("The map has been saved!");
             });
         }
         
@@ -67,9 +69,9 @@ namespace TileEditor.Loaders
         /// <summary>
         /// Loads given map
         /// </summary>
-        public void LoadMap(string mapName)
+        public void LoadMap()
         {
-            string data = IOHandler.ReadFromFile(CreateMapPath(mapName));
+            string data = IOHandler.ReadFromFile(GetMapPath());
 
             if(data == null) { MessageBox.Show("Could not load map"); return; }
 
@@ -222,6 +224,24 @@ namespace TileEditor.Loaders
                 
                 _tileHandler.AddTile(position, (int)jsonProperty["Id"]);
             }
+        }
+
+        /// <summary>
+        /// Gives the path to a file selected by the user
+        /// </summary>
+        /// <returns></returns>
+        private string GetMapPath()
+        {
+            OpenFileDialog fileDialog = new OpenFileDialog();
+            fileDialog.Title = "Select a TilEditor map";
+            fileDialog.Filter = "TileEditor map files|*.tm";
+
+            if (fileDialog.ShowDialog() == true)
+            {
+                return fileDialog.FileName;
+            }
+
+            return "";
         }
     }
 }
