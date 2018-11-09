@@ -26,40 +26,5 @@ namespace TileEditor
 
             Messenger.Default.Send<Canvas>(DrawCanvas);
         }
-
-        private void OnButtonKeyDown(object sender, KeyEventArgs e)
-        {
-           
-        }
-
-        /// <summary>
-        /// The event fires when the canvas is clicked
-        /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
-        private void OnButtonKeyRelease(object sender, KeyEventArgs e)
-        {
-
-        }
-
-        /// <summary>
-        /// The event fires when the mouse moves over the canvas
-        /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
-        private new void MouseMove(object sender, MouseEventArgs e)
-        {
-
-        }
-
-        private new void MouseDown(object sender, MouseButtonEventArgs e)
-        {
-        }
-
-        private new void MouseUp(object sender, MouseButtonEventArgs e)
-        {
-         
-        }
-
     }
 }

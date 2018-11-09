@@ -174,7 +174,7 @@
             </Grid.ColumnDefinitions>
 
             <Label Grid.Column="0">Properties</Label>
-            <Canvas x:Name="DrawCanvas" Focusable="True" Grid.Column="1" ClipToBounds="True" MouseMove="MouseMove" MouseDown="MouseDown" MouseUp="MouseUp" Background="#FF3D6AB5"/>
+            <Canvas x:Name="DrawCanvas" Focusable="True" Grid.Column="1" ClipToBounds="True" Background="#FF3D6AB5"/>
             <Label Grid.Column="2">Tiles</Label>
 
             <ListView Grid.Column="2" ItemsSource="{Binding SelectableTileTextures, Mode=TwoWay}" SelectedItem="{Binding SelectedTileTexture, Mode=TwoWay}">
