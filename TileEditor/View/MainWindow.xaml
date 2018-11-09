@@ -182,7 +182,7 @@
                 <StackPanel Grid.Row="0" Background="WhiteSmoke">
                     <Label Content="Map Properties"></Label>
                     <TextBox Text="TextBox"/>
-
+    
                 </StackPanel>
 
                 <StackPanel Grid.Row="1" Background="WhiteSmoke">
