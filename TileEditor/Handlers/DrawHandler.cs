@@ -156,7 +156,7 @@ namespace TileEditor.Handlers
             if (_tilesetHandler.TileBitmaps.Count <= 0) { return; }
             if(_tileHandler.TileDictionary.Count <= 0) { return; }
 
-            foreach(var tile in _tileHandler.TileDictionary.Values)
+            foreach (var tile in _tileHandler.TileDictionary.Values)
             {
                 if (!_gridHandler.IsTileInsideGrid(tile.Position)) { continue; }
                 DrawTile(_gridHandler.GetCoordsFromPoint(tile.Position), (int)_gridHandler.TileSize, (System.Drawing.Rectangle)_tilesetHandler.TileBitmaps[tile.TextureId], graphics);

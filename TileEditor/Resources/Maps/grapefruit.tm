@@ -2,7 +2,7 @@
   "Name": "grapefruit",
   "Created": "09.11.2018 00.00.00",
   "Width": 16,
-  "Height": 16,
+  "Height": 10,
   "Tileset": "set.gif",
   "TileSize": 16,
   "TileProperties": [
@@ -16,6 +16,14 @@
     },
     {
       "Id": 8,
+      "SpeedMultiplier": 1.0,
+      "Damage": 0.0,
+      "DamageInterval": 1.0,
+      "Walkable": true,
+      "Water": false
+    },
+    {
+      "Id": 0,
       "SpeedMultiplier": 1.0,
       "Damage": 0.0,
       "DamageInterval": 1.0,
