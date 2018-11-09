@@ -83,6 +83,7 @@
     <Compile Include="Handlers\TileHandler.cs" />
     <Compile Include="Loaders\TilesetLoader.cs" />
     <Compile Include="Loaders\MapLoader.cs" />
+    <Compile Include="Model\Information.cs" />
     <Compile Include="Model\Tile.cs" />
     <Compile Include="Model\TileProperty.cs" />
     <Compile Include="Model\TileTextureItem.cs" />

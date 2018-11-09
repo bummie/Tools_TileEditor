@@ -2,6 +2,7 @@
 using System.Windows.Controls;
 using System.Windows.Input;
 using System.Windows;
+using TileEditor.Model;
 
 namespace TileEditor.Handlers
 {
@@ -16,31 +17,18 @@ namespace TileEditor.Handlers
 
         #endregion
 
-        #region InfoStrings
-        private string _infoMousePos;
-        public string InfoMousePos { get => _infoMousePos; set { _infoMousePos = $"[{value}]"; /*RaisePropertyChanged("InfoMousePos");*/ } }
-        private string _infoTilePos;
-        public string InfoTilePos { get => _infoTilePos; set { _infoTilePos = $"[{value}]"; /* RaisePropertyChanged("InfoTilePos"); */} }
-
-        private string _infoCameraPosition;
-
-        public string InfoCameraPosition
-        {
-            get => _infoCameraPosition; set { _infoCameraPosition = $"[{value}]"; /*RaisePropertyChanged("InfoCameraPosition"); */}
-        }
-
-        #endregion
-
+        private readonly Information _information;
         private readonly Canvas _canvas;
         private bool _mouseDown = false;
 
-        public InputHandler(GridHandler gridHandler, CameraHandler cameraHandler, TileHandler tileHandler, ModeHandler modeHandler, Canvas canvas)
+        public InputHandler(GridHandler gridHandler, CameraHandler cameraHandler, TileHandler tileHandler, ModeHandler modeHandler, Canvas canvas, Information information)
         {
             _gridHandler = gridHandler;
             _cameraHandler = cameraHandler;
             _tileHandler = tileHandler;
             _modeHandler = modeHandler;
             _canvas = canvas;
+            _information = information;
         }
 
         /// <summary>
@@ -52,7 +40,7 @@ namespace TileEditor.Handlers
             var pressedKey = (e != null) ? (KeyEventArgs)e : null;
 
             _cameraHandler.UpdateMovement(pressedKey.Key);
-            InfoCameraPosition = _cameraHandler.Position.ToString() + " Zoom: " + _cameraHandler.Zoom;
+            _information.InfoCameraPosition = _cameraHandler.Position.ToString() + " Zoom: " + _cameraHandler.Zoom;
         }
 
         /// <summary>
@@ -77,8 +65,8 @@ namespace TileEditor.Handlers
             AddTile(mouseEvent);
             _gridHandler.HoverTile = _gridHandler.GetPointFromCoords(mouseEvent.GetPosition(_canvas));
 
-            InfoMousePos = mouseEvent.GetPosition(_canvas).ToString();
-            InfoTilePos = _gridHandler.GetPointFromCoords(mouseEvent.GetPosition(_canvas)).ToString();
+            _information.InfoMousePos = mouseEvent.GetPosition(_canvas).ToString();
+            _information.InfoTilePos = _gridHandler.GetPointFromCoords(mouseEvent.GetPosition(_canvas)).ToString();
         }
 
         /// <summary>

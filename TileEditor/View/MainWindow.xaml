@@ -252,18 +252,17 @@
                 <StackPanel Grid.Column="1" Orientation="Vertical">
                     <StackPanel Orientation="Horizontal">
                         <Image Source="/TileEditor;component/Resources/Icons/camera.png"></Image>
-                        <Label Content="{Binding InfoCameraPosition, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}" Foreground="#FFF9F9F9"/>
-                        <!--SelectedItem="{Binding SelectedType, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"-->
+                        <Label Content="{Binding Information.InfoCameraPosition, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}" Foreground="#FFF9F9F9"/>
                     </StackPanel>
 
                     <StackPanel Orientation="Horizontal">
                         <Image Source="/TileEditor;component/Resources/Icons/mouse.png"></Image>
-                        <Label Content="{Binding InfoMousePos, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}" Foreground="#FFF9F9F9"/>
+                        <Label Content="{Binding Information.InfoMousePos, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}" Foreground="#FFF9F9F9"/>
                     </StackPanel>
 
                     <StackPanel Orientation="Horizontal">
                         <Image Source="/TileEditor;component/Resources/Icons/application_view_tile.png"></Image>
-                        <Label Content="{Binding InfoTilePos, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}" Foreground="#FFF9F9F9"/>
+                        <Label Content="{Binding Information.InfoTilePos, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}" Foreground="#FFF9F9F9"/>
                     </StackPanel>
                 </StackPanel>
 

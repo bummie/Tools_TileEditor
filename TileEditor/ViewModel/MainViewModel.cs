@@ -34,7 +34,7 @@ namespace TileEditor.ViewModel
         public RelayCommand CmdButtonHost { get; set; }
         public RelayCommand CmdButtonJoin { get; set; }
         public RelayCommand CmdButtonClear { get; set; }
-        
+
         #endregion
 
         public Canvas DrawCanvas { get; set; }
@@ -52,6 +52,9 @@ namespace TileEditor.ViewModel
             }
         }
 
+        #region Models
+        public Information Information { get; set; }
+        #endregion
         #region Handlers
         private DrawHandler _drawHandler;
         private GridHandler _gridHandler;
@@ -61,12 +64,20 @@ namespace TileEditor.ViewModel
         private MapLoader _mapLoader;
         private ModeHandler _modeHandler;
         private InputHandler _inputHandler;
+
+        public InputHandler InputHandler
+        {
+            get { return _inputHandler; }
+            set { _inputHandler = value; RaisePropertyChanged("Inputhandler"); }
+        }
+
         #endregion
 
         public MainViewModel()
         {
             CompositionTarget.Rendering += Update;
             InitCommands();
+            Information = new Information();
             SelectableTileTextures = new ObservableCollection<TileTextureItem>();
             Messenger.Default.Register<Canvas>(this, (canvas) => { InitEditor(canvas); });
         }
@@ -98,12 +109,12 @@ namespace TileEditor.ViewModel
         /// </summary>
         private void InitCommands()
         {
-            CmdKeyDown = new RelayCommand<EventArgs>((e) => { if (_inputHandler != null) {  _inputHandler.KeyDown(e); }});
-            CmdKeyUp = new RelayCommand<EventArgs>((e) => { if (_inputHandler != null) {  _inputHandler.KeyUp(e); }});
+            CmdKeyDown = new RelayCommand<EventArgs>((e) => { if (InputHandler != null) { InputHandler.KeyDown(e); }});
+            CmdKeyUp = new RelayCommand<EventArgs>((e) => { if (InputHandler != null) { InputHandler.KeyUp(e); }});
 
-            CmdMouseDown = new RelayCommand<EventArgs>((e) => { if (_inputHandler != null) {  _inputHandler.MouseDown(e); }});
-            CmdMouseUp = new RelayCommand<EventArgs>((e) => { if (_inputHandler != null) {  _inputHandler.MouseUp(e); }});
-            CmdMouseMove = new RelayCommand<EventArgs>((e) => { if (_inputHandler != null) { _inputHandler.MouseMove(e); }});
+            CmdMouseDown = new RelayCommand<EventArgs>((e) => { if (InputHandler != null) {  InputHandler.MouseDown(e); }});
+            CmdMouseUp = new RelayCommand<EventArgs>((e) => { if (InputHandler != null) {  InputHandler.MouseUp(e); }});
+            CmdMouseMove = new RelayCommand<EventArgs>((e) => { if (InputHandler != null) { InputHandler.MouseMove(e); }});
 
             CmdButtonSelect = new RelayCommand(() => { if (_modeHandler != null) { _modeHandler.CurrentMode = ModeHandler.MODE.SELECT; } });
             CmdButtonDraw = new RelayCommand(() => { if (_modeHandler != null) { _modeHandler.CurrentMode = ModeHandler.MODE.DRAW; } });
@@ -126,7 +137,7 @@ namespace TileEditor.ViewModel
             _tilesetLoader = new TilesetLoader();
             _mapLoader = new MapLoader(_tileHandler, _gridHandler, _tilesetLoader);
             _drawHandler = new DrawHandler(DrawCanvas, _gridHandler, _cameraHandler, _tilesetLoader, _tileHandler, _modeHandler);
-            _inputHandler = new InputHandler(_gridHandler, _cameraHandler, _tileHandler, _modeHandler, DrawCanvas);
+            InputHandler = new InputHandler(_gridHandler, _cameraHandler, _tileHandler, _modeHandler, DrawCanvas, Information);
         }
 
         /// <summary>
