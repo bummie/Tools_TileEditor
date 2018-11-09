@@ -173,9 +173,26 @@
                 <ColumnDefinition Width=".6*"/>
             </Grid.ColumnDefinitions>
 
-            <Label Grid.Column="0">Properties</Label>
+            <Grid Grid.Column="0">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="1*"/>
+                    <RowDefinition Height="3*"/>
+                </Grid.RowDefinitions>
+
+                <StackPanel Grid.Row="0" Background="WhiteSmoke">
+                    <Label Content="Map Properties"></Label>
+                    <TextBox Text="TextBox"/>
+
+                </StackPanel>
+
+                <StackPanel Grid.Row="1" Background="WhiteSmoke">
+                    <Label Content="Tile Properties"></Label>
+                    
+                </StackPanel>
+            </Grid>
             <Canvas x:Name="DrawCanvas" Focusable="True" Grid.Column="1" ClipToBounds="True" Background="#FF3D6AB5"/>
-            <Label Grid.Column="2">Tiles</Label>
+            
+            
 
             <ListView Grid.Column="2" ItemsSource="{Binding SelectableTileTextures, Mode=TwoWay}" SelectedItem="{Binding SelectedTileTexture, Mode=TwoWay}">
                 <ListView.ItemTemplate>
