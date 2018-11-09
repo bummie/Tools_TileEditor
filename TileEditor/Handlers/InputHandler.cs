@@ -65,7 +65,11 @@ namespace TileEditor.Handlers
             AddTile(mouseEvent);
             _gridHandler.HoverTile = _gridHandler.GetPointFromCoords(mouseEvent.GetPosition(_canvas));
 
-            _information.InfoMousePos = mouseEvent.GetPosition(_canvas).ToString();
+            Point mousePos = mouseEvent.GetPosition(_canvas);
+            mousePos.X = (int)mousePos.X;
+            mousePos.Y = (int)mousePos.Y;
+
+            _information.InfoMousePos = mousePos.ToString();
             _information.InfoTilePos = _gridHandler.GetPointFromCoords(mouseEvent.GetPosition(_canvas)).ToString();
         }
 

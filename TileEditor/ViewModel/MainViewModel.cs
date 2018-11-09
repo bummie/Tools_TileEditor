@@ -54,6 +54,8 @@ namespace TileEditor.ViewModel
 
         #region Models
         public Information Information { get; set; }
+        public MapData MapData { get; set; }
+
         #endregion
         #region Handlers
         private DrawHandler _drawHandler;
@@ -77,7 +79,7 @@ namespace TileEditor.ViewModel
         {
             CompositionTarget.Rendering += Update;
             InitCommands();
-            Information = new Information();
+            InitModels();
             SelectableTileTextures = new ObservableCollection<TileTextureItem>();
             Messenger.Default.Register<Canvas>(this, (canvas) => { InitEditor(canvas); });
         }
@@ -102,6 +104,15 @@ namespace TileEditor.ViewModel
         {
             if (DrawCanvas == null) { return; }
             _drawHandler.Update();
+        }
+
+        /// <summary>
+        /// Initialized the models
+        /// </summary>
+        private void InitModels()
+        {
+            Information = new Information();
+            MapData = new MapData();
         }
 
         /// <summary>
@@ -135,7 +146,7 @@ namespace TileEditor.ViewModel
             _gridHandler = new GridHandler(_cameraHandler);
             _tileHandler = new TileHandler(SelectedTileTexture, _gridHandler);
             _tilesetLoader = new TilesetLoader();
-            _mapLoader = new MapLoader(_tileHandler, _gridHandler, _tilesetLoader);
+            _mapLoader = new MapLoader(_tileHandler, _gridHandler, _tilesetLoader, MapData);
             _drawHandler = new DrawHandler(DrawCanvas, _gridHandler, _cameraHandler, _tilesetLoader, _tileHandler, _modeHandler);
             InputHandler = new InputHandler(_gridHandler, _cameraHandler, _tileHandler, _modeHandler, DrawCanvas, Information);
         }

@@ -13,34 +13,29 @@ namespace TileEditor.Loaders
         private readonly string MAPS_PATH = System.IO.Path.Combine(System.IO.Path.GetFullPath(@"..\..\"), @"Resources\Maps\");
         private readonly string MAPS_FILETYPE = ".tm";
 
-        public string MapName { get; set; }
-        public string Date { get; set; }
-        public string Tileset { get; set; }
-        public int TileSize { get; set; }
-        public int GridWidth { get; set; }
-        public int GridHeight { get; set; }
+        private readonly MapData _mapData;    
 
         public readonly TileHandler _tileHandler;
         public readonly GridHandler _gridHandler;
         public readonly TilesetLoader _tilesetLoader;
 
-        public MapLoader(TileHandler tileHandler, GridHandler gridHandler, TilesetLoader tilesetLoader)
+        public MapLoader(TileHandler tileHandler, GridHandler gridHandler, TilesetLoader tilesetLoader, MapData mapData)
         {
             _tileHandler = tileHandler;
             _gridHandler = gridHandler;
             _tilesetLoader = tilesetLoader;
-
+            _mapData = mapData;
             Reset();
         }
 
         private void Reset()
         {
-            MapName = "Unnamed";
-            Date = "";
-            Tileset = "set.gif";
-            TileSize = 16;
-            GridWidth = 16;
-            GridHeight = 16;
+            _mapData.MapName = "Unnamed";
+            _mapData.Date = "";
+            _mapData.TileSet = "set.gif";
+            _mapData.TileSize = 16;
+            _mapData.GridWidth = 16;
+            _mapData.GridHeight = 16;
         }
 
         /// <summary>
@@ -50,7 +45,7 @@ namespace TileEditor.Loaders
         {
             Task.Factory.StartNew(() =>
             {
-                string path = CreateMapPath(MapName);
+                string path = CreateMapPath(_mapData.MapName);
                 IOHandler.WriteToFile(path, CreateMapToJSON());
                 MessageBox.Show("The map has been saved!");
             });
@@ -63,7 +58,7 @@ namespace TileEditor.Loaders
         /// <returns></returns>
         private string CreateMapPath(string mapName)
         {
-            return MAPS_PATH + MapName.ToLower() + MAPS_FILETYPE;
+            return MAPS_PATH + _mapData.MapName.ToLower() + MAPS_FILETYPE;
         }
 
         /// <summary>
@@ -89,11 +84,11 @@ namespace TileEditor.Loaders
         /// </summary>
         private void ResetEditor()
         {
-            _gridHandler.GridWidth = GridWidth;
-            _gridHandler.GridHeight = GridHeight;
-            _gridHandler.TileSize = TileSize;
+            _gridHandler.GridWidth = _mapData.GridWidth;
+            _gridHandler.GridHeight = _mapData.GridHeight;
+            _gridHandler.TileSize = _mapData.TileSize;
 
-            _tilesetLoader.LoadTileset(Tileset, TileSize);
+            _tilesetLoader.LoadTileset(_mapData.TileSet, _mapData.TileSize);
         }
 
         /// <summary>
@@ -106,12 +101,12 @@ namespace TileEditor.Loaders
 
             JObject mapObject = new JObject
             {
-                { "Name", MapName },
+                { "Name", _mapData.MapName },
                 { "Created", System.DateTime.Today.ToString() },
-                { "Width", GridWidth },
-                { "Height", GridHeight },
-                { "Tileset", Tileset },
-                { "TileSize", TileSize }
+                { "Width", _mapData.GridWidth },
+                { "Height", _mapData.GridHeight },
+                { "Tileset", _mapData.TileSet },
+                { "TileSize", _mapData.TileSize }
             };
 
             mapObject.Add("TileProperties", CreateTilePropertyArray());
@@ -177,12 +172,12 @@ namespace TileEditor.Loaders
         {
             if( mapObject == null) { return; }
 
-            MapName = (string)mapObject["Name"];
-            Date = (string)mapObject["Created"];
-            GridWidth = (int)mapObject["Width"];
-            GridHeight = (int)mapObject["Width"];
-            Tileset = (string)mapObject["Tileset"];
-            TileSize = (int)mapObject["TileSize"];
+            _mapData.MapName = (string)mapObject["Name"];
+            _mapData.Date = (string)mapObject["Created"];
+            _mapData.GridWidth = (int)mapObject["Width"];
+            _mapData.GridHeight = (int)mapObject["Width"];
+            _mapData.TileSet = (string)mapObject["Tileset"];
+            _mapData.TileSize = (int)mapObject["TileSize"];
 
             LoadTilePropertiesFromJSON((JArray)mapObject["TileProperties"]);
             LoadTilesFromJSON((JArray)mapObject["Tiles"]);
