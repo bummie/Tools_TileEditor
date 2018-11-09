@@ -180,14 +180,45 @@
                 </Grid.RowDefinitions>
 
                 <StackPanel Grid.Row="0" Background="WhiteSmoke">
-                    <Label Content="Map Properties"></Label>
-                    <TextBox Text="TextBox"/>
-    
+                    <Label Content="Map Properties" FontWeight="Bold"></Label>
+
+                    <StackPanel Orientation="Horizontal">
+                        <Label Content="Name"></Label>
+                        <TextBox Text="Unnamed" Width="Auto" MinWidth="150"/>
+                    </StackPanel>
+                    <StackPanel Orientation="Horizontal">
+                        <Label Content="Tileset"></Label>
+                        <TextBox Text="set.gif" Width="Auto" MinWidth="150"/>
+                    </StackPanel>
+                    <StackPanel Orientation="Horizontal">
+                        <Label Content="Tilesize"></Label>
+                        <TextBox Text="16" Width="Auto" MinWidth="150"/>
+                    </StackPanel>
                 </StackPanel>
 
-                <StackPanel Grid.Row="1" Background="WhiteSmoke">
-                    <Label Content="Tile Properties"></Label>
+                <StackPanel Grid.Row="1" Background="WhiteSmoke" Visibility="Visible">
+                    <Label Content="Tile Properties" FontWeight="Bold"></Label>
                     
+                    <StackPanel Orientation="Horizontal">
+                        <Label Content="SpeedMultiplier"></Label>
+                        <TextBox Text="1" Width="Auto" MinWidth="75"/>
+                    </StackPanel>
+                    <StackPanel Orientation="Horizontal">
+                        <Label Content="Damage"></Label>
+                        <TextBox Text="0" Width="Auto" MinWidth="75"/>
+                    </StackPanel>
+                    <StackPanel Orientation="Horizontal">
+                        <Label Content="DamageInterval"></Label>
+                        <TextBox Text="0" Width="Auto" MinWidth="75"/>
+                    </StackPanel>
+                    <StackPanel Orientation="Horizontal">
+                        <Label Content="Walkable"></Label>
+                        <CheckBox IsChecked="True"></CheckBox>
+                    </StackPanel>
+                    <StackPanel Orientation="Horizontal">
+                        <Label Content="Water"></Label>
+                        <CheckBox IsChecked="false"></CheckBox>
+                    </StackPanel>
                 </StackPanel>
             </Grid>
             <Canvas x:Name="DrawCanvas" Focusable="True" Grid.Column="1" ClipToBounds="True" Background="#FF3D6AB5"/>
