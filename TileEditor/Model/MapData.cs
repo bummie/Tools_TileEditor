@@ -19,10 +19,15 @@ namespace TileEditor.Model
         private string _tileSet;
         public string TileSet { get => _tileSet; set { _tileSet = value; RaisePropertyChanged("TileSet"); } }
 
-        public int TileSize { get; set; }
-        public int GridWidth { get; set; }
-        public int GridHeight { get; set; }
+        private int _tileSize;
+        public int TileSize { get => _tileSize; set { _tileSize = value; RaisePropertyChanged("TileSize"); } }
 
+        private int _gridWidth;
+        public int GridWidth { get => _gridWidth; set { _gridWidth = value; RaisePropertyChanged("GridWidth"); } }
+
+        private int _gridHeight;
+        public int GridHeight { get => _gridHeight; set { _gridHeight = value; RaisePropertyChanged("GridHeight"); } }
+        
         public MapData() { }
     }
 }

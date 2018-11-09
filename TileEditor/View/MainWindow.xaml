@@ -194,6 +194,14 @@
                         <Label Content="Tilesize"></Label>
                         <TextBox Text="{Binding MapData.TileSize, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Width="Auto" MinWidth="150"/>
                     </StackPanel>
+                    <StackPanel Orientation="Horizontal">
+                        <Label Content="GridWidth"></Label>
+                        <TextBox Text="{Binding MapData.GridWidth, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Width="Auto" MinWidth="150"/>
+                    </StackPanel>
+                    <StackPanel Orientation="Horizontal">
+                        <Label Content="GridHeight"></Label>
+                        <TextBox Text="{Binding MapData.GridHeight, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Width="Auto" MinWidth="150"/>
+                    </StackPanel>
                 </StackPanel>
 
                 <StackPanel Grid.Row="1" Background="WhiteSmoke" Visibility="Visible">
