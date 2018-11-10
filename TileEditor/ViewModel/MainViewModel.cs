@@ -166,7 +166,7 @@ namespace TileEditor.ViewModel
             _modeHandler = new ModeHandler();
             _cameraHandler = new CameraHandler();
             _gridHandler = new GridHandler(_cameraHandler);
-            _tileHandler = new TileHandler(SelectedTileTexture, _gridHandler);
+            _tileHandler = new TileHandler(_gridHandler);
             _tilesetLoader = new TilesetLoader();
             _mapLoader = new MapLoader(_tileHandler, _gridHandler, _tilesetLoader, MapData);
             _drawHandler = new DrawHandler(DrawCanvas, _gridHandler, _cameraHandler, _tilesetLoader, _tileHandler, _modeHandler);

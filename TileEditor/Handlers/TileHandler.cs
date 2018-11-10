@@ -13,7 +13,7 @@ namespace TileEditor.Handlers
         public Dictionary<Point, Tile> TileDictionary { get; set; }
         public int SelectedTileTextureId { get; set; }
 
-        public TileHandler(TileTextureItem selectedTexture, GridHandler gridHandler)
+        public TileHandler(GridHandler gridHandler)
         {
             TilePropertyDictionary = new Dictionary<int, TileProperty>();
             TileDictionary = new Dictionary<Point, Tile>();
@@ -100,6 +100,7 @@ namespace TileEditor.Handlers
         /// <param name="textureId"></param>
         private void CreateTileProperty(int textureId)
         {
+            if (TilePropertyDictionary.ContainsKey(textureId)) { return; }
             TilePropertyDictionary.Add(textureId, new TileProperty(textureId));            
         }
 
@@ -109,6 +110,7 @@ namespace TileEditor.Handlers
         /// <param name="tileProperty"></param>
         public void AddTileProperty(TileProperty tileProperty)
         {
+            if (TilePropertyDictionary.ContainsKey(tileProperty.TextureId)) { return; }
             TilePropertyDictionary.Add(tileProperty.TextureId, tileProperty);
         }
 
