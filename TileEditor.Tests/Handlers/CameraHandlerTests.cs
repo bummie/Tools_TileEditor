@@ -1,0 +1,28 @@
+﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
+using TileEditor.Handlers;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+using System.Windows;
+
+namespace TileEditor.Handlers.Tests
+{
+    [TestClass()]
+    public class CameraHandlerTests
+    {
+        [TestMethod()]
+        public void UpdateMovement_SeeIfCameraMovesCorrectly_PositionIsCorrect()
+        {
+            var cameraHandler = new CameraHandler();
+            cameraHandler.Position = new Point(0, 0);
+
+            cameraHandler.UpdateMovement(System.Windows.Input.Key.W);
+            Assert.AreEqual(new Point(0, cameraHandler.MOVE_AMOUNT), cameraHandler.Position);
+
+            cameraHandler.UpdateMovement(System.Windows.Input.Key.D);
+            Assert.AreEqual(new Point(cameraHandler.MOVE_AMOUNT, cameraHandler.MOVE_AMOUNT), cameraHandler.Position);
+        }
+    }
+}
