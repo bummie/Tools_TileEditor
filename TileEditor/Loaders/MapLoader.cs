@@ -73,7 +73,6 @@ namespace TileEditor.Loaders
             _tileHandler.Reset();
 
             JSONToMap(JObject.Parse(data));
-            ResetEditor();
         }
 
         /// <summary>

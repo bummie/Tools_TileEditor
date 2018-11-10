@@ -35,6 +35,7 @@ namespace TileEditor.ViewModel
         public RelayCommand CmdButtonJoin { get; set; }
         public RelayCommand CmdButtonClear { get; set; }
         public RelayCommand CmdButtonUpdateEditor { get; set; }
+        public RelayCommand CmdButtonUpdateTileProperty { get; set; }
 
         #endregion
 
@@ -136,10 +137,25 @@ namespace TileEditor.ViewModel
             CmdButtonDraw = new RelayCommand(() => { if (_modeHandler != null) { _modeHandler.CurrentMode = ModeHandler.MODE.DRAW; } });
             CmdButtonFill = new RelayCommand(() => { if (_modeHandler != null) { _modeHandler.CurrentMode = ModeHandler.MODE.FILL; } });
             CmdButtonSave = new RelayCommand(() => { if (_mapLoader != null) { _mapLoader.SaveMap();} });
-            CmdButtonLoad = new RelayCommand(() => { if (_mapLoader != null) { _mapLoader.LoadMap(); } });
+            CmdButtonLoad = new RelayCommand(() => { if (_mapLoader != null) { _mapLoader.LoadMap(); UpdateEditor(); } });
             CmdButtonClear = new RelayCommand(() => { if (_tileHandler != null) { _tileHandler.Reset(); } });
 
             CmdButtonUpdateEditor = new RelayCommand(() => { UpdateEditor(); });
+            CmdButtonUpdateTileProperty = new RelayCommand(() => { UpdateTileProperty(); });
+        }
+
+        /// <summary>
+        /// Updates the data from the UI to the selected tile
+        /// </summary>
+        private void UpdateTileProperty()
+        {
+            Tile selectedTile = _tileHandler.GetTile(_gridHandler.SelectedTilePoint);
+            if (selectedTile == null) { return; }
+
+            TileProperty tileProp = _tileHandler.GetTileProperty(selectedTile.TextureId);
+            if (tileProp == null) { return; }
+
+            tileProp.CopyData(TileProperty);
         }
 
         /// <summary>

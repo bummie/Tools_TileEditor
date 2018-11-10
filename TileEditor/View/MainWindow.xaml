@@ -130,7 +130,7 @@
                     <Label Grid.Row="1">Import</Label>
                 </Grid>
             </Button>
-            <Button Grid.Column="5" Command="{Binding CmdButtonHost}">
+            <Button Grid.Column="5" Command="{Binding CmdButtonHost}" IsEnabled="False">
                 <Grid>
                     <Grid.RowDefinitions>
                         <RowDefinition Height="2*"></RowDefinition>
@@ -141,7 +141,7 @@
                     <Label Grid.Row="1">Host</Label>
                 </Grid>
             </Button>
-            <Button Grid.Column="6" Command="{Binding CmdButtonJoin}">
+            <Button Grid.Column="6" Command="{Binding CmdButtonJoin}" IsEnabled="False">
                 <Grid>
                     <Grid.RowDefinitions>
                         <RowDefinition Height="2*"></RowDefinition>
@@ -232,6 +232,7 @@
                         <Label Content="Water"></Label>
                         <CheckBox IsChecked="{Binding TileProperty.Water, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"></CheckBox>
                     </StackPanel>
+                    <Button Content="Update TileProperty" Command="{Binding CmdButtonUpdateTileProperty}"></Button>
                 </StackPanel>
             </Grid>
             <Canvas x:Name="DrawCanvas" Focusable="True" Grid.Column="1" ClipToBounds="True" Background="#FF3D6AB5"/>
