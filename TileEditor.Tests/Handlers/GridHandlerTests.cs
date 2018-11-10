@@ -38,6 +38,9 @@ namespace TileEditor.Handlers.Tests
 
             var point3 = gridHandler.GetPointFromCoords(new Point(-100, 700));
             Assert.AreEqual(new Point(-1, -1), point3);
+
+            var point4 = gridHandler.GetPointFromCoords(new Point(0, -700));
+            Assert.AreEqual(new Point(-1, -1), point4);
         }
 
         [TestMethod]

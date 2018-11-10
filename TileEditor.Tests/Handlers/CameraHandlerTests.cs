@@ -25,6 +25,18 @@ namespace TileEditor.Handlers.Tests
 
             cameraHandler.UpdateMovement(System.Windows.Input.Key.A);
             Assert.AreEqual(new Point(cameraHandler.MOVE_AMOUNT, cameraHandler.MOVE_AMOUNT), cameraHandler.Position);
+
+            cameraHandler.UpdateMovement(System.Windows.Input.Key.S);
+            Assert.AreEqual(new Point(cameraHandler.MOVE_AMOUNT, 0), cameraHandler.Position);
+
+            cameraHandler.UpdateMovement(System.Windows.Input.Key.D);
+            Assert.AreEqual(new Point(0, 0), cameraHandler.Position);
+
+            cameraHandler.UpdateMovement(System.Windows.Input.Key.Q);
+            Assert.AreEqual(1 + CameraHandler.ZOOM_LEVEL, cameraHandler.Zoom);
+
+            cameraHandler.UpdateMovement(System.Windows.Input.Key.E);
+            Assert.AreEqual(1, cameraHandler.Zoom);
         }
 
         [TestMethod()]
