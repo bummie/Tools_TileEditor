@@ -2,7 +2,7 @@
   "Name": "platformer",
   "Created": "10/11/2018 00:00:00",
   "Width": 32,
-  "Height": 16,
+  "Height": 32,
   "Tileset": "2dplatform.png",
   "TileSize": 32,
   "TileProperties": [
@@ -99,7 +99,7 @@
       "SpeedMultiplier": 1.0,
       "Damage": 0.0,
       "DamageInterval": 1.0,
-      "Walkable": true,
+      "Walkable": false,
       "Water": false
     },
     {
@@ -136,6 +136,22 @@
     },
     {
       "Id": 48,
+      "SpeedMultiplier": 1.0,
+      "Damage": 0.0,
+      "DamageInterval": 1.0,
+      "Walkable": true,
+      "Water": false
+    },
+    {
+      "Id": 59,
+      "SpeedMultiplier": 1.0,
+      "Damage": 0.0,
+      "DamageInterval": 1.0,
+      "Walkable": true,
+      "Water": false
+    },
+    {
+      "Id": 32,
       "SpeedMultiplier": 1.0,
       "Damage": 0.0,
       "DamageInterval": 1.0,
