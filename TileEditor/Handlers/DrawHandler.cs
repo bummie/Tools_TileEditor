@@ -74,6 +74,9 @@ namespace TileEditor.Handlers
             if(_bitmapRender == null) { return; }
             using (var graphics = System.Drawing.Graphics.FromImage(_bitmapRender))
             {
+                graphics.CompositingMode = System.Drawing.Drawing2D.CompositingMode.SourceCopy;
+                graphics.InterpolationMode = System.Drawing.Drawing2D.InterpolationMode.NearestNeighbor;
+
                 DrawTiles(graphics);
                 DrawGrid(graphics);
                 if (_modeHandler.CurrentMode == ModeHandler.MODE.DRAW) { DrawSelectedTileTexture(graphics); }
@@ -126,7 +129,27 @@ namespace TileEditor.Handlers
         {
             if(_bitmapRender == null) { return; }
 
-            _writeableBitmap = new WriteableBitmap(BitmapToSource(_bitmapRender));
+            var bitmapSource = BitmapToSource(_bitmapRender);
+
+            int stride = bitmapSource.PixelWidth * (bitmapSource.Format.BitsPerPixel + 7) / 8;
+
+            byte[] data = new byte[stride * bitmapSource.PixelHeight];
+
+            bitmapSource.CopyPixels(data, stride, 0);
+
+            if(_writeableBitmap == null)
+            {
+                _writeableBitmap = new WriteableBitmap
+                (
+                     bitmapSource.PixelWidth,
+                     bitmapSource.PixelHeight,
+                     bitmapSource.DpiX, bitmapSource.DpiY,
+                     bitmapSource.Format, null
+                 );
+            }
+
+            _writeableBitmap.WritePixels( new Int32Rect(0, 0, bitmapSource.PixelWidth, bitmapSource.PixelHeight),data, stride, 0);
+
             CreateCanvasImage(_writeableBitmap);
         }
 
@@ -190,6 +213,8 @@ namespace TileEditor.Handlers
         private void DrawFPS(System.Drawing.Graphics graphics)
         {
             if (_bitmapRender == null) { return; }
+            graphics.CompositingMode = System.Drawing.Drawing2D.CompositingMode.SourceOver;
+            graphics.InterpolationMode = System.Drawing.Drawing2D.InterpolationMode.Bilinear;
 
             DrawText(new Point(0, 0), 250, 80, _fpsFont, $"FPS: {_fpsCounter}", graphics);
         }
