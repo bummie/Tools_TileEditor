@@ -15,14 +15,30 @@ namespace TileEditor.Handlers.Tests
         [TestMethod()]
         public void UpdateMovement_SeeIfCameraMovesCorrectly_PositionIsCorrect()
         {
-            var cameraHandler = new CameraHandler();
-            cameraHandler.Position = new Point(0, 0);
+            var cameraHandler = new CameraHandler
+            {
+                Position = new Point(0, 0)
+            };
 
             cameraHandler.UpdateMovement(System.Windows.Input.Key.W);
             Assert.AreEqual(new Point(0, cameraHandler.MOVE_AMOUNT), cameraHandler.Position);
 
-            cameraHandler.UpdateMovement(System.Windows.Input.Key.D);
+            cameraHandler.UpdateMovement(System.Windows.Input.Key.A);
             Assert.AreEqual(new Point(cameraHandler.MOVE_AMOUNT, cameraHandler.MOVE_AMOUNT), cameraHandler.Position);
+        }
+
+        [TestMethod()]
+        public void Zoom_SeeIfZoomIsClamped_ValueBetweenMaxAndMin()
+        {
+            var cameraHandler = new CameraHandler
+            {
+                Zoom = -100
+            };
+
+            Assert.AreEqual(cameraHandler.MIN_ZOOM, cameraHandler.Zoom);
+
+            cameraHandler.Zoom = 1000;
+            Assert.AreEqual(cameraHandler.MAX_ZOOM, cameraHandler.Zoom);
         }
     }
 }
