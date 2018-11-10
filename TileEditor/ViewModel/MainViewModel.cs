@@ -210,6 +210,11 @@ namespace TileEditor.ViewModel
         [return: MarshalAs(UnmanagedType.Bool)]
         public static extern bool DeleteObject([In] IntPtr hObject);
 
+        /// <summary>
+        /// Retrieves the source of the given bitmap
+        /// </summary>
+        /// <param name="bmp"></param>
+        /// <returns></returns>
         public BitmapSource ImageSourceForBitmap(Bitmap bmp)
         {
             var handle = bmp.GetHbitmap();

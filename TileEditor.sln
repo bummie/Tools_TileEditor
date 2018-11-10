@@ -5,6 +5,8 @@ VisualStudioVersion = 15.0.28010.2041
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TileEditor", "TileEditor\TileEditor.csproj", "{A3B4E840-CFC6-4F8A-96BA-AF1B7592355C}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TileEditor.Tests", "TileEditor.Tests\TileEditor.Tests.csproj", "{C6BB3A57-056C-40A0-9988-71D7389183C6}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -15,6 +17,10 @@ Global
 		{A3B4E840-CFC6-4F8A-96BA-AF1B7592355C}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{A3B4E840-CFC6-4F8A-96BA-AF1B7592355C}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{A3B4E840-CFC6-4F8A-96BA-AF1B7592355C}.Release|Any CPU.Build.0 = Release|Any CPU
+		{C6BB3A57-056C-40A0-9988-71D7389183C6}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C6BB3A57-056C-40A0-9988-71D7389183C6}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C6BB3A57-056C-40A0-9988-71D7389183C6}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C6BB3A57-056C-40A0-9988-71D7389183C6}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
