@@ -52,8 +52,9 @@ namespace TileEditor.Handlers
         public void AddTile(Point position, int textureId)
         {
             if (position == new Point(-1, -1)) { return; }
+            int tilePropertyId = (textureId == -1) ? SelectedTileTextureId : textureId;
 
-            if (!TilePropertyDictionary.ContainsKey(textureId)) { CreateTileProperty(textureId); }
+            if (!TilePropertyDictionary.ContainsKey(tilePropertyId)) { CreateTileProperty(tilePropertyId); }
 
             if (TileDictionary.ContainsKey(position))
             {
@@ -74,19 +75,23 @@ namespace TileEditor.Handlers
         {
             if (!_gridHandler.IsTileInsideGrid(tile)) { return; }
             if (!TileDictionary.ContainsKey(tile)) { AddTile(tile, -1); }
-            if (targetTexture == SelectedTileTextureId) { if (TileDictionary[tile].TextureId == -1) { TileDictionary.Remove(tile); } return; }
-            if (TileDictionary[tile].TextureId != targetTexture) { if (TileDictionary[tile].TextureId == -1) { TileDictionary.Remove(tile); } return; }
+            if (targetTexture == SelectedTileTextureId) { RemoveNegativeTileTextureId(tile); return; }
+            if (TileDictionary[tile].TextureId != targetTexture) { RemoveNegativeTileTextureId(tile); return; }
 
             TileDictionary[tile].TextureId = SelectedTileTextureId;
 
-            //FillTiles(new Point(tile.X + 1, tile.Y + 1), targetTexture);
             FillTiles(new Point(tile.X + 1, tile.Y), targetTexture);
             FillTiles(new Point(tile.X, tile.Y + 1), targetTexture);
-            //FillTiles(new Point(tile.X - 1, tile.Y - 1), targetTexture);
             FillTiles(new Point(tile.X - 1, tile.Y), targetTexture);
             FillTiles(new Point(tile.X, tile.Y - 1), targetTexture);
-            //FillTiles(new Point(tile.X + 1, tile.Y - 1), targetTexture);
-            //FillTiles(new Point(tile.X - 1, tile.Y + 1), targetTexture);
+        }
+
+        private void RemoveNegativeTileTextureId(Point tile)
+        {
+            if (TileDictionary[tile].TextureId == -1)
+            {
+                TileDictionary.Remove(tile);
+            }
         }
 
         /// <summary>
@@ -116,8 +121,28 @@ namespace TileEditor.Handlers
             TileDictionary.Clear();
         }
 
-        /* EXPORT */
+        /// <summary>
+        /// Returns the propterty with given id
+        /// </summary>
+        /// <param name="textureId"></param>
+        /// <returns></returns>
+        public TileProperty GetTileProperty(int textureId)
+        {
+            if (!TilePropertyDictionary.ContainsKey(textureId)) { return null; }
 
-        /* IMPORT */
+            return TilePropertyDictionary[textureId];
+        }
+
+        /// <summary>
+        /// Returns the tile at given point
+        /// </summary>
+        /// <param name="tile"></param>
+        /// <returns></returns>
+        public Tile GetTile(Point position)
+        {
+            if (!TileDictionary.ContainsKey(position)) { return null; }
+
+            return TileDictionary[position];
+        }
     }
 }

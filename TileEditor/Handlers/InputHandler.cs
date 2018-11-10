@@ -18,10 +18,11 @@ namespace TileEditor.Handlers
         #endregion
 
         private readonly Information _information;
+        private readonly TileProperty _tileProperty;
         private readonly Canvas _canvas;
         private bool _mouseDown = false;
 
-        public InputHandler(GridHandler gridHandler, CameraHandler cameraHandler, TileHandler tileHandler, ModeHandler modeHandler, Canvas canvas, Information information)
+        public InputHandler(GridHandler gridHandler, CameraHandler cameraHandler, TileHandler tileHandler, ModeHandler modeHandler, Canvas canvas, Information information, TileProperty tileProperty)
         {
             _gridHandler = gridHandler;
             _cameraHandler = cameraHandler;
@@ -29,6 +30,7 @@ namespace TileEditor.Handlers
             _modeHandler = modeHandler;
             _canvas = canvas;
             _information = information;
+            _tileProperty = tileProperty;
         }
 
         /// <summary>
@@ -121,7 +123,16 @@ namespace TileEditor.Handlers
 
             if (mouseEvent == null) { return; }
 
-            _gridHandler.SelectedTilePoint = _gridHandler.GetPointFromCoords(mouseEvent.GetPosition(_canvas));
+            if(_modeHandler.CurrentMode == ModeHandler.MODE.SELECT)
+            {
+                _gridHandler.SelectedTilePoint = _gridHandler.GetPointFromCoords(mouseEvent.GetPosition(_canvas));
+                Tile selectedTile = _tileHandler.GetTile(_gridHandler.SelectedTilePoint);
+                if(selectedTile != null)
+                {
+                    _tileProperty.CopyData(_tileHandler.GetTileProperty(selectedTile.TextureId));
+                }
+            }
+            
             _mouseDown = false;
         }
 

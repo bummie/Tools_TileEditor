@@ -58,8 +58,9 @@ namespace TileEditor.ViewModel
         #region Models
         public Information Information { get; set; }
         public MapData MapData { get; set; }
-
+        public TileProperty TileProperty { get; set; }
         #endregion
+
         #region Handlers
         private DrawHandler _drawHandler;
         private GridHandler _gridHandler;
@@ -116,6 +117,7 @@ namespace TileEditor.ViewModel
         {
             Information = new Information();
             MapData = new MapData();
+            TileProperty = new TileProperty(0);
         }
 
         /// <summary>
@@ -152,7 +154,7 @@ namespace TileEditor.ViewModel
             _tilesetLoader = new TilesetLoader();
             _mapLoader = new MapLoader(_tileHandler, _gridHandler, _tilesetLoader, MapData);
             _drawHandler = new DrawHandler(DrawCanvas, _gridHandler, _cameraHandler, _tilesetLoader, _tileHandler, _modeHandler);
-            InputHandler = new InputHandler(_gridHandler, _cameraHandler, _tileHandler, _modeHandler, DrawCanvas, Information);
+            InputHandler = new InputHandler(_gridHandler, _cameraHandler, _tileHandler, _modeHandler, DrawCanvas, Information, TileProperty);
         }
 
         /// <summary>
