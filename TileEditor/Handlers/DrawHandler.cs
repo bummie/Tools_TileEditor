@@ -116,8 +116,10 @@ namespace TileEditor.Handlers
             _canvasRender.Width = _canvas.ActualWidth;
             _canvasRender.Height = _canvas.ActualHeight;
             _canvasRender.Source = bitmap;
-            _canvas.Children.Add(_canvasRender);
 
+            if(_canvas.Children.Count > 0) { _canvas.Children[0] = _canvasRender; }
+            else { _canvas.Children.Add(_canvasRender); }
+            
             Canvas.SetLeft(_canvasRender, 0);
             Canvas.SetTop(_canvasRender, 0);
         }
@@ -308,7 +310,7 @@ namespace TileEditor.Handlers
         public void Clear()
         {
             CreateEmptyBitmap();
-            _canvas.Children.Clear();
+            //_canvas.Children.Clear();
         }
         
         /// <summary>

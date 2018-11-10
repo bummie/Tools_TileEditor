@@ -70,19 +70,16 @@ namespace TileEditor.Loaders
 
             if(data == null) { MessageBox.Show("Could not load map"); return; }
 
-            Task.Factory.StartNew(() =>
-            {
-                _tileHandler.Reset();
+            _tileHandler.Reset();
 
-                JSONToMap(JObject.Parse(data));
-                ResetEditor();
-            });
+            JSONToMap(JObject.Parse(data));
+            ResetEditor();
         }
 
         /// <summary>
         /// Resets the tilehandler, gridhandler, and tilesethandler
         /// </summary>
-        private void ResetEditor()
+        public void ResetEditor()
         {
             _gridHandler.GridWidth = _mapData.GridWidth;
             _gridHandler.GridHeight = _mapData.GridHeight;

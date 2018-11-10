@@ -34,6 +34,7 @@ namespace TileEditor.ViewModel
         public RelayCommand CmdButtonHost { get; set; }
         public RelayCommand CmdButtonJoin { get; set; }
         public RelayCommand CmdButtonClear { get; set; }
+        public RelayCommand CmdButtonUpdateEditor { get; set; }
 
         #endregion
 
@@ -47,6 +48,8 @@ namespace TileEditor.ViewModel
             set
             {
                 _selectedTileTextureItem = value;
+
+                if(_selectedTileTextureItem == null) { return; }
                 _drawHandler.SelectedTileTextureId = _selectedTileTextureItem.TextureId;
                 _tileHandler.SelectedTileTextureId = _selectedTileTextureItem.TextureId;
             }
@@ -132,8 +135,9 @@ namespace TileEditor.ViewModel
             CmdButtonFill = new RelayCommand(() => { if (_modeHandler != null) { _modeHandler.CurrentMode = ModeHandler.MODE.FILL; } });
             CmdButtonSave = new RelayCommand(() => { if (_mapLoader != null) { _mapLoader.SaveMap();} });
             CmdButtonLoad = new RelayCommand(() => { if (_mapLoader != null) { _mapLoader.LoadMap(); } });
-
             CmdButtonClear = new RelayCommand(() => { if (_tileHandler != null) { _tileHandler.Reset(); } });
+
+            CmdButtonUpdateEditor = new RelayCommand(() => { UpdateEditor(); });
         }
 
         /// <summary>
@@ -149,6 +153,16 @@ namespace TileEditor.ViewModel
             _mapLoader = new MapLoader(_tileHandler, _gridHandler, _tilesetLoader, MapData);
             _drawHandler = new DrawHandler(DrawCanvas, _gridHandler, _cameraHandler, _tilesetLoader, _tileHandler, _modeHandler);
             InputHandler = new InputHandler(_gridHandler, _cameraHandler, _tileHandler, _modeHandler, DrawCanvas, Information);
+        }
+
+        /// <summary>
+        /// Updates the editor with new values
+        /// </summary>
+        private void UpdateEditor()
+        {
+            _mapLoader.ResetEditor();
+            SelectableTileTextures.Clear();
+            FillSelectableTileTextures();
         }
 
         /// <summary>
