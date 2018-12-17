@@ -232,6 +232,14 @@
                         <Label Content="Water"></Label>
                         <CheckBox IsChecked="{Binding TileProperty.Water, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"></CheckBox>
                     </StackPanel>
+                    <StackPanel Orientation="Horizontal">
+                        <Label Content="GroupId"></Label>
+                        <TextBox Text="{Binding TileProperty.GroupId, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Width="Auto" MinWidth="75"/>
+                    </StackPanel>
+                    <StackPanel Orientation="Horizontal">
+                        <Label Content="GroupPosition"></Label>
+                        <TextBox Text="{Binding TileProperty.GroupPosition, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Width="Auto" MinWidth="75"/>
+                    </StackPanel>
                     <Button Content="Update TileProperty" Command="{Binding CmdButtonUpdateTileProperty}"></Button>
                 </StackPanel>
             </Grid>

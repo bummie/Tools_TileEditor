@@ -15,12 +15,17 @@ namespace TileEditor.Model
         private int _textureId;
         public int TextureId { get => _textureId; set { _textureId = value; RaisePropertyChanged("TextureId"); } }
 
+        private int _groupId;
+        public int GroupId { get => _groupId; set { _groupId = value; RaisePropertyChanged("GroupId"); } }
+
+        private int _groupPosition;
+        public int GroupPosition { get => _groupPosition; set { _groupPosition = value; RaisePropertyChanged("GroupPosition"); } }
+
         private float _speedMultiplier;
         public float SpeedMultiplier { get => _speedMultiplier; set { _speedMultiplier = value; RaisePropertyChanged("SpeedMultiplier"); } }
 
         private float _damage;
         public float Damage { get => _damage; set { _damage = value; RaisePropertyChanged("Damage"); } }
-
 
         private float _damageInterval;
         public float DamageInterval { get => _damageInterval; set { _damageInterval = value; RaisePropertyChanged("DamageInterval"); } }
@@ -50,6 +55,8 @@ namespace TileEditor.Model
             DamageInterval = 1;
             Walkable = true;
             Water = false;
+            GroupId = -1;
+            GroupPosition = 5;
         }
 
         /// <summary>
@@ -66,6 +73,8 @@ namespace TileEditor.Model
             DamageInterval = tileProperty.DamageInterval;
             Walkable = tileProperty.Walkable;
             Water = tileProperty.Water;
+            GroupId = tileProperty.GroupId;
+            GroupPosition = tileProperty.GroupPosition;
         }
     }
 }

@@ -127,7 +127,9 @@ namespace TileEditor.Loaders
                     {"Damage", tileProperty.Damage },
                     {"DamageInterval", tileProperty.DamageInterval },
                     {"Walkable", tileProperty.Walkable },
-                    {"Water", tileProperty.Water }
+                    {"Water", tileProperty.Water },
+                    {"GroupId", tileProperty.GroupId },
+                    {"GroupPosition", tileProperty.GroupPosition }
                 };
                 tilePropertiesArray.Add(tilePropertyObject);
             }
@@ -195,7 +197,9 @@ namespace TileEditor.Loaders
                 tileProperty.DamageInterval = (float)jsonProperty["DamageInterval"];
                 tileProperty.Walkable = (bool)jsonProperty["Walkable"];
                 tileProperty.Water = (bool)jsonProperty["Water"];
-                
+                tileProperty.GroupId = (jsonProperty["GroupId"] != null) ? (int)jsonProperty["GroupId"] : -1;
+                tileProperty.GroupPosition = (jsonProperty["GroupPosition"] != null) ? (int)jsonProperty["GroupPosition"] : 5;
+
                 _tileHandler.AddTileProperty(tileProperty);
             }
         }
