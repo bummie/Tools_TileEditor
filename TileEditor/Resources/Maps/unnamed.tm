@@ -43,8 +43,8 @@
       "DamageInterval": 1.0,
       "Walkable": true,
       "Water": false,
-      "GroupId": -1,
-      "GroupPosition": 5
+      "GroupId": 1,
+      "GroupPosition": 2
     },
     {
       "Id": 19,
@@ -74,7 +74,7 @@
       "Walkable": true,
       "Water": false,
       "GroupId": 1,
-      "GroupPosition": 5
+      "GroupPosition": 3
     },
     {
       "Id": 37,

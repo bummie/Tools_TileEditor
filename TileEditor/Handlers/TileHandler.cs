@@ -13,6 +13,8 @@ namespace TileEditor.Handlers
         public Dictionary<Point, Tile> TileDictionary { get; set; }
         public int SelectedTileTextureId { get; set; }
 
+        public List<Point> BorderControlled = new List<Point>();
+
         public TileHandler(GridHandler gridHandler)
         {
             TilePropertyDictionary = new Dictionary<int, TileProperty>();
@@ -42,7 +44,7 @@ namespace TileEditor.Handlers
             }
 
             TileDictionary[position] = new Tile(position, SelectedTileTextureId);
-            AddBorders(position, TilePropertyDictionary[SelectedTileTextureId].GroupId);
+            StartAddBorders(position, TilePropertyDictionary[SelectedTileTextureId].GroupId);
         }
 
         /// <summary>
@@ -64,7 +66,7 @@ namespace TileEditor.Handlers
             }
 
             TileDictionary[position] = new Tile(position, textureId);
-            AddBorders(position, TilePropertyDictionary[tilePropertyId].GroupId);
+            StartAddBorders(position, TilePropertyDictionary[tilePropertyId].GroupId);
         }
 
         /// <summary>
@@ -172,12 +174,19 @@ namespace TileEditor.Handlers
             TileDictionary.Clear();
         }
 
+        private void StartAddBorders(Point tile, int groupId)
+        {
+            AddBorders(tile, groupId);
+            BorderControlled.Clear();
+        }
+
         /// <summary>
         /// Add borders to neighbouring tiles if in the same group
         /// </summary>
         /// <param name="tile"></param>
         private void AddBorders(Point tile, int groupId)
         {
+            if (BorderControlled.Contains(tile)) { return; }
             if (!_gridHandler.IsTileInsideGrid(tile)) { return; }
             if (!TileDictionary.ContainsKey(tile)) { return; }
             if (!TilePropertyDictionary.ContainsKey(GetTile(tile).TextureId)) { return; }
@@ -202,12 +211,13 @@ namespace TileEditor.Handlers
             if (newTextureId == -1) { return; }
             TileDictionary[tile].TextureId = newTextureId;
 
+            BorderControlled.Add(tile);
+
             // Recursion ?!
-            /*AddBorders(TileTop, groupId);
+            AddBorders(TileTop, groupId);
             AddBorders(TileBottom, groupId);
             AddBorders(TileLeft, groupId);
             AddBorders(TileRight, groupId);
-            */
         }
 
         /// <summary>
