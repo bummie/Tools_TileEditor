@@ -167,6 +167,12 @@
   <ItemGroup>
     <Resource Include="Resources\Tilesets\tileset_topdown.png" />
   </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\Icons\pencil_delete.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\Icons\paintcan.png" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

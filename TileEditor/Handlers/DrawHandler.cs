@@ -47,7 +47,7 @@ namespace TileEditor.Handlers
 
             GridThickness = 1;
 
-            _gridPen = new System.Drawing.Pen(System.Drawing.Color.NavajoWhite, GridThickness);
+            _gridPen = new System.Drawing.Pen(System.Drawing.Color.WhiteSmoke, GridThickness);
             _hoverPen = new System.Drawing.Pen(System.Drawing.Color.LightGray, 3);
             _selectedPen = new System.Drawing.Pen(System.Drawing.Color.GhostWhite, 3);
 
@@ -310,7 +310,6 @@ namespace TileEditor.Handlers
         public void Clear()
         {
             CreateEmptyBitmap();
-            //_canvas.Children.Clear();
         }
         
         /// <summary>
@@ -328,7 +327,7 @@ namespace TileEditor.Handlers
             using (System.Drawing.Graphics graphics = System.Drawing.Graphics.FromImage(_bitmapRender))
             {
                 System.Drawing.Rectangle ImageSize = new System.Drawing.Rectangle(0, 0, width, height);
-                graphics.FillRectangle(System.Drawing.Brushes.RoyalBlue, ImageSize);
+                graphics.FillRectangle(System.Drawing.Brushes.DimGray, ImageSize);
             }
         }
 

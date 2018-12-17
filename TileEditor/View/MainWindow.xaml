@@ -62,7 +62,6 @@
                 <ColumnDefinition Width="1*"/>
                 <ColumnDefinition Width="1*"/>
                 <ColumnDefinition Width="1*"/>
-                <ColumnDefinition Width="1*"/>
             </Grid.ColumnDefinitions>
 
             <Grid.Resources>
@@ -104,11 +103,11 @@
                         <RowDefinition Height="2*"></RowDefinition>
                     </Grid.RowDefinitions>
 
-                    <Image Grid.Row="0" Source="/TileEditor;component/Resources/Icons/wand.png" />
+                    <Image Grid.Row="0" Source="/TileEditor;component/Resources/Icons/paintcan.png" />
                     <Label Grid.Row="1">Fill</Label>
                 </Grid>
             </Button>
-            <Button Grid.Column="3" Command="{Binding CmdButtonSave}">
+            <Button Grid.Column="5" Command="{Binding CmdButtonSave}">
                 <Grid>
                     <Grid.RowDefinitions>
                         <RowDefinition Height="2*"></RowDefinition>
@@ -119,7 +118,7 @@
                     <Label Grid.Row="1">Save</Label>
                 </Grid>
             </Button>
-            <Button Grid.Column="4" Command="{Binding CmdButtonLoad}">
+            <Button Grid.Column="6" Command="{Binding CmdButtonLoad}">
                 <Grid>
                     <Grid.RowDefinitions>
                         <RowDefinition Height="2*"></RowDefinition>
@@ -130,29 +129,18 @@
                     <Label Grid.Row="1">Import</Label>
                 </Grid>
             </Button>
-            <Button Grid.Column="5" Command="{Binding CmdButtonHost}" IsEnabled="False">
+            <Button Grid.Column="3" Command="{Binding CmdButtonErase}">
                 <Grid>
                     <Grid.RowDefinitions>
                         <RowDefinition Height="2*"></RowDefinition>
                         <RowDefinition Height="2*"></RowDefinition>
                     </Grid.RowDefinitions>
 
-                    <Image Grid.Row="0" Source="/Resources/Icons/server_add.png" />
-                    <Label Grid.Row="1">Host</Label>
+                    <Image Grid.Row="0" Source="/Resources/Icons/pencil_delete.png" />
+                    <Label Grid.Row="1">Eraser</Label>
                 </Grid>
             </Button>
-            <Button Grid.Column="6" Command="{Binding CmdButtonJoin}" IsEnabled="False">
-                <Grid>
-                    <Grid.RowDefinitions>
-                        <RowDefinition Height="2*"></RowDefinition>
-                        <RowDefinition Height="2*"></RowDefinition>
-                    </Grid.RowDefinitions>
-
-                    <Image Grid.Row="0" Source="/Resources/Icons/server_go.png" />
-                    <Label Grid.Row="1">Join</Label>
-                </Grid>
-            </Button>
-            <Button Grid.Column="7" Command="{Binding CmdButtonClear}">
+            <Button Grid.Column="4" Command="{Binding CmdButtonClear}">
                 <Grid>
                     <Grid.RowDefinitions>
                         <RowDefinition Height="2*"></RowDefinition>
@@ -179,7 +167,7 @@
                     <RowDefinition Height="1*"/>
                 </Grid.RowDefinitions>
 
-                <StackPanel Grid.Row="0" Background="WhiteSmoke">
+                <StackPanel Grid.Row="0" Background="#FF939393">
                     <Label Content="Map Properties" FontWeight="Bold"></Label>
 
                     <StackPanel Orientation="Horizontal">
@@ -205,7 +193,7 @@
                     <Button Content="Update Editor" Command="{Binding CmdButtonUpdateEditor}"></Button>
                 </StackPanel>
 
-                <StackPanel Grid.Row="1" Background="WhiteSmoke">
+                <StackPanel Grid.Row="1" Background="#FF939393">
                     <Label Content="Tile Properties" FontWeight="Bold"></Label>
                     
                     <StackPanel Orientation="Horizontal">
@@ -243,9 +231,9 @@
                     <Button Content="Update TileProperty" Command="{Binding CmdButtonUpdateTileProperty}"></Button>
                 </StackPanel>
             </Grid>
-            <Canvas x:Name="DrawCanvas" Focusable="True" Grid.Column="1" ClipToBounds="True" Background="#FF3D6AB5"/>
+            <Canvas x:Name="DrawCanvas" Focusable="True" Grid.Column="1" ClipToBounds="True" Background="#FF6581B0"/>
 
-            <ListView Grid.Column="2" ItemsSource="{Binding SelectableTileTextures, Mode=TwoWay}" SelectedItem="{Binding SelectedTileTexture, Mode=TwoWay}" ScrollViewer.HorizontalScrollBarVisibility="Disabled">
+            <ListView Grid.Column="2" ItemsSource="{Binding SelectableTileTextures, Mode=TwoWay}" SelectedItem="{Binding SelectedTileTexture, Mode=TwoWay}" ScrollViewer.HorizontalScrollBarVisibility="Disabled" Background="#FF939393">
                 <ListView.ItemTemplate>
                     <DataTemplate>
                         <Image Width="32" Height="32">

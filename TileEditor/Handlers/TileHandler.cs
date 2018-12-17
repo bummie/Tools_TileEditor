@@ -45,6 +45,21 @@ namespace TileEditor.Handlers
         }
 
         /// <summary>
+        /// Removes tile at given position
+        /// </summary>
+        /// <param name="position"></param>
+        public void RemoveTile(Point position)
+        {
+            if (position == new Point(-1, -1)) { return; }
+
+            if (TileDictionary.ContainsKey(position))
+            {
+                TileDictionary.Remove(position);
+                return;
+            }
+        }
+
+        /// <summary>
         /// Add tile with textureid
         /// </summary>
         /// <param name="position"></param>

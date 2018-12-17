@@ -31,8 +31,7 @@ namespace TileEditor.ViewModel
         public RelayCommand CmdButtonFill { get; set; }
         public RelayCommand CmdButtonSave { get; set; }
         public RelayCommand CmdButtonLoad { get; set; }
-        public RelayCommand CmdButtonHost { get; set; }
-        public RelayCommand CmdButtonJoin { get; set; }
+        public RelayCommand CmdButtonErase { get; set; }
         public RelayCommand CmdButtonClear { get; set; }
         public RelayCommand CmdButtonUpdateEditor { get; set; }
         public RelayCommand CmdButtonUpdateTileProperty { get; set; }
@@ -136,6 +135,7 @@ namespace TileEditor.ViewModel
             CmdButtonSelect = new RelayCommand(() => { if (_modeHandler != null) { _modeHandler.CurrentMode = ModeHandler.MODE.SELECT; } });
             CmdButtonDraw = new RelayCommand(() => { if (_modeHandler != null) { _modeHandler.CurrentMode = ModeHandler.MODE.DRAW; } });
             CmdButtonFill = new RelayCommand(() => { if (_modeHandler != null) { _modeHandler.CurrentMode = ModeHandler.MODE.FILL; } });
+            CmdButtonErase = new RelayCommand(() => { if (_modeHandler != null) { _modeHandler.CurrentMode = ModeHandler.MODE.ERASE; } });
             CmdButtonSave = new RelayCommand(() => { if (_mapLoader != null) { _mapLoader.SaveMap();} });
             CmdButtonLoad = new RelayCommand(() => { if (_mapLoader != null) { _mapLoader.LoadMap(); UpdateEditor(); } });
             CmdButtonClear = new RelayCommand(() => { if (_tileHandler != null) { _tileHandler.Reset(); } });

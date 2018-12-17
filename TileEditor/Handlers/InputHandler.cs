@@ -65,6 +65,7 @@ namespace TileEditor.Handlers
             if (mouseEvent == null) { return; }
 
             AddTile(mouseEvent);
+            RemoveTile(mouseEvent);
             _gridHandler.HoverTile = _gridHandler.GetPointFromCoords(mouseEvent.GetPosition(_canvas));
 
             Point mousePos = mouseEvent.GetPosition(_canvas);
@@ -86,6 +87,7 @@ namespace TileEditor.Handlers
 
             _mouseDown = true;
             AddTile(mouseEvent);
+            RemoveTile(mouseEvent);
             Fill(mouseEvent);
         }
 
@@ -97,6 +99,18 @@ namespace TileEditor.Handlers
             if (_mouseDown && _modeHandler.CurrentMode == ModeHandler.MODE.DRAW)
             {
                 _tileHandler.AddTile(_gridHandler.GetPointFromCoords(mouseEvent.GetPosition(_canvas)));
+            }
+        }
+
+        /// <summary>
+        /// Removes tile at given position
+        /// </summary>
+        /// <param name="mouseEvent"></param>
+        public void RemoveTile(MouseEventArgs mouseEvent)
+        {
+            if (_mouseDown && _modeHandler.CurrentMode == ModeHandler.MODE.ERASE)
+            {
+                _tileHandler.RemoveTile(_gridHandler.GetPointFromCoords(mouseEvent.GetPosition(_canvas)));
             }
         }
 

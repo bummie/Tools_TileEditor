@@ -8,7 +8,7 @@ namespace TileEditor.Handlers
 {
     public class ModeHandler
     {
-        public enum MODE { SELECT, DRAW, FILL };
+        public enum MODE { SELECT, DRAW, FILL, ERASE };
         public MODE CurrentMode { get; set; }
 
         public ModeHandler()
