@@ -64,7 +64,7 @@ namespace TileEditor.Handlers
             var mouseEvent = (e != null) ? (MouseEventArgs)e : null;
             if (mouseEvent == null) { return; }
 
-            AddTile(mouseEvent);
+            //AddTile(mouseEvent);
             RemoveTile(mouseEvent);
             _gridHandler.HoverTile = _gridHandler.GetPointFromCoords(mouseEvent.GetPosition(_canvas));
 

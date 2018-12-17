@@ -182,9 +182,10 @@ namespace TileEditor.Handlers
             if (!TileDictionary.ContainsKey(tile)) { return; }
             if (!TilePropertyDictionary.ContainsKey(GetTile(tile).TextureId)) { return; }
             if (GetTileProperty(GetTile(tile).TextureId).GroupId != groupId) { return; }
+            if (GetTileProperty(GetTile(tile).TextureId).GroupId == -1 || groupId == -1) { return; }
 
-            Point TileTop = new Point(tile.X, tile.Y + 1);
-            Point TileBottom = new Point(tile.X, tile.Y - 1);
+            Point TileTop = new Point(tile.X, tile.Y - 1);
+            Point TileBottom = new Point(tile.X, tile.Y + 1);
             Point TileLeft = new Point(tile.X - 1, tile.Y);
             Point TileRight = new Point(tile.X + 1, tile.Y);
 
@@ -239,22 +240,19 @@ namespace TileEditor.Handlers
         private int CalculateGroupPosition(bool top, bool bottom, bool left, bool right)
         {
             if (!top && bottom && !left && right) { return 1; }
-
             if (!top && bottom && left && right) { return 2; }
-
             if (!top && bottom && left && !right) { return 3; }
-
             if (top && bottom && !left && right) { return 4; }
-
             if (top && bottom && left && right) { return 5; }
-
             if (top && bottom && left && !right) { return 6; }
-
             if (top && !bottom && !left && right) { return 7; }
-
             if (top && !bottom && left && right) { return 8; }
-
             if (top && !bottom && left && !right) { return 9; }
+
+            if (top && !bottom && !left && !right) { return 8; }
+            if (!top && bottom && !left && !right) { return 2; }
+            if (!top && !bottom && !left && right) { return 4; }
+            if (!top && !bottom && left && !right) { return 6; }
 
             return -1;
         }
