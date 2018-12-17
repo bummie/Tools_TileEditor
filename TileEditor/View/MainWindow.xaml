@@ -170,7 +170,7 @@
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="2*"/>
                 <ColumnDefinition Width="8*"/>
-                <ColumnDefinition Width=".6*"/>
+                <ColumnDefinition Width="2*"/>
             </Grid.ColumnDefinitions>
 
             <Grid Grid.Column="0">
@@ -236,10 +236,8 @@
                 </StackPanel>
             </Grid>
             <Canvas x:Name="DrawCanvas" Focusable="True" Grid.Column="1" ClipToBounds="True" Background="#FF3D6AB5"/>
-            
-            
 
-            <ListView Grid.Column="2" ItemsSource="{Binding SelectableTileTextures, Mode=TwoWay}" SelectedItem="{Binding SelectedTileTexture, Mode=TwoWay}">
+            <ListView Grid.Column="2" ItemsSource="{Binding SelectableTileTextures, Mode=TwoWay}" SelectedItem="{Binding SelectedTileTexture, Mode=TwoWay}" ScrollViewer.HorizontalScrollBarVisibility="Disabled">
                 <ListView.ItemTemplate>
                     <DataTemplate>
                         <Image Width="32" Height="32">
@@ -249,13 +247,16 @@
                         </Image>
                     </DataTemplate>
                 </ListView.ItemTemplate>
+                <ListView.ItemsPanel>
+                    <ItemsPanelTemplate>
+                        <WrapPanel Orientation="Horizontal" />
+                    </ItemsPanelTemplate>
+                </ListView.ItemsPanel>
             </ListView>
         </Grid>
 
         <!-- Information -->
         <Grid Grid.Row="2">
-            
-            
             <Grid>
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="2*"/>
@@ -279,9 +280,8 @@
                         <Label Content="{Binding Information.InfoTilePos, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}" Foreground="#FFF9F9F9"/>
                     </StackPanel>
                 </StackPanel>
-
             </Grid>
-
         </Grid>
+        
     </Grid>
 </Window>
