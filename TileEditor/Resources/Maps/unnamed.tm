@@ -24,7 +24,7 @@
       "Walkable": true,
       "Water": false,
       "GroupId": 1,
-      "GroupPosition": 5
+      "GroupPosition": 4
     },
     {
       "Id": 2,
@@ -34,7 +34,7 @@
       "Walkable": true,
       "Water": false,
       "GroupId": 1,
-      "GroupPosition": 5
+      "GroupPosition": 7
     },
     {
       "Id": 18,
@@ -63,8 +63,8 @@
       "DamageInterval": 1.0,
       "Walkable": true,
       "Water": false,
-      "GroupId": -1,
-      "GroupPosition": 5
+      "GroupId": 1,
+      "GroupPosition": 8
     },
     {
       "Id": 36,
@@ -83,8 +83,8 @@
       "DamageInterval": 1.0,
       "Walkable": true,
       "Water": false,
-      "GroupId": -1,
-      "GroupPosition": 5
+      "GroupId": 1,
+      "GroupPosition": 6
     },
     {
       "Id": 38,
@@ -95,71 +95,17 @@
       "Water": false,
       "GroupId": 1,
       "GroupPosition": 9
+    },
+    {
+      "Id": 29,
+      "SpeedMultiplier": 1.0,
+      "Damage": 0.0,
+      "DamageInterval": 1.0,
+      "Walkable": true,
+      "Water": false,
+      "GroupId": -1,
+      "GroupPosition": 5
     }
   ],
-  "Tiles": [
-    {
-      "Id": 0,
-      "Position": {
-        "X": 0.0,
-        "Y": 0.0
-      }
-    },
-    {
-      "Id": 1,
-      "Position": {
-        "X": 0.0,
-        "Y": 1.0
-      }
-    },
-    {
-      "Id": 2,
-      "Position": {
-        "X": 0.0,
-        "Y": 2.0
-      }
-    },
-    {
-      "Id": 18,
-      "Position": {
-        "X": 1.0,
-        "Y": 0.0
-      }
-    },
-    {
-      "Id": 19,
-      "Position": {
-        "X": 1.0,
-        "Y": 1.0
-      }
-    },
-    {
-      "Id": 20,
-      "Position": {
-        "X": 1.0,
-        "Y": 2.0
-      }
-    },
-    {
-      "Id": 36,
-      "Position": {
-        "X": 2.0,
-        "Y": 0.0
-      }
-    },
-    {
-      "Id": 37,
-      "Position": {
-        "X": 2.0,
-        "Y": 1.0
-      }
-    },
-    {
-      "Id": 38,
-      "Position": {
-        "X": 2.0,
-        "Y": 2.0
-      }
-    }
-  ]
+  "Tiles": []
 }

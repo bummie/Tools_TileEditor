@@ -42,21 +42,7 @@ namespace TileEditor.Handlers
             }
 
             TileDictionary[position] = new Tile(position, SelectedTileTextureId);
-        }
-
-        /// <summary>
-        /// Removes tile at given position
-        /// </summary>
-        /// <param name="position"></param>
-        public void RemoveTile(Point position)
-        {
-            if (position == new Point(-1, -1)) { return; }
-
-            if (TileDictionary.ContainsKey(position))
-            {
-                TileDictionary.Remove(position);
-                return;
-            }
+            AddBorders(position, TilePropertyDictionary[SelectedTileTextureId].GroupId);
         }
 
         /// <summary>
@@ -78,6 +64,22 @@ namespace TileEditor.Handlers
             }
 
             TileDictionary[position] = new Tile(position, textureId);
+            AddBorders(position, TilePropertyDictionary[tilePropertyId].GroupId);
+        }
+
+        /// <summary>
+        /// Removes tile at given position
+        /// </summary>
+        /// <param name="position"></param>
+        public void RemoveTile(Point position)
+        {
+            if (position == new Point(-1, -1)) { return; }
+
+            if (TileDictionary.ContainsKey(position))
+            {
+                TileDictionary.Remove(position);
+                return;
+            }
         }
 
         /// <summary>
@@ -135,7 +137,7 @@ namespace TileEditor.Handlers
         public void Reset()
         {
             TilePropertyDictionary.Clear();
-            TileDictionary.Clear();
+            Clear();
         }
 
         /// <summary>
@@ -160,6 +162,114 @@ namespace TileEditor.Handlers
             if (!TileDictionary.ContainsKey(position)) { return null; }
 
             return TileDictionary[position];
+        }
+
+        /// <summary>
+        /// Clears the tiles
+        /// </summary>
+        public void Clear()
+        {
+            TileDictionary.Clear();
+        }
+
+        /// <summary>
+        /// Add borders to neighbouring tiles if in the same group
+        /// </summary>
+        /// <param name="tile"></param>
+        private void AddBorders(Point tile, int groupId)
+        {
+            if (!_gridHandler.IsTileInsideGrid(tile)) { return; }
+            if (!TileDictionary.ContainsKey(tile)) { return; }
+            if (!TilePropertyDictionary.ContainsKey(GetTile(tile).TextureId)) { return; }
+            if (GetTileProperty(GetTile(tile).TextureId).GroupId != groupId) { return; }
+
+            Point TileTop = new Point(tile.X, tile.Y + 1);
+            Point TileBottom = new Point(tile.X, tile.Y - 1);
+            Point TileLeft = new Point(tile.X - 1, tile.Y);
+            Point TileRight = new Point(tile.X + 1, tile.Y);
+
+            int groupPosition = CalculateGroupPosition(
+                GetTileGroup(TileTop) == groupId ? true : false,
+                GetTileGroup(TileBottom) == groupId ? true : false,
+                GetTileGroup(TileLeft) == groupId ? true : false,
+                GetTileGroup(TileRight) == groupId ? true : false
+                );
+
+            if (groupPosition == -1) { return; }
+            int newTextureId = FindTilePropertyWithGroupPosition(groupId, groupPosition);
+
+            if (newTextureId == -1) { return; }
+            TileDictionary[tile].TextureId = newTextureId;
+
+            // Recursion ?!
+            /*AddBorders(TileTop, groupId);
+            AddBorders(TileBottom, groupId);
+            AddBorders(TileLeft, groupId);
+            AddBorders(TileRight, groupId);
+            */
+        }
+
+        /// <summary>
+        /// Discovers the texturetid for given tile with correct groupu and position
+        /// </summary>
+        /// <param name="groupId"></param>
+        /// <param name="groupPosition"></param>
+        /// <returns></returns>
+        private int FindTilePropertyWithGroupPosition(int groupId, int groupPosition)
+        {
+            foreach(TileProperty tileProperty in TilePropertyDictionary.Values)
+            {
+                if(tileProperty.GroupId == groupId && tileProperty.GroupPosition == groupPosition)
+                {
+                    return tileProperty.TextureId;
+                }
+            }
+
+            return -1;
+        }
+
+        /// <summary>
+        /// Calculates the position in the group based on if the neighbours are in the same group
+        /// </summary>
+        /// <param name="top"></param>
+        /// <param name="bottom"></param>
+        /// <param name="left"></param>
+        /// <param name="right"></param>
+        /// <returns></returns>
+        private int CalculateGroupPosition(bool top, bool bottom, bool left, bool right)
+        {
+            if (!top && bottom && !left && right) { return 1; }
+
+            if (!top && bottom && left && right) { return 2; }
+
+            if (!top && bottom && left && !right) { return 3; }
+
+            if (top && bottom && !left && right) { return 4; }
+
+            if (top && bottom && left && right) { return 5; }
+
+            if (top && bottom && left && !right) { return 6; }
+
+            if (top && !bottom && !left && right) { return 7; }
+
+            if (top && !bottom && left && right) { return 8; }
+
+            if (top && !bottom && left && !right) { return 9; }
+
+            return -1;
+        }
+
+        /// <summary>
+        /// Returns the group of the tile
+        /// </summary>
+        /// <param name="tile"></param>
+        /// <returns></returns>
+        private int GetTileGroup(Point tile)
+        {
+            if (GetTile(tile) == null) { return -1; }
+            if (GetTileProperty(GetTile(tile).TextureId) == null) { return -1; }
+
+            return GetTileProperty(GetTile(tile).TextureId).GroupId;
         }
     }
 }

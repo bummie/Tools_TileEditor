@@ -138,7 +138,7 @@ namespace TileEditor.ViewModel
             CmdButtonErase = new RelayCommand(() => { if (_modeHandler != null) { _modeHandler.CurrentMode = ModeHandler.MODE.ERASE; } });
             CmdButtonSave = new RelayCommand(() => { if (_mapLoader != null) { _mapLoader.SaveMap();} });
             CmdButtonLoad = new RelayCommand(() => { if (_mapLoader != null) { _mapLoader.LoadMap(); UpdateEditor(); } });
-            CmdButtonClear = new RelayCommand(() => { if (_tileHandler != null) { _tileHandler.Reset(); } });
+            CmdButtonClear = new RelayCommand(() => { if (_tileHandler != null) { _tileHandler.Clear(); } });
 
             CmdButtonUpdateEditor = new RelayCommand(() => { UpdateEditor(); });
             CmdButtonUpdateTileProperty = new RelayCommand(() => { UpdateTileProperty(); });
