@@ -40,6 +40,7 @@ namespace TileEditor.Handlers
             if (TileDictionary.ContainsKey(position))
             {
                 TileDictionary[position].TextureId = SelectedTileTextureId;
+                StartAddBorders(position, TilePropertyDictionary[SelectedTileTextureId].GroupId);
                 return;
             }
 
@@ -62,6 +63,7 @@ namespace TileEditor.Handlers
             if (TileDictionary.ContainsKey(position))
             {
                 TileDictionary[position].TextureId = textureId;
+                StartAddBorders(position, TilePropertyDictionary[tilePropertyId].GroupId);
                 return;
             }
 
