@@ -176,6 +176,11 @@ namespace TileEditor.Handlers
             TileDictionary.Clear();
         }
 
+        /// <summary>
+        /// Starts the the recursion proccess of adding borders, and then cleans up afterwards.
+        /// </summary>
+        /// <param name="tile"></param>
+        /// <param name="groupId"></param>
         private void StartAddBorders(Point tile, int groupId)
         {
             AddBorders(tile, groupId);
@@ -251,20 +256,36 @@ namespace TileEditor.Handlers
         /// <returns></returns>
         private int CalculateGroupPosition(bool top, bool bottom, bool left, bool right)
         {
+            // Top left
             if (!top && bottom && !left && right) { return 1; }
-            if (!top && bottom && left && right) { return 2; }
-            if (!top && bottom && left && !right) { return 3; }
-            if (top && bottom && !left && right) { return 4; }
-            if (top && bottom && left && right) { return 5; }
-            if (top && bottom && left && !right) { return 6; }
-            if (top && !bottom && !left && right) { return 7; }
-            if (top && !bottom && left && right) { return 8; }
-            if (top && !bottom && left && !right) { return 9; }
 
-            if (top && !bottom && !left && !right) { return 8; }
+            // Top
             if (!top && bottom && !left && !right) { return 2; }
+            if (!top && bottom && left && right) { return 2; }
+
+            // Top Right
+            if (!top && bottom && left && !right) { return 3; }
+
+            // Center Left
+            if (top && bottom && !left && right) { return 4; }
             if (!top && !bottom && !left && right) { return 4; }
+
+            // Center
+            if (top && bottom && left && right) { return 5; }
+
+            // Center Right
+            if (top && bottom && left && !right) { return 6; }
             if (!top && !bottom && left && !right) { return 6; }
+
+            // Bottom Left
+            if (top && !bottom && !left && right) { return 7; }
+
+            // Bottom
+            if (top && !bottom && !left && !right) { return 8; }
+            if (top && !bottom && left && right) { return 8; }
+
+            // Bottom Right
+            if (top && !bottom && left && !right) { return 9; }
 
             return -1;
         }
